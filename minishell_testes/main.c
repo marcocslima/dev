@@ -35,7 +35,6 @@ char	**copy_env(char **envp, int add)
 	return (copy);
 }
 
-
 void	init_struct(t_data **data, char **argv, char **envp)
 {
 	(*data) = (t_data *)malloc(sizeof(t_data));
@@ -46,24 +45,15 @@ void	init_struct(t_data **data, char **argv, char **envp)
 
 }
 
-char	*get_home(char **envp)//deletei essa função já que ficou curta e inseri direto no open_prompt, se achar melhor deixar separado tu que sabe, pra mim tanto faz ,deleta ela já caso concorde se não volta pro antigo
-{
-	while (ft_memcmp("HOME=", *envp, 5))
-		envp++;
-	return (*envp + 5);
-}
-
 void	open_prompt(char **envp)
 {
 	char	*home;
 	char	cwd[4097];
 	char	*path;
 
-//	home = get_home(envp);
-//função get home embutida abaixo, se concordar pode deletar os comentarios
-	while (ft_memcmp("HOME=", *envp, 5))//inicio
+	while (ft_memcmp("HOME=", *envp, 5))
 		envp++;
-	home = *envp + 5;//fim
+	home = *envp + 5;
 	getcwd(cwd, 4096);
 	if (ft_memcmp(cwd, home, ft_strlen(home)))
 		path = ft_strdup(cwd);
@@ -74,7 +64,7 @@ void	open_prompt(char **envp)
 	free(path);
 }
 
-void		get_input(t_data **data)//adicionei essa função que está lendo o que for escrito no promp
+void		get_input(t_data **data)
 {
 	char	buf;
 	char*	bufstring;
@@ -107,9 +97,7 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGINT, signal_handler);
 		get_input(&data);
 		parser(&data);
-		exit (0); //retirar
-
+		//exit (0); //retirar
 	}
-
 	return (0);
 }
