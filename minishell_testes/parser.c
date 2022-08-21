@@ -52,18 +52,41 @@ void slices(t_data **data)
 {
 	int i;
 	int k;
+	int counter;
+	char c;
+	int flag;
 
 	i = 0;
-	k = -1;
+	k = 0;
 	if((*data)->len_tokens[0] > 0)
 	{
 		while(i < (*data)->len_tokens[0])
-		{	
-			while((*data)->tokens[2] && ((*data)->tokens[2][k] < (*data)->tokens[0][i]))
+		{
+			flag = 0;
+			counter = 0;
+			while(k < (*data)->tokens[0][i])
+			{
+				if((*data)->input[k] == '\'' && flag == 0)
+				{
+					c = '\'';
+					flag = 1;
+				}
+				else if ((*data)->input[k] == '"' && flag == 0)
+				{
+					c = '"';
+					flag = 1;
+				}
+				if((*data)->input[k] == c)
+					counter++;
+				if(counter % 2 == 0 && (*data)->input[k+1] == ';')
+				{
+					ft_putstr_fd("É um separador -> ; na pos: ", 1);
+					ft_putnbr_fd((*data)->tokens[0][i], 1);
+				}
 				k++;
-			if(k % 2 == 0)
-				ft_putstr_fd("É um separador ", 1);
+			}
 			i++;
+			
 		}
 	}
 }
