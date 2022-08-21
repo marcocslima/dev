@@ -28,7 +28,7 @@ void	get_token(t_data **data, char token, int n)
 		(*data)->tokens[n] = tok;
 	}
 }
-
+/*
 void quotes(t_data **data)
 {
 	if ((*data)->tokens[2] && (*data)->tokens[3])
@@ -47,15 +47,25 @@ void quotes(t_data **data)
 			}
 	}
 }
-
+*/
 void slices(t_data **data)
 {
 	int i;
-	
-	(*data)->len_tokens[0] > (*data)->len_tokens[1] ? i = (*data)->len_tokens[0] : (*data)->len_tokens[1];
+	int k;
 
-	if ((*data)->tokens[0] || (*data)->tokens[1])
-		(*data)->len_tokens[0];
+	i = 0;
+	k = -1;
+	if((*data)->len_tokens[0] > 0)
+	{
+		while(i < (*data)->len_tokens[0])
+		{	
+			while((*data)->tokens[2] && ((*data)->tokens[2][k] < (*data)->tokens[0][i]))
+				k++;
+			if(k % 2 == 0)
+				ft_putstr_fd("É um separador ", 1);
+			i++;
+		}
+	}
 }
 
 void parser(t_data	**data)
@@ -68,5 +78,5 @@ void parser(t_data	**data)
 	(*data)->len_tokens = calloc(7,sizeof(int));
 	while(++i < 7)
 		get_token(data, token[i], i);
-	quotes(data);
+	slices(data);
 }
