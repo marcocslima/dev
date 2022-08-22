@@ -29,37 +29,18 @@ void	get_token(t_data **data, char token, int n)
 	}
 }
 /*
-void quotes(t_data **data)
+int *sort_slicers(int *list_a, int *list_b)
 {
-	if ((*data)->tokens[2] && (*data)->tokens[3])
-	{
-		if(((*data)->tokens[2][0] < (*data)->tokens[3][0]))
-			{
-				ft_putstr_fd("single quotes ", 1);
-				ft_putnbr_fd((*data)->len_tokens[2], 1);
-				ft_putstr_fd("\n", 1);
-			}
-			else
-			{
-				ft_putstr_fd("double quotes ", 1);
-				ft_putnbr_fd((*data)->len_tokens[3], 1);
-				ft_putstr_fd("\n", 1);
-			}
-	}
-}
-*/
-
-xxxxxxx(){
     int i,j;
     int a[5]={1,4,8,9,11};
     int b[6]={3,6,7,10,15,25};
     int c[11];
     int aux;
 
-    /* Copia vetor 'a' para a primeira metade do vetor 'c' */
+    Copia vetor 'a' para a primeira metade do vetor 'c' 
     memcpy( c, a, sizeof(a) );
 
-    /* Copia vetor 'b' para a segunda metade do vetor 'c' */
+    Copia vetor 'b' para a segunda metade do vetor 'c'
     memcpy( c + 5, b, sizeof(b) );
 
     for(i=0;i<10;i++){
@@ -77,8 +58,6 @@ xxxxxxx(){
     for(i=0;i<10;i++){
         printf("%d\n",c[i]); //imprime os resultados em ordem crescente
     }
-
-
 }
 
 int *slicers(t_data **data, int n)
@@ -104,49 +83,55 @@ int *slicers(t_data **data, int n)
 		}
 	}
 }
-
+*/
 void slices(t_data **data)
 {
 	int i;
+	int j;
 	int k;
-	int counter;
 	char c;
+	int counter;
 	int flag;
-	int len;
+	int *slc_scolon;
+	int *slc_pipe;
 
-	i = 0;
-	k = 0;
-	if((*data)->len_tokens[0] > 0 || (*data)->len_tokens[1] > 0)
+	slc_scolon = ft_calloc((*data)->len_tokens[0] + 1,sizeof(int));
+	slc_pipe = ft_calloc((*data)->len_tokens[1] + 1,sizeof(int));
+	j = 0;
+	while(j < 2)
 	{
-		len = (*data)->len_tokens[0] + (*data)->len_tokens[1] > 0;
-		while(i < len)
+		i = 0;
+		k = 0;
+		if((*data)->len_tokens[j] > 0)
 		{
-			flag = 0;
-			counter = 0;
-			while(k < (*data)->tokens[0][i])
+			while(i < (*data)->len_tokens[j])
 			{
-				if((*data)->input[k] == '\'' && flag == 0)
+				flag = 0;
+				counter = 0;
+				while(k < (*data)->tokens[j][i])
 				{
-					c = '\'';
-					flag = 1;
+					if((*data)->input[k] == '\'' && flag == 0)
+					{
+						c = '\'';
+						flag = 1;
+					}
+					else if ((*data)->input[k] == '"' && flag == 0)
+					{
+						c = '"';
+						flag = 1;
+					}
+					if((*data)->input[k] == c)
+						counter++;
+					if(j == 0 && counter % 2 == 0 && (*data)->input[k + 1] == ';')
+						slc_scolon[i] = (*data)->tokens[j][i];
+					else if(j == 1 && counter % 2 == 0 && (*data)->input[k + 1] == '|')
+						slc_pipe[i] = (*data)->tokens[j][i];
+					k++;
 				}
-				else if ((*data)->input[k] == '"' && flag == 0)
-				{
-					c = '"';
-					flag = 1;
-				}
-				if((*data)->input[k] == c)
-					counter++;
-				if(counter % 2 == 0 && (*data)->input[k+1] == ';')
-				{
-					ft_putstr_fd("É um separador -> ; na pos: ", 1);
-					ft_putnbr_fd((*data)->tokens[0][i], 1);
-				}
-				k++;
+				i++;
 			}
-			i++;
-			
 		}
+		j++;
 	}
 }
 
