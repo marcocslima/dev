@@ -29,37 +29,6 @@ void	get_token(t_data **data, char token, int n)
 	}
 }
 /*
-int *sort_slicers(int *list_a, int *list_b)
-{
-    int i,j;
-    int a[5]={1,4,8,9,11};
-    int b[6]={3,6,7,10,15,25};
-    int c[11];
-    int aux;
-
-    Copia vetor 'a' para a primeira metade do vetor 'c' 
-    memcpy( c, a, sizeof(a) );
-
-    Copia vetor 'b' para a segunda metade do vetor 'c'
-    memcpy( c + 5, b, sizeof(b) );
-
-    for(i=0;i<10;i++){
-        for(j=0;j<10;j++){
-        if(c[i] < c[j]){
-           //nesta parte que ocorre a troca e ordenação de varíaveis
-           aux = c[i]; //recebe o menor valor, na varável temporária aux
-           c[i] = c[j]; // repete com todos os valores no loop
-           c[j] = aux; // recebe em ordem crescente no vetor c[j]
-
-        }
-      }
-    }
-
-    for(i=0;i<10;i++){
-        printf("%d\n",c[i]); //imprime os resultados em ordem crescente
-    }
-}
-
 int *slicers(t_data **data, int n)
 {
 	int *slc;
@@ -84,6 +53,7 @@ int *slicers(t_data **data, int n)
 	}
 }
 */
+
 void slices(t_data **data)
 {
 	int i;
@@ -92,11 +62,7 @@ void slices(t_data **data)
 	char c;
 	int counter;
 	int flag;
-	int *slc_scolon;
-	int *slc_pipe;
 
-	slc_scolon = ft_calloc((*data)->len_tokens[0] + 1,sizeof(int));
-	slc_pipe = ft_calloc((*data)->len_tokens[1] + 1,sizeof(int));
 	j = 0;
 	while(j < 2)
 	{
@@ -110,22 +76,17 @@ void slices(t_data **data)
 				counter = 0;
 				while(k < (*data)->tokens[j][i])
 				{
-					if((*data)->input[k] == '\'' && flag == 0)
+					if(((*data)->input[k] == '\'' || (*data)->input[k] == '"') && flag == 0)
 					{
-						c = '\'';
-						flag = 1;
-					}
-					else if ((*data)->input[k] == '"' && flag == 0)
-					{
-						c = '"';
+						c = (*data)->input[k];
 						flag = 1;
 					}
 					if((*data)->input[k] == c)
 						counter++;
-					if(j == 0 && counter % 2 == 0 && (*data)->input[k + 1] == ';')
-						slc_scolon[i] = (*data)->tokens[j][i];
-					else if(j == 1 && counter % 2 == 0 && (*data)->input[k + 1] == '|')
-						slc_pipe[i] = (*data)->tokens[j][i];
+					if(j == 0 && counter % 2 == 0 && ((*data)->input[k + 1] == ';'))
+						(*data)->slicers[k] = (*data)->tokens[j][i];
+					if(j == 1 && counter % 2 == 0 && ((*data)->input[k + 1] == '|'))
+						(*data)->slicers[k] = (*data)->tokens[j][i];
 					k++;
 				}
 				i++;
@@ -133,6 +94,12 @@ void slices(t_data **data)
 		}
 		j++;
 	}
+	// PARA TESTES
+	i=0;
+	while(i < (int)ft_strlen((*data)->input))
+		ft_putnbr_fd((*data)->slicers[i++],1);
+	ft_putstr_fd("\n",1);
+	// PARA TESTES
 }
 
 void parser(t_data	**data)
@@ -145,5 +112,6 @@ void parser(t_data	**data)
 	(*data)->len_tokens = ft_calloc(7,sizeof(int));
 	while(++i < 7)
 		get_token(data, token[i], i);
+	(*data)->slicers = ft_calloc(ft_strlen((*data)->input),sizeof(int));
 	slices(data);
 }

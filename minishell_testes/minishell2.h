@@ -46,6 +46,7 @@ typedef struct s_data
 	char	**argv;
 	int		**tokens;
 	int		*len_tokens;
+	int		*slicers;
 	int		argc;
 	char	*input;
 	char	**pars_inpt;
