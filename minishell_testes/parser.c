@@ -28,33 +28,8 @@ void	get_token(t_data **data, char token, int n)
 		(*data)->tokens[n] = tok;
 	}
 }
-/*
-int *slicers(t_data **data, int n)
-{
-	int *slc;
-	int i;
-	int j;
 
-	i = 0;
-	j = 0;
-	slc = ft_calloc(n,sizeof(int));
-	while(i < n)
-	{
-		if((*data)->tokens[0][i] < (*data)->tokens[1][j])
-		{
-			slc[i] = (*data)->tokens[0][i];
-			i++;
-		}
-		else
-		{
-			slc[i] = (*data)->tokens[1][j];
-			j++;
-		}
-	}
-}
-*/
-
-typedef struct s_conters
+typedef struct s_cursors
 {
 	int		i;
 	int		j;
@@ -62,144 +37,67 @@ typedef struct s_conters
 	char	c;
 	int		counter;
 	int		flag;
-} t_conters;
+} t_cursors;
 
-void init_conters(t_conters *counters)
+void	init_cursors(t_cursors	**cursor)
 {
-	counters->counter = 0;
-	counters->flag = 0;
-	counters->i = 0;
-	counters->j = 0;
-	counters->k = 0;
+	(*cursor)->counter = 0;
+	(*cursor)->flag = 0;
+	(*cursor)->i = 0;
+	(*cursor)->j = 0;
+	(*cursor)->k = 0;
 }
 
-void	get_slicers(t_data **data, int k, int j, int i, int flag, int counter)
+void	get_slicers(t_data **data, t_cursors **cursor, char slc, int index)
 {
-	char	c;
-
-	while(k < (*data)->tokens[j][i])
+	while((*cursor)->i < (*data)->len_tokens[index])
 	{
-		if(((*data)->input[k] == '\'' || (*data)->input[k] == '"') && flag == 0)
+		(*cursor)->flag = 0;
+		(*cursor)->counter = 0;
+		while((*cursor)->k < (*data)->tokens[index][(*cursor)->i])
 		{
-			c = (*data)->input[k];
-			flag = 1;
-		}
-		if((*data)->input[k] == c)
-			counter++;
-		if(j == 0 && counter % 2 == 0 && ((*data)->input[k + 1] == ';'))
-			(*data)->slicers[k] = (*data)->tokens[j][i];
-		if(j == 1 && counter % 2 == 0 && ((*data)->input[k + 1] == '|'))
-			(*data)->slicers[k] = (*data)->tokens[j][i];
-		k++;
-	}
-	// PARA TESTES
-	i = 0;
-	while(i < (int)ft_strlen((*data)->input))
-		ft_putnbr_fd((*data)->slicers[i++],1);
-	ft_putstr_fd("\n",1);
-	// PARA TESTES
-}
-
-void slices(t_data **data)
-{
-	t_conters *cont;
-
-	cont = malloc(sizeof(t_conters) * 1);
-	while(cont->j < 2)
-	{
-		cont->i = 0;
-		cont->k = 0;
-		if((*data)->len_tokens[cont->j] > 0)
-		{
-			while(cont->i < (*data)->len_tokens[cont->j])
+			if(((*data)->input[(*cursor)->k] == '\'' || (*data)->input[(*cursor)->k] == '"') && (*cursor)->flag == 0)
 			{
-				cont->flag = 0;
-				cont->counter = 0;
-				get_slicers(data, cont->k, cont->j, cont->i, cont->flag, cont->counter);
-				/*
-				while(cont->k < (*data)->tokens[cont->j][cont->i])
-				{
-					if(((*data)->input[cont->k] == '\'' || (*data)->input[cont->k] == '"') && cont->flag == 0)
-					{
-						cont->c = (*data)->input[cont->k];
-						cont->flag = 1;
-					}
-					if((*data)->input[cont->k] == cont->c)
-						cont->counter++;
-					if(cont->j == 0 && cont->counter % 2 == 0 && ((*data)->input[cont->k + 1] == ';'))
-						(*data)->slicers[cont->k] = (*data)->tokens[cont->j][cont->i];
-					if(cont->j == 1 && cont->counter % 2 == 0 && ((*data)->input[cont->k + 1] == '|'))
-						(*data)->slicers[cont->k] = (*data)->tokens[cont->j][cont->i];
-					cont->k++;
-				}
-				*/
-			cont->i++;
+				(*cursor)->c = (*data)->input[(*cursor)->k];
+				(*cursor)->flag = 1;
 			}
+			if((*data)->input[(*cursor)->k] == (*cursor)->c)
+				(*cursor)->counter++;
+			if((*cursor)->counter % 2 == 0 && ((*data)->input[(*cursor)->k + 1] == slc))
+				(*data)->slicers[(*cursor)->k] = (*data)->tokens[index][(*cursor)->i];
+			(*cursor)->k++;
 		}
-		cont->j++;
+	(*cursor)->i++;
 	}
 }
-
-/*
-void slices(t_data **data)
-{
-	int i;
-	int j;
-	int k;
-	char c;
-	int counter;
-	int flag;
-
-	j = 0;
-	while(j < 2)
-	{
-		i = 0;
-		k = 0;
-		if((*data)->len_tokens[j] > 0)
-		{
-			while(i < (*data)->len_tokens[j])
-			{
-				flag = 0;
-				counter = 0;
-				while(k < (*data)->tokens[j][i])
-				{
-					if(((*data)->input[k] == '\'' || (*data)->input[k] == '"') && flag == 0)
-					{
-						c = (*data)->input[k];
-						flag = 1;
-					}
-					if((*data)->input[k] == c)
-						counter++;
-					if(j == 0 && counter % 2 == 0 && ((*data)->input[k + 1] == ';'))
-						(*data)->slicers[k] = (*data)->tokens[j][i];
-					if(j == 1 && counter % 2 == 0 && ((*data)->input[k + 1] == '|'))
-						(*data)->slicers[k] = (*data)->tokens[j][i];
-					k++;
-				}
-				i++;
-			}
-		}
-		j++;
-	}
-	// PARA TESTES
-	i=0;
-	while(i < (int)ft_strlen((*data)->input))
-		ft_putnbr_fd((*data)->slicers[i++],1);
-	ft_putstr_fd("\n",1);
-	// PARA TESTES
-}
-*/
 
 void parser(t_data	**data)
 {
-	char	token[7] = ";|'\" $\\";
-	int		i;
+	char		token[7] = ";|'\" $\\";
+	char		slicers[2] = ";|";
+	t_cursors	**cursor;
+	int			i;
+	int			s;
 
 	i = -1;
+	s = -1;
 	(*data)->tokens = malloc(sizeof(size_t) * 7);
 	(*data)->len_tokens = ft_calloc(7,sizeof(int));
 	while(++i < 7)
 		get_token(data, token[i], i);
 	(*data)->slicers = ft_calloc(ft_strlen((*data)->input),sizeof(int));
-	slices(data);
+	cursor = malloc(sizeof(t_cursors));
+	while(++s < 2)
+	{
+		init_cursors(cursor);
+		get_slicers(data, cursor, slicers[s], s);
+	}
+	free(cursor);
+
+	// PARA TESTES*******************************************
+	i = 0;
+	while(i < (int)ft_strlen((*data)->input))
+		ft_putnbr_fd((*data)->slicers[i++],1);
+	ft_putstr_fd("\n",1);
+	// PARA TESTES*******************************************
 }

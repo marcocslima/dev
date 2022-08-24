@@ -28,10 +28,7 @@ char	**copy_env(char **envp, int add)
 		return (0);
 	i = -1;
 	while (i++ < len - 1)
-	{
 		copy[i] = ft_strdup(envp[i]);
-//		printf("%s %d\n", copy[i], i);
-	}
 	return (copy);
 }
 
@@ -42,7 +39,6 @@ void	init_struct(t_data **data, char **argv, char **envp)
 	(*data)->argv = argv;
 	(*data)->input = (char *)ft_calloc(sizeof(char *), 4097);
 	(*data)->pars_inpt = (char **)ft_calloc(sizeof(char *), (4097));
-
 }
 
 void	open_prompt(char **envp)
@@ -97,7 +93,7 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGINT, signal_handler);
 		get_input(&data);
 		parser(&data);
-		//exit (0); //retirar
+		exit (0); //retirar
 	}
 	return (0);
 }
