@@ -86,6 +86,7 @@ void parser(t_data	**data)
 	while(++i < 7)
 		get_token(data, token[i], i);
 	(*data)->slicers = ft_calloc(ft_strlen((*data)->input),sizeof(int));
+	(*data)->quotes_type = ft_calloc(ft_strlen((*data)->input),sizeof(int));
 	cursor = malloc(sizeof(t_cursors));
 	while(++s < 2)
 	{
@@ -98,6 +99,10 @@ void parser(t_data	**data)
 	i = 0;
 	while(i < (int)ft_strlen((*data)->input))
 		ft_putnbr_fd((*data)->slicers[i++],1);
+	ft_putstr_fd("\n",1);
+	i = 0;
+	while(i < (int)ft_strlen((*data)->input))
+		ft_putnbr_fd((*data)->quotes_type[i++],1);
 	ft_putstr_fd("\n",1);
 	// PARA TESTES*******************************************
 }
