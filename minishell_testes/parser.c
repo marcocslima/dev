@@ -54,21 +54,6 @@ void	init_cursors(t_cursors	**cursor)
 	(*cursor)->k = 0;
 }
 
-void	get_types(t_data **data)
-{
-	int	i;
-	int	len;
-
-	i = -1;
-	len = 0;
-	while(++i < (int)ft_strlen((*data)->input))
-		if((*data)->slicers[i] > 0)
-			len++;
-	ft_putstr_fd("\n",1);
-	ft_putnbr_fd(len,1);
-	ft_putstr_fd("\n",1);
-}
-
 void	get_slicers(t_data **data, t_cursors **cursor, char slc, int index)
 {
 	while((*cursor)->i < (*data)->len_tokens[index])
