@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <chaves_87@hotmail.com>           +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/30 14:37:11 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/04/09 17:14:57 by acosta-a         ###   ########.fr       */
+/*   Created: 2022/04/06 00:09:31 by mcesar-d          #+#    #+#             */
+/*   Updated: 2022/04/17 05:31:49 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,22 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	int	i;
+	int	len_str;
 
-	i = 0;
-	while (s[i])
-		i++;
-	while (i >= 0)
-	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
-		i--;
-	}
+	len_str = ft_strlen(s) - 1;
+	if (s == NULL)
+		return (NULL);
+	if (c > 255)
+		return ((void *)s);
 	if (c == 0)
-		return ((char *)&s[i]);
-	return (NULL);
+		return ((void *)(s + len_str + 1));
+	while (len_str >= 0)
+	{
+		if (s[len_str] == 0 && s[len_str] != c)
+			return (NULL);
+		if (s[len_str] == c)
+			return ((char *) &s[len_str]);
+		len_str--;
+	}
+	return (0);
 }

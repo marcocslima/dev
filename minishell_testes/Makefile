@@ -14,7 +14,7 @@ NAME = minishell2
 
 # Compilation #
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -g -Wall -Wextra -Werror
 OPTCC=  -I. -c
 RM = rm -rf
 
@@ -25,9 +25,10 @@ LIBFT_PATH = ./libft
 SRC = ./exits.c ./signal.c ./main.c ./utils.c ./parser.c \
 
 #BONUS =
+# $(CC) $(CFLAGS) -c $< -o $(<:%.c=%.o) #
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $(<:%.c=%.o)
+	$(CC) -g -c $< -o $(<:%.c=%.o)
 
 SRC.O = $(SRC:%.c=%.o)
 

@@ -3,37 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <chaves_87@hotmail.com>           +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/07 12:47:58 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/06/14 04:00:34 by acosta-a         ###   ########.fr       */
+/*   Created: 2022/04/10 17:54:49 by mcesar-d          #+#    #+#             */
+/*   Updated: 2022/04/20 22:57:50 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t size)
 {
 	size_t	i;
-	char	*dest;
-	size_t	lens;
+	size_t	len_s;
+	char	*nstr;
 
+	len_s = ft_strlen(s);
 	i = 0;
-	lens = ft_strlen(s);
-	if (start >= lens)
-		dest = (char *)malloc(1);
-	else if (len >= lens)
-		dest = (char *)malloc(lens - start + 1);
+	if (start >= len_s)
+		nstr = (char *)malloc(1);
+	else if (size >= len_s)
+		nstr = (char *)malloc(len_s - start + 1);
 	else
-		dest = (char *)malloc (len + 1);
-	if (!dest)
+		nstr = (char *)malloc(size + 1);
+	if (!nstr)
 		return ((char *)s);
-	while (start < lens && i < len)
-	{
-		dest[i] = s[start];
-		i++;
-		start++;
-	}
-	dest [i] = '\0';
-	return (dest);
+	while (start < len_s && i < size)
+		nstr[i++] = s[start++];
+	nstr[i] = '\0';
+	return (nstr);
 }
