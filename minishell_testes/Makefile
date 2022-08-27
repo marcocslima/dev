@@ -28,7 +28,7 @@ SRC = ./exits.c ./signal.c ./main.c ./utils.c ./parser.c \
 # $(CC) $(CFLAGS) -c $< -o $(<:%.c=%.o) #
 
 %.o: %.c
-	$(CC) -g -c $< -o $(<:%.c=%.o)
+	$(CC) $(CFLAGS) -c $< -o $(<:%.c=%.o)
 
 SRC.O = $(SRC:%.c=%.o)
 

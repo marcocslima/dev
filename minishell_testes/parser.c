@@ -60,9 +60,6 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 {
 	//char **tmp;
 	cursor->len = ft_strlen((*data)->input);
-	while (cursor->i++ < cursor->len)
-		if((*data)->slicers[cursor->i] != 0)
-			cursor->counter++;
 
 	while (cursor->i < cursor->len)
 	{
@@ -72,8 +69,22 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 		cursor->i++;
 	}
 	ft_putstr_fd("\n\n",1);
+	init_cursors(cursor);
+	while (cursor->i < cursor->len)
+	{
+		if((*data)->slicers[cursor->i] != 0)
+			cursor->counter++;
+		cursor->i++;
+	}
 	char **cmds = malloc(sizeof(size_t) * cursor->counter + 1);
 	cmds = ft_split((*data)->input, 1);
+	cursor->i = 0;
+	while (cursor->i < cursor->counter + 1)
+	{
+		ft_putstr_fd(cmds[cursor->i],1);
+		cursor->i++;
+	}
+	ft_putstr_fd("\n\n",1);
 }
 
 void	get_slicers(t_data **data, t_cursors *cursor, char slc, int index)
@@ -92,7 +103,7 @@ void	get_slicers(t_data **data, t_cursors *cursor, char slc, int index)
 			}
 			if((*data)->input[cursor->k] == cursor->c)
 				cursor->counter++;
-			if(cursor->counter == 2 && ((*data)->input[cursor->k + 1] == slc))
+			if(cursor->counter % 2 == 0 && ((*data)->input[cursor->k + 1] == slc))
 			{
 				(*data)->slicers[cursor->k] = (*data)->tokens[index][cursor->i];
 				(*data)->slicers_types[cursor->k] = cursor->q;
@@ -129,7 +140,7 @@ void parser(t_data	**data)
 	init_cursors(cursor);
 	get_cmds(data, cursor);
 
-	/*
+	
 	// PARA TESTES*******************************************
 	i = 0;
 	ft_putstr_fd("\n",1);
@@ -156,5 +167,5 @@ void parser(t_data	**data)
 	ft_putstr_fd("\n\n",1);
 
 	// PARA TESTES*******************************************
-	*/
+	
 }
