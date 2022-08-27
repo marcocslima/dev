@@ -12,7 +12,7 @@
 
 /* ************************************************************************** */
 
-#include "minishell2.h"
+#include "minishell.h"
 /*
 void	cmd_space_substitution(t_data **data)
 {

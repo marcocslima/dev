@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell2
+NAME = minishell
 
 # Compilation #
 CC = gcc
@@ -25,7 +25,6 @@ LIBFT_PATH = ./libft
 SRC = ./exits.c ./signal.c ./main.c ./utils.c ./parser.c \
 
 #BONUS =
-# $(CC) $(CFLAGS) -c $< -o $(<:%.c=%.o) #
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $(<:%.c=%.o)
@@ -49,5 +48,10 @@ fclean: clean
 
 re: fclean all
 	make clean
+
+debug:
+					$(MAKE) -C $(LIBFT_PATH)
+					$(CC) -g $(CFLAGS) $(SRC) $(LIBFT) -o $@
+					gdb --tui --args ./minishell
 
 .PHONY: clean fclean re

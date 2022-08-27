@@ -12,7 +12,7 @@
 
 /* ************************************************************************** */
 
-#include "minishell2.h"
+#include "minishell.h"
 
 char	**copy_env(char **envp, int add)
 {

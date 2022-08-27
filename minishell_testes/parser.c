@@ -1,5 +1,5 @@
 
-#include "minishell2.h"
+#include "minishell.h"
 
 void	get_token(t_data **data, char token, int n)
 {
@@ -34,8 +34,11 @@ typedef struct s_cursors
 	int		i;
 	int		j;
 	int		k;
+	int		begin;
+	int		last;
 	char	c;
 	char	q;
+	char	h;
 	int		counter;
 	int		flag;
 	int		len;
@@ -50,15 +53,50 @@ void	reset_conters(t_cursors	*cursor)
 void	init_cursors(t_cursors	*cursor)
 {
 	reset_conters(cursor);
-	cursor->i = 0;
-	cursor->j = 0;
-	cursor->k = 0;
-	cursor->len = 0;
+	cursor->i 		= 0;
+	cursor->j 		= 0;
+	cursor->k 		= 0;
+	cursor->begin	= 0;
+	cursor->last	= 0;
+	cursor->c		= '\0';
+	cursor->q		= '\0';
+	cursor->h		= '\0';
+	cursor->len		= 0;
 }
+
+void get_params(char **cmds, int n)
+{
+	t_cursors	*crs;
+
+	crs = malloc(sizeof(t_cursors));
+	init_cursors(crs);
+	crs->len = ft_strlen(cmds[n]);
+
+	while (crs->i < crs->len)
+	{
+		if(cmds[n][crs->i] == '\'' && crs->flag == 0)
+		{
+			crs->q = '\'';
+			crs->flag = 1;
+			crs->begin = crs->i;
+		}
+		else if(cmds[n][crs->i] == '"' && crs->flag == 0)
+		{
+			crs->q = '"';
+			crs->flag = 1;
+			crs->begin = crs->i;
+		}
+		if (crs->q)
+			crs->last = ft_findrchr(cmds[n], crs->q);
+		crs->i++;
+	}
+	free(crs);
+}
+
 
 void get_cmds(t_data ** data, t_cursors *cursor)
 {
-	//char **tmp;
+	init_cursors(cursor);
 	cursor->len = ft_strlen((*data)->input);
 
 	while (cursor->i < cursor->len)
@@ -69,7 +107,7 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 		cursor->i++;
 	}
 	ft_putstr_fd("\n\n",1);
-	init_cursors(cursor);
+	cursor->i = 0;
 	while (cursor->i < cursor->len)
 	{
 		if((*data)->slicers[cursor->i] != 0)
@@ -81,10 +119,16 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 	cursor->i = 0;
 	while (cursor->i < cursor->counter + 1)
 	{
-		ft_putstr_fd(cmds[cursor->i],1);
+		get_params(cmds, cursor->i);
 		cursor->i++;
+		/*
+		ft_putstr_fd(cmds[cursor->i],1);
+		ft_putstr_fd("\n",1);
+		cursor->i++;
+		*/
 	}
-	ft_putstr_fd("\n\n",1);
+	//ft_putstr_fd("\n\n",1);
+	free(cursor);
 }
 
 void	get_slicers(t_data **data, t_cursors *cursor, char slc, int index)
@@ -137,10 +181,9 @@ void parser(t_data	**data)
 		init_cursors(cursor);
 		get_slicers(data, cursor, slicers[s], s);
 	}
-	init_cursors(cursor);
 	get_cmds(data, cursor);
 
-	
+	/*
 	// PARA TESTES*******************************************
 	i = 0;
 	ft_putstr_fd("\n",1);
@@ -167,5 +210,5 @@ void parser(t_data	**data)
 	ft_putstr_fd("\n\n",1);
 
 	// PARA TESTES*******************************************
-	
+	*/
 }

@@ -1,5 +1,5 @@
 
-#include "minishell2.h"
+#include "minishell.h"
 
 void	get_token(t_data **data, char token, int n)
 {
