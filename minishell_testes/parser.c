@@ -71,7 +71,6 @@ void get_params(char **cmds, int n)
 	crs = malloc(sizeof(t_cursors));
 	init_cursors(crs);
 	crs->len = ft_strlen(cmds[n]);
-
 	while (crs->i < crs->len)
 	{
 		if(cmds[n][crs->i] == '\'' && crs->flag == 0)
@@ -88,6 +87,16 @@ void get_params(char **cmds, int n)
 		}
 		if (crs->q)
 			crs->last = ft_findrchr(cmds[n], crs->q);
+		crs->i++;
+	}
+	crs->i = 0;
+	while (crs->i < crs->len)
+	{
+		if(crs->i > crs->begin && crs->i < crs->last)
+		{
+			if(cmds[n][crs->i] == ' ')
+				cmds[n][crs->i] = 1;
+		}
 		crs->i++;
 	}
 	free(crs);
