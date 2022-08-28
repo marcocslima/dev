@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell2.h                                       :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/08/20 22:35:00 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/08/28 16:57:04 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ typedef struct s_data
 	char	**pars_inpt;
 	char	**pars_type;
 	char	*path;
+	t_list	**cmds;
 }	t_data;
 
-typedef struct s_cmds
+typedef struct s_cmd
 {
 	char **params;
-}	t_cmds;
+}	t_cmd;
 
 int		no_error_msg(char *message);
 int		error_msg(char *message);

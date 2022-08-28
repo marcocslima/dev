@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/08/21 01:35:56 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:20:51 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	init_struct(t_data **data, char **argv, char **envp)
 	(*data)->argv = argv;
 	(*data)->input = (char *)ft_calloc(sizeof(char *), 4097);
 	(*data)->pars_inpt = (char **)ft_calloc(sizeof(char *), (4097));
+	(*data)->cmds = NULL;
 }
 
 void	open_prompt(char **envp)

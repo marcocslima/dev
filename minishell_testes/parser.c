@@ -64,30 +64,30 @@ void	init_cursors(t_cursors	*cursor)
 	cursor->len		= 0;
 }
 
-void get_params(char **cmds, int n)
+void get_params(t_data ** data, char **st_cmds, int n)
 {
 	t_cursors	*crs;
-	t_cmds		*params;
+	t_cmd		*params;
 
 	crs = malloc(sizeof(t_cursors));
 	init_cursors(crs);
-	crs->len = ft_strlen(cmds[n]);
+	crs->len = ft_strlen(st_cmds[n]);
 	while (crs->i < crs->len)
 	{
-		if(cmds[n][crs->i] == '\'' && crs->flag == 0)
+		if(st_cmds[n][crs->i] == '\'' && crs->flag == 0)
 		{
 			crs->q = '\'';
 			crs->flag = 1;
 			crs->begin = crs->i;
 		}
-		else if(cmds[n][crs->i] == '"' && crs->flag == 0)
+		else if(st_cmds[n][crs->i] == '"' && crs->flag == 0)
 		{
 			crs->q = '"';
 			crs->flag = 1;
 			crs->begin = crs->i;
 		}
 		if (crs->q)
-			crs->last = ft_findrchr(cmds[n], crs->q);
+			crs->last = ft_findrchr(st_cmds[n], crs->q);
 		crs->i++;
 	}
 	//crs->i = 0;
@@ -95,14 +95,14 @@ void get_params(char **cmds, int n)
 	{
 		if(crs->j > crs->begin && crs->j < crs->last)
 		{
-			if(cmds[n][crs->j] == ' ')
-				cmds[n][crs->j] = 1;
+			if(st_cmds[n][crs->j] == ' ')
+				st_cmds[n][crs->j] = 1;
 		}
 		crs->j++;
 	}
-	params = malloc(sizeof(t_cmds));
-	params->params = ft_split(cmds[n], ' ');
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Corrigir
+	params = malloc(sizeof(t_cmd));
+	params->params = ft_split(st_cmds[n], ' ');
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	crs->i = 0;
 	while(params->params[crs->i] != NULL)
 	{
@@ -115,14 +115,15 @@ void get_params(char **cmds, int n)
 		crs->k = 0;
 		crs->i++;
 	}
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Corrigir
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	(*data)->cmds[n] = ft_lstnew(&params);
 	free(crs);
 }
 
 
 void get_cmds(t_data ** data, t_cursors *cursor)
 {
-	char **cmds;
+	char	**st_cmds;
 
 	init_cursors(cursor);
 	cursor->len = ft_strlen((*data)->input);
@@ -141,12 +142,13 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 			cursor->counter++;
 		cursor->i++;
 	}
-	cmds = malloc(sizeof(size_t) * cursor->counter + 1);
-	cmds = ft_split((*data)->input, 1);
+	st_cmds = malloc(sizeof(size_t) * cursor->counter + 1);
+	(*data)->cmds = malloc(sizeof(size_t) * cursor->counter + 1);
+	st_cmds = ft_split((*data)->input, 1);
 	cursor->i = 0;
 	while (cursor->i < cursor->counter + 1)
 	{
-		get_params(cmds, cursor->i);
+		get_params(data, st_cmds, cursor->i);
 		cursor->i++;
 		/*
 		ft_putstr_fd(cmds[cursor->i],1);
