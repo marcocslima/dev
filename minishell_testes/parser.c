@@ -116,7 +116,7 @@ void get_params(t_data ** data, char **st_cmds, int n)
 		crs->i++;
 	}
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	(*data)->cmds[n] = ft_lstnew(&params);
+	(*data)->cmds[n] = ft_lstnew(&params[n]);
 	free(crs);
 }
 
