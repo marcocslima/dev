@@ -112,6 +112,7 @@ void get_params(char **cmds, int n)
 				params->params[crs->i][crs->k] = ' ';
 			crs->k++;
 		}
+		crs->k = 0;
 		crs->i++;
 	}
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Corrigir
