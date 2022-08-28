@@ -143,7 +143,13 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 		cursor->i++;
 	}
 	st_cmds = malloc(sizeof(size_t) * cursor->counter + 1);
+	cursor->i = 0;
 	(*data)->cmds = malloc(sizeof(size_t) * cursor->counter + 1);
+	while (cursor->i < cursor->counter + 1)
+	{
+		(*data)->cmds[cursor->i] = malloc(sizeof(size_t));
+		cursor->i++;
+	}
 	st_cmds = ft_split((*data)->input, 1);
 	cursor->i = 0;
 	while (cursor->i < cursor->counter + 1)
