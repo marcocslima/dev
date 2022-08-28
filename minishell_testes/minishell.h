@@ -54,13 +54,10 @@ typedef struct s_data
 	char	**pars_inpt;
 	char	**pars_type;
 	char	*path;
-	t_list	**cmds;
+	char	**st_cmds;
+	char	**params;
+	char	***cmds;
 }	t_data;
-
-typedef struct s_cmd
-{
-	char **params;
-}	t_cmd;
 
 int		no_error_msg(char *message);
 int		error_msg(char *message);

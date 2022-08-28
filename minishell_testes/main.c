@@ -39,6 +39,7 @@ void	init_struct(t_data **data, char **argv, char **envp)
 	(*data)->argv = argv;
 	(*data)->input = (char *)ft_calloc(sizeof(char *), 4097);
 	(*data)->pars_inpt = (char **)ft_calloc(sizeof(char *), (4097));
+	(*data)->params = malloc(sizeof(char));
 	(*data)->cmds = NULL;
 }
 
