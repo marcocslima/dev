@@ -56,6 +56,11 @@ typedef struct s_data
 	char	*path;
 }	t_data;
 
+typedef struct s_cmds
+{
+	char **params;
+}	t_cmds;
+
 int		no_error_msg(char *message);
 int		error_msg(char *message);
 void	signal_handler(int	input);

@@ -67,6 +67,7 @@ void	init_cursors(t_cursors	*cursor)
 void get_params(char **cmds, int n)
 {
 	t_cursors	*crs;
+	t_cmds		*params;
 
 	crs = malloc(sizeof(t_cursors));
 	init_cursors(crs);
@@ -89,25 +90,41 @@ void get_params(char **cmds, int n)
 			crs->last = ft_findrchr(cmds[n], crs->q);
 		crs->i++;
 	}
-	crs->i = 0;
-	while (crs->i < crs->len)
+	//crs->i = 0;
+	while (crs->j < crs->len)
 	{
-		if(crs->i > crs->begin && crs->i < crs->last)
+		if(crs->j > crs->begin && crs->j < crs->last)
 		{
-			if(cmds[n][crs->i] == ' ')
-				cmds[n][crs->i] = 1;
+			if(cmds[n][crs->j] == ' ')
+				cmds[n][crs->j] = 1;
+		}
+		crs->j++;
+	}
+	params = malloc(sizeof(t_cmds));
+	params->params = ft_split(cmds[n], ' ');
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Corrigir
+	crs->i = 0;
+	while(params->params[crs->i] != NULL)
+	{
+		while(params->params[crs->i][crs->k])
+		{
+			if(params->params[crs->i][crs->k] == 1)
+				params->params[crs->i][crs->k] = ' ';
+			crs->k++;
 		}
 		crs->i++;
 	}
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Corrigir
 	free(crs);
 }
 
 
 void get_cmds(t_data ** data, t_cursors *cursor)
 {
+	char **cmds;
+
 	init_cursors(cursor);
 	cursor->len = ft_strlen((*data)->input);
-
 	while (cursor->i < cursor->len)
 	{
 		if((*data)->slicers[cursor->i] != 0)
@@ -123,7 +140,7 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 			cursor->counter++;
 		cursor->i++;
 	}
-	char **cmds = malloc(sizeof(size_t) * cursor->counter + 1);
+	cmds = malloc(sizeof(size_t) * cursor->counter + 1);
 	cmds = ft_split((*data)->input, 1);
 	cursor->i = 0;
 	while (cursor->i < cursor->counter + 1)
