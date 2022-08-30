@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 11:59:29 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/08/14 11:59:50 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/08/30 02:51:51 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,29 @@ char	*ft_strjoin_2(char *s1, char *s2)
 	dest[i] = '\0';
 //	free(s1);
 	return (dest);
+}
+
+void	reset_conters(t_cursors	**cursor)
+{
+	(*cursor)->counter	= 0;
+	(*cursor)->flag		= 0;
+}
+
+void	init_crs(t_cursors	**cursor)
+{
+	(*cursor) = (t_cursors *)malloc(sizeof(t_cursors));
+	(*cursor)->counter	= 0;
+	(*cursor)->flag		= 0;
+	(*cursor)->i 		= 0;
+	(*cursor)->j 		= 0;
+	(*cursor)->k 		= 0;
+	(*cursor)->r 		= 0;
+	(*cursor)->l 		= -1;
+	(*cursor)->m 		= -1;
+	(*cursor)->begin	= 0;
+	(*cursor)->last		= 0;
+	(*cursor)->c		= '\0';
+	(*cursor)->q		= '\0';
+	(*cursor)->h		= '\0';
+	(*cursor)->len		= 0;
 }

@@ -29,48 +29,6 @@ void	get_token(t_data **data, char token, int n)
 	}
 }
 
-typedef struct s_cursors
-{
-	int		i;
-	int		j;
-	int		k;
-	int		r;
-	int		l;
-	int		m;
-	int		begin;
-	int		last;
-	char	c;
-	char	q;
-	char	h;
-	int		counter;
-	int		flag;
-	int		len;
-}	t_cursors;
-
-void	reset_conters(t_cursors	**cursor)
-{
-	(*cursor)->counter = 0;
-	(*cursor)->flag = 0;
-}
-
-void	init_crs(t_cursors	**cursor)
-{
-	(*cursor) = (t_cursors *)malloc(sizeof(t_cursors));
-	(*cursor)->counter	= 0;
-	(*cursor)->flag		= 0;
-	(*cursor)->i 		= 0;
-	(*cursor)->j 		= 0;
-	(*cursor)->k 		= 0;
-	(*cursor)->r 		= 0;
-	(*cursor)->l 		= -1;
-	(*cursor)->m 		= -1;
-	(*cursor)->begin	= 0;
-	(*cursor)->last		= 0;
-	(*cursor)->c		= '\0';
-	(*cursor)->q		= '\0';
-	(*cursor)->h		= '\0';
-	(*cursor)->len		= 0;
-}
 
 void	len_limits(t_cursors **crs, char **st_cmds, int n)
 {

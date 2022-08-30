@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/08/28 16:57:04 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/08/30 02:52:27 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,29 @@ typedef struct s_data
 	char	***cmds;
 }	t_data;
 
+typedef struct s_cursors
+{
+	int		i;
+	int		j;
+	int		k;
+	int		r;
+	int		l;
+	int		m;
+	int		begin;
+	int		last;
+	char	c;
+	char	q;
+	char	h;
+	int		counter;
+	int		flag;
+	int		len;
+}	t_cursors;
+
 int		no_error_msg(char *message);
 int		error_msg(char *message);
 void	signal_handler(int	input);
 char	*ft_strjoin_2(char *s1, char *s2);
 void	parser(t_data **data);
+void	reset_conters(t_cursors	**cursor);
+void	init_crs(t_cursors	**cursor);
 #endif
