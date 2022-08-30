@@ -1,6 +1,32 @@
 
 #include "minishell.h"
 
+
+//@@@@@@@@ Para testes @@@@@@@@
+void	ver(char *scr)
+{
+	t_cursors	*crs;
+
+	init_crs(&crs);
+	while(scr[crs->i])
+	{
+		ft_putchar_fd(scr[crs->i], 1);
+		crs->i++;
+	}
+	ft_putchar_fd('\n', 1);
+	while(scr[crs->j])
+	{
+		ft_putnbr_fd(scr[crs->j], 1);
+		ft_putchar_fd(' ', 1);
+		crs->j++;
+	}
+	ft_putchar_fd('\n', 1);
+	free(crs);
+}
+//@@@@@@@@ Para testes @@@@@@@@
+
+
+
 void	get_token(t_data **data, char token, int n)
 {
 	int	*tok;
@@ -29,51 +55,28 @@ void	get_token(t_data **data, char token, int n)
 	}
 }
 
-
-void	len_limits(t_cursors **crs, char **st_cmds, int n)
+void	len_limits(t_cursors **crs, char **st_cmds, int n, int i)
 {
-	while ((*crs)->i < (*crs)->len)
+	(*crs)->flag = 0;
+	while (i < (*crs)->len)
 	{
-		if(st_cmds[n][(*crs)->i] == '\'' && (*crs)->flag == 0)
+		if(st_cmds[n][i] == '\'' && (*crs)->flag == 0)
 		{
 			(*crs)->q = '\'';
 			(*crs)->flag = 1;
-			(*crs)->begin = (*crs)->i;
+			(*crs)->begin = i;
 		}
-		else if(st_cmds[n][(*crs)->i] == '"' && (*crs)->flag == 0)
+		else if(st_cmds[n][i] == '"' && (*crs)->flag == 0)
 		{
 			(*crs)->q = '"';
 			(*crs)->flag = 1;
-			(*crs)->begin = (*crs)->i;
+			(*crs)->begin = i;
 		}
-		if ((*crs)->q)
+		if ((*crs)->q && (*crs)->last < (*crs)->begin)
 			(*crs)->last = ft_findrchr(st_cmds[n], (*crs)->q);
-		(*crs)->i++;
+		i++;
 	}
 }
-
-//@@@@@@@@ Para testes @@@@@@@@
-void	ver(char *scr)
-{
-	t_cursors	*crs;
-
-	init_crs(&crs);
-	while(scr[crs->i])
-	{
-		ft_putchar_fd(scr[crs->i], 1);
-		crs->i++;
-	}
-	ft_putchar_fd('\n', 1);
-	while(scr[crs->j])
-	{
-		ft_putnbr_fd(scr[crs->j], 1);
-		ft_putchar_fd(' ', 1);
-		crs->j++;
-	}
-	ft_putchar_fd('\n', 1);
-	free(crs);
-}
-//@@@@@@@@ Para testes @@@@@@@@
 
 void get_params(t_data ** data, char *st_cmd, int n)
 {
@@ -81,9 +84,11 @@ void get_params(t_data ** data, char *st_cmd, int n)
 
 	init_crs(&crs);
 	crs->len = ft_strlen(st_cmd);
-	len_limits(&crs, &st_cmd, n);
+	len_limits(&crs, &st_cmd, n, crs->i);
 	while (crs->l++ < crs->len)
 	{
+		if(crs->l > crs->last)
+			len_limits(&crs, &st_cmd, n, crs->i = crs->l);
 		if(crs->l > crs->begin && crs->l < crs->last)
 			if(st_cmd[crs->l] == ' ')
 				st_cmd[crs->l] = 1;
