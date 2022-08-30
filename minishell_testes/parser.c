@@ -197,26 +197,6 @@ void	get_slicers(t_data **data, t_cursors *cursor, char slc, int index)
 	}
 }
 
-void	norm_input(t_data ** data)
-{
-	t_cursors	*crs;
-
-	init_crs(&crs);
-	while((*data)->input[crs->i])
-	{
-		ft_putchar_fd((*data)->input[crs->i], 1);
-		crs->i++;
-	}
-	ft_putchar_fd('\n', 1);
-	while((*data)->input[crs->j])
-	{
-		ft_putnbr_fd((*data)->input[crs->j], 1);
-		ft_putchar_fd(' ', 1);
-		crs->j++;
-	}
-	free(crs);
-}
-
 void parser(t_data	**data)
 {
 	char		token[9] = ";|'\" $\\<>";
