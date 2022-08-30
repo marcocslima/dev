@@ -72,21 +72,6 @@ void	init_crs(t_cursors	**cursor)
 	(*cursor)->len		= 0;
 }
 
-void teste(t_data ** data)
-{
-	t_cursors *c;
-
-
-	init_crs(&c);
-	while((*data)->cmds[c->i])
-	{
-		while((*data)->cmds[++c->l])
-			while((*data)->cmds[++c->m])
-				ft_putstr_fd((*data)->cmds[c->l][c->m], 1);
-		c->i++;
-	}
-}
-
 void	len_limits(t_cursors **crs, char **st_cmds, int n)
 {
 	while ((*crs)->i < (*crs)->len)
@@ -109,6 +94,7 @@ void	len_limits(t_cursors **crs, char **st_cmds, int n)
 	}
 }
 
+//@@@@@@@@ Para testes @@@@@@@@
 void	ver(char *scr)
 {
 	t_cursors	*crs;
@@ -129,6 +115,7 @@ void	ver(char *scr)
 	ft_putchar_fd('\n', 1);
 	free(crs);
 }
+//@@@@@@@@ Para testes @@@@@@@@
 
 void get_params(t_data ** data, char *st_cmd, int n)
 {
@@ -137,30 +124,24 @@ void get_params(t_data ** data, char *st_cmd, int n)
 	init_crs(&crs);
 	crs->len = ft_strlen(st_cmd);
 	len_limits(&crs, &st_cmd, n);
-	while (crs->m++ < crs->len)
+	while (crs->l++ < crs->len)
 	{
-
-		if(crs->m > crs->begin && crs->m < crs->last)
-			if(st_cmd[crs->m] == ' ')
-				st_cmd[crs->m] = 1;
+		if(crs->l > crs->begin && crs->l < crs->last)
+			if(st_cmd[crs->l] == ' ')
+				st_cmd[crs->l] = 1;
 	}
-	ver(st_cmd);
 	(*data)->params = ft_split(st_cmd, ' ');
 	while((*data)->params[crs->r] != NULL)
 	{
-
-		while((*data)->params[crs->r][crs->k])
-			if((*data)->params[crs->r][crs->k++] == 1)
-				(*data)->params[crs->r][crs->k] = ' ';
-		crs->k = 0;
+		while((*data)->params[crs->r][crs->m])
+			if((*data)->params[crs->r][++crs->m] == 1)
+				(*data)->params[crs->r][crs->m] = ' ';
+		crs->m = 0;
 		crs->r++;
 	}
-	ver((*data)->params[1]);
 	(*data)->cmds[n] = (*data)->params;
 	free(crs);
-	//teste(data);
 }
-
 
 void get_cmds(t_data ** data, t_cursors *cursor)
 {
@@ -239,7 +220,7 @@ void	norm_input(t_data ** data)
 void parser(t_data	**data)
 {
 	char		token[9] = ";|'\" $\\<>";
-	char		slicers[1] = ";";
+	char		slicers[2] = ";|";
 	t_cursors	*cursor;
 	int			i;
 	int			s;
@@ -252,8 +233,7 @@ void parser(t_data	**data)
 		get_token(data, token[i], i);
 	(*data)->slicers = ft_calloc(ft_strlen((*data)->input),sizeof(int));
 	(*data)->slicers_types = ft_calloc(ft_strlen((*data)->input),sizeof(int));
-	//norm_input(data);
-	while(++s < 1)
+	while(++s < 2)
 	{
 		init_crs(&cursor);
 		get_slicers(data, cursor, slicers[s], s);
