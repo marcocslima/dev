@@ -25,8 +25,6 @@ void	ver(char *scr)
 }
 //@@@@@@@@ Para testes @@@@@@@@
 
-
-
 void	get_token(t_data **data, char token, int n)
 {
 	int	*tok;
