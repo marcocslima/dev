@@ -55,7 +55,7 @@ void	get_token(t_data **data, char token, int n)
 	}
 }
 
-void	len_limits(t_cursors **crs, char **st_cmds, int n, int i)
+void	get_limits(t_cursors **crs, char **st_cmds, int n, int i)
 {
 	(*crs)->flag = 0;
 	while (i < (*crs)->len)
@@ -84,11 +84,11 @@ void get_params(t_data ** data, char *st_cmd, int n)
 
 	init_crs(&crs);
 	crs->len = ft_strlen(st_cmd);
-	len_limits(&crs, &st_cmd, n, crs->i);
+	get_limits(&crs, &st_cmd, n, crs->i);
 	while (crs->l++ < crs->len)
 	{
 		if(crs->l > crs->last)
-			len_limits(&crs, &st_cmd, n, crs->i = crs->l);
+			get_limits(&crs, &st_cmd, n, crs->i = crs->l);
 		if(crs->l > crs->begin && crs->l < crs->last)
 			if(st_cmd[crs->l] == ' ')
 				st_cmd[crs->l] = 1;
