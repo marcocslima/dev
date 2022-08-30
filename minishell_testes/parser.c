@@ -82,11 +82,11 @@ void get_params(t_data ** data, char *st_cmd, int n)
 
 	init_crs(&crs);
 	crs->len = ft_strlen(st_cmd);
-	get_limits(&crs, &st_cmd, n, crs->i);
+	get_limits(&crs, &st_cmd, 0, crs->i); // 0 era n : VERIFICAR !!
 	while (crs->l++ < crs->len)
 	{
 		if(crs->l > crs->last)
-			get_limits(&crs, &st_cmd, n, crs->i = crs->l);
+			get_limits(&crs, &st_cmd, 0, crs->i = crs->l);
 		if(crs->l > crs->begin && crs->l < crs->last)
 			if(st_cmd[crs->l] == ' ')
 				st_cmd[crs->l] = 1;
@@ -126,7 +126,10 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 		(*data)->cmds[cursor->k++] = malloc(sizeof(size_t));
 	(*data)->st_cmds = ft_split((*data)->input, 1);
 	while (cursor->r < cursor->counter + 1)
-		get_params(data, (*data)->st_cmds[cursor->r], cursor->r++);
+	{
+		get_params(data, (*data)->st_cmds[cursor->r], cursor->r);
+		cursor->r++;
+	}
 	free(cursor);
 }
 
