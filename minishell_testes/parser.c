@@ -78,42 +78,20 @@ void	get_limits(t_cursors **crs, char **st_cmds, int n, int i)
 
 void	str_cat(t_data **data, char *prm, int n)
 {
-	int i = -1;
-	int j = 0;
-	int *s;
-	char sr[2];
-	int len_prm = ft_strlen(prm);
-	char *new = malloc(sizeof(char) * (len_prm + 2));
-	char *tmp = new;
+	int		len;
+	char	*new;
+	char	*tmp;
+	char	sr[2];
+
+	len = ft_strlen(prm);
+	new = malloc(sizeof(char) * (len + 2));
+	tmp = new;
 	new = prm;
-	while((*data)->input[++i])
-		if((*data)->slicers_types[i] != 0)
-			j++;
-	s = ft_calloc(j, sizeof(int));
-	i = -1;
-	j = 0;
-	while((*data)->input[++i])
-		if((*data)->slicers_types[i] != 0)
-		{
-			s[j] = (*data)->slicers_types[i];
-			j++;
-		}
-	i = -1;
-	sr[0] = ' ';
-	sr[1] = (char)s[n];
-	ft_strlcat(new, sr, len_prm + 3);
-	/*
-	while(++i < len_prm + 2)
-	{
-		if(i > len_prm)
-		{
-			new[i] = ' ';
-			new[++i] = s[n];
-		}
-	}
-	*/
-	prm = new;
 	free(tmp);
+	sr[0] = ' ';
+	sr[1] = (char)(*data)->slicers_seq[n];
+	ft_strlcat(new, sr, len + 3);
+	prm = new;
 }
 
 void get_params(t_data ** data, char *st_cmd, int n)
@@ -123,7 +101,7 @@ void get_params(t_data ** data, char *st_cmd, int n)
 	init_crs(&crs);
 	str_cat(data, st_cmd, n);
 	crs->len = ft_strlen(st_cmd);
-	get_limits(&crs, &st_cmd, 0, crs->i); // 0 era n : VERIFICAR !!
+	get_limits(&crs, &st_cmd, 0, crs->i);
 	while (crs->l++ < crs->len)
 	{
 		if(crs->l > crs->last)
@@ -202,6 +180,25 @@ void	get_slicers(t_data **data, t_cursors *cursor, char slc, int index)
 	}
 }
 
+void	get_slc_seq(t_data **data)
+{
+	t_cursors	*crs;
+
+	init_crs(&crs);
+	while((*data)->input[++crs->l])
+		if((*data)->slicers_types[crs->l] != 0)
+			crs->i++;
+	(*data)->slicers_seq = ft_calloc(crs->i, sizeof(int));
+	while((*data)->input[++crs->m])
+		if((*data)->slicers_types[crs->m] != 0)
+		{
+			(*data)->slicers_seq[crs->j] = (*data)->slicers_types[crs->m];
+			crs->j++;
+		}
+	free(crs);
+}
+
+
 void parser(t_data	**data)
 {
 	char		token[9] = ";|'\" $\\<>";
@@ -223,5 +220,6 @@ void parser(t_data	**data)
 		init_crs(&cursor);
 		get_slicers(data, cursor, slicers[s], s);
 	}
+	get_slc_seq(data);
 	get_cmds(data, cursor);
 }
