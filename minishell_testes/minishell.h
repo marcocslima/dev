@@ -49,6 +49,7 @@ typedef struct s_data
 	int		*slicers;
 	int		*slicers_types;
 	int		*slicers_seq;
+	int		*slc_mm;
 	int		*quotes_types;
 	int		argc;
 	char	*input;

@@ -45,10 +45,10 @@ void	get_token(t_data **data, char token, int n)
 		(*data)->len_tokens[n] = t;
 		tok = calloc(t,sizeof(int));
 		i = -1;
-		t = 0;
+		t = -1;
 		while (++i < lenstr)
 			if((*data)->input[i] == token)
-				tok[t++] = i;
+				tok[++t] = i;
 		(*data)->tokens[n] = tok;
 	}
 }
@@ -152,12 +152,12 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 	free(cursor);
 }
 
-void	get_slicers(t_data **data, t_cursors *cursor, char slc, int index)
+void	get_slicers(t_data **data, t_cursors *cursor, char slc, int t)
 {
-	while(cursor->i < (*data)->len_tokens[index])
+	while(cursor->i < (*data)->len_tokens[t])
 	{
 		reset_conters(&cursor);
-		while(cursor->k < (*data)->tokens[index][cursor->i])
+		while(cursor->k < (*data)->tokens[t][cursor->i])
 		{
 			if(((*data)->input[cursor->k] == '\'' || (*data)->input[cursor->k] == '"'))
 				cursor->q = (*data)->input[cursor->k];
@@ -170,7 +170,7 @@ void	get_slicers(t_data **data, t_cursors *cursor, char slc, int index)
 				cursor->counter++;
 			if(cursor->counter % 2 == 0 && ((*data)->input[cursor->k + 1] == slc))
 			{
-				(*data)->slicers[cursor->k] = (*data)->tokens[index][cursor->i];
+				(*data)->slicers[cursor->k] = (*data)->tokens[t][cursor->i];
 				(*data)->slicers_types[cursor->k] = slc;
 				reset_conters(&cursor);
 			}
@@ -198,27 +198,45 @@ void	get_slc_seq(t_data **data)
 	free(crs);
 }
 
+void verify(t_data **data)
+{
+	int i = 0;
+	int l = ft_strlen((*data)->input);
+	(*data)->slc_mm = ft_calloc(l,sizeof(int));
+	while(i < l)
+	{
+		if(((*data)->input[i] == '<' && (*data)->input[i+1] == '<')
+		|| ((*data)->input[i] == '>' && (*data)->input[i+1] == '>'))
+			(*data)->slc_mm[i] = 1;
+		i++;
+	}
+}
 
 void parser(t_data	**data)
 {
 	char		token[9] = ";|'\" $\\<>";
-	char		slicers[2] = ";|";
+	char		slicers[4] = ";|<>";
 	t_cursors	*cursor;
 	int			i;
 	int			s;
+	int			t;
 
 	i = -1;
 	s = -1;
+	verify(data);
 	(*data)->tokens = malloc(sizeof(size_t) * 9);
 	(*data)->len_tokens = ft_calloc(9,sizeof(int));
 	while(++i < 9)
 		get_token(data, token[i], i);
 	(*data)->slicers = ft_calloc(ft_strlen((*data)->input),sizeof(int));
 	(*data)->slicers_types = ft_calloc(ft_strlen((*data)->input),sizeof(int));
-	while(++s < 2)
+	while(++s < 4)
 	{
 		init_crs(&cursor);
-		get_slicers(data, cursor, slicers[s], s);
+		t = 0;
+		while(token[t] != slicers[s])
+			t++;
+		get_slicers(data, cursor, slicers[s], t);
 	}
 	get_slc_seq(data);
 	get_cmds(data, cursor);
