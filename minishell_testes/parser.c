@@ -76,11 +76,52 @@ void	get_limits(t_cursors **crs, char **st_cmds, int n, int i)
 	}
 }
 
+void	str_cat(t_data **data, char *prm, int n)
+{
+	int i = -1;
+	int j = 0;
+	int *s;
+	char sr[2];
+	int len_prm = ft_strlen(prm);
+	char *new = malloc(sizeof(char) * (len_prm + 2));
+	char *tmp = new;
+	new = prm;
+	while((*data)->input[++i])
+		if((*data)->slicers_types[i] != 0)
+			j++;
+	s = ft_calloc(j, sizeof(int));
+	i = -1;
+	j = 0;
+	while((*data)->input[++i])
+		if((*data)->slicers_types[i] != 0)
+		{
+			s[j] = (*data)->slicers_types[i];
+			j++;
+		}
+	i = -1;
+	sr[0] = ' ';
+	sr[1] = (char)s[n];
+	ft_strlcat(new, sr, len_prm + 3);
+	/*
+	while(++i < len_prm + 2)
+	{
+		if(i > len_prm)
+		{
+			new[i] = ' ';
+			new[++i] = s[n];
+		}
+	}
+	*/
+	prm = new;
+	free(tmp);
+}
+
 void get_params(t_data ** data, char *st_cmd, int n)
 {
 	t_cursors	*crs;
 
 	init_crs(&crs);
+	str_cat(data, st_cmd, n);
 	crs->len = ft_strlen(st_cmd);
 	get_limits(&crs, &st_cmd, 0, crs->i); // 0 era n : VERIFICAR !!
 	while (crs->l++ < crs->len)
@@ -152,7 +193,7 @@ void	get_slicers(t_data **data, t_cursors *cursor, char slc, int index)
 			if(cursor->counter % 2 == 0 && ((*data)->input[cursor->k + 1] == slc))
 			{
 				(*data)->slicers[cursor->k] = (*data)->tokens[index][cursor->i];
-				(*data)->slicers_types[cursor->k] = cursor->q;
+				(*data)->slicers_types[cursor->k] = slc;
 				reset_conters(&cursor);
 			}
 			cursor->k++;
