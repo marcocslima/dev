@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/08/31 13:12:00 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/08/31 22:42:52 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_data
 	int		*slicers_types;
 	int		*slicers_seq;
 	int		*slc_mm;
+	int		crs;
 	int		*quotes_types;
 	int		argc;
 	char	*input;

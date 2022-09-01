@@ -76,22 +76,53 @@ void	get_limits(t_cursors **crs, char **st_cmds, int n, int i)
 	}
 }
 
-void	str_cat(t_data **data, char *prm, int n)
+void	str_cat_util(t_data **data, t_cursors *crs, char *prm, int n)
 {
-	int		len;
 	char	*new;
 	char	*tmp;
-	char	sr[2];
+	char	sr[3];
 
-	len = ft_strlen(prm);
-	new = malloc(sizeof(char) * (len + 2));
+	new = malloc(sizeof(char) * (crs->len + 3));
 	tmp = new;
 	new = prm;
 	free(tmp);
-	sr[0] = ' ';
-	sr[1] = (char)(*data)->slicers_seq[n];
-	ft_strlcat(new, sr, len + 3);
+	if(crs->c)
+	{
+		sr[0] = ' ';
+		sr[1] = (char)(*data)->slicers_seq[n];
+		sr[2] = crs->c;
+		ft_strlcat(new, sr, crs->len + 4);
+	}
+	else
+	{
+		sr[0] = ' ';
+		sr[1] = (char)(*data)->slicers_seq[n];
+		sr[2] = '\0';
+		ft_strlcat(new, sr, crs->len + 3);
+	}
 	prm = new;
+}
+
+void	str_cat(t_data **data, char *prm, int n)
+{
+	t_cursors	*crs;
+
+	init_crs(&crs);
+	if (prm)
+		crs->len = ft_strlen(prm);
+	crs->i = (*data)->crs + 1;
+	(*data)->crs = (*data)->crs + crs->len + 1;
+	while(crs->i < (*data)->crs)
+	{
+		if(((*data)->slicers_types[crs->i] == '<' && (*data)->slicers_types[crs->i + 1] == '<')
+			|| ((*data)->slicers_types[crs->i] == '>' && (*data)->slicers_types[crs->i + 1] == '>'))
+		{
+			crs->c = (*data)->slicers_types[crs->i];
+			(*data)->slicers_seq[n] = (*data)->slicers_seq[n + 1];
+		}		
+		crs->i++;
+	}
+	str_cat_util(data, crs, prm, n);
 }
 
 void get_params(t_data ** data, char *st_cmd, int n)
@@ -144,7 +175,7 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 	while (cursor->k < cursor->counter + 1)
 		(*data)->cmds[cursor->k++] = malloc(sizeof(size_t));
 	(*data)->st_cmds = ft_split((*data)->input, 1);
-	while (cursor->r < cursor->counter + 1)
+	while (cursor->r < cursor->counter)
 	{
 		get_params(data, (*data)->st_cmds[cursor->r], cursor->r);
 		cursor->r++;
@@ -238,6 +269,7 @@ void parser(t_data	**data)
 			t++;
 		get_slicers(data, cursor, slicers[s], t);
 	}
+	(*data)->crs = 0;
 	get_slc_seq(data);
 	get_cmds(data, cursor);
 }
