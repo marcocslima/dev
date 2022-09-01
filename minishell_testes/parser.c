@@ -161,7 +161,6 @@ void	get_params(t_data **data, char *st_cmd, int n)
 
 void	get_cmds(t_data **data, t_cursors *cursor)
 {
-	init_crs(&cursor);
 	cursor->len = ft_strlen((*data)->input);
 	while (cursor->i < cursor->len)
 	{
@@ -183,8 +182,8 @@ void	get_cmds(t_data **data, t_cursors *cursor)
 	while (cursor->r < cursor->counter + 1)
 	{
 		if ((*data)->st_cmds[cursor->r])
-			get_params(data, (*data)->st_cmds[cursor->r], cursor->r++);
-		//cursor->r++;
+			get_params(data, (*data)->st_cmds[cursor->r], cursor->r);
+		cursor->r++;
 	}
 	free(cursor);
 }
@@ -246,13 +245,10 @@ void parser(t_data	**data)
 
 	i = -1;
 	s = -1;
-	//verify(data);
 	(*data)->tokens = malloc(sizeof(size_t) * 9);
 	(*data)->len_tokens = ft_calloc(9,sizeof(int));
 	while(++i < 9)
 		get_token(data, token[i], i);
-	(*data)->slicers = ft_calloc(ft_strlen((*data)->input),sizeof(int));
-	(*data)->slicers_types = ft_calloc(ft_strlen((*data)->input),sizeof(int));
 	while(++s < 4)
 	{
 		init_crs(&cursor);
@@ -261,7 +257,7 @@ void parser(t_data	**data)
 			t++;
 		get_slicers(data, cursor, slicers[s], t);
 	}
-	(*data)->crs = 0;
 	get_slc_seq(data);
+	init_crs(&cursor);
 	get_cmds(data, cursor);
 }

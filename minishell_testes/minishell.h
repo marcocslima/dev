@@ -69,6 +69,7 @@ typedef struct s_cursors
 	int		r;
 	int		l;
 	int		m;
+	int		n;
 	int		begin;
 	int		last;
 	char	c;

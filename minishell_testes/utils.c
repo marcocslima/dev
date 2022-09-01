@@ -58,6 +58,7 @@ void	init_crs(t_cursors	**cursor)
 	(*cursor)->r 		= 0;
 	(*cursor)->l 		= -1;
 	(*cursor)->m 		= -1;
+	(*cursor)->n 		= -1;
 	(*cursor)->begin	= 0;
 	(*cursor)->last		= 0;
 	(*cursor)->c		= '\0';

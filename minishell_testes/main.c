@@ -41,6 +41,7 @@ void	init_struct(t_data **data, char **argv, char **envp)
 	(*data)->pars_inpt = (char **)ft_calloc(sizeof(char *), (4097));
 	(*data)->params = malloc(sizeof(char));
 	(*data)->cmds = NULL;
+	(*data)->crs = 0;
 }
 
 void	open_prompt(char **envp)
@@ -94,6 +95,8 @@ int	main(int argc, char **argv, char **envp)
 		open_prompt(data->envp);
 		signal(SIGINT, signal_handler);
 		get_input(&data);
+		data->slicers = ft_calloc(ft_strlen(data->input),sizeof(int));
+		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int));
 		parser(&data);
 		exit (0); //retirar
 	}
