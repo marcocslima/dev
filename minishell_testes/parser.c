@@ -110,7 +110,7 @@ void	str_cat(t_data **data, char *prm, int n)
 	init_crs(&crs);
 	if (prm)
 		crs->len = ft_strlen(prm);
-	crs->i = (*data)->crs + 1;
+	crs->i = (*data)->crs;
 	(*data)->crs = (*data)->crs + crs->len + 1;
 	while(crs->i < (*data)->crs)
 	{
@@ -118,8 +118,10 @@ void	str_cat(t_data **data, char *prm, int n)
 			|| ((*data)->slicers_types[crs->i] == '>' && (*data)->slicers_types[crs->i + 1] == '>'))
 		{
 			crs->c = (*data)->slicers_types[crs->i];
-			(*data)->slicers_seq[n] = (*data)->slicers_seq[n + 1];
-		}		
+			(*data)->slicers_seq[n + 1] = 0;
+			if((*data)->slicers_seq[n] == 0)
+				(*data)->slicers_seq[n] = (*data)->slicers_seq[n + 1];
+		}
 		crs->i++;
 	}
 	str_cat_util(data, crs, prm, n);
@@ -175,7 +177,7 @@ void get_cmds(t_data ** data, t_cursors *cursor)
 	while (cursor->k < cursor->counter + 1)
 		(*data)->cmds[cursor->k++] = malloc(sizeof(size_t));
 	(*data)->st_cmds = ft_split((*data)->input, 1);
-	while (cursor->r < cursor->counter)
+	while (cursor->r < cursor->counter + 1)
 	{
 		get_params(data, (*data)->st_cmds[cursor->r], cursor->r);
 		cursor->r++;
