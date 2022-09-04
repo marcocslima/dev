@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/01 13:58:36 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/03 15:25:01 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL2_H
-# define MINISHELL2_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 # include <fcntl.h>
 # include <dirent.h>
 # include <signal.h>
@@ -32,13 +32,12 @@
 # define INPUT 5
 # define PIPE 6
 # define COLON 7
-# define ECHO 10
-# define CD 11
-# define PWD 12
-# define EXPORT 13
-# define UNSET 14
-# define ENV 15
-# define EXIT 16
+
+# define IN 0
+# define OUT 1
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 typedef struct s_data
 {
@@ -59,6 +58,7 @@ typedef struct s_data
 	char	**st_cmds;
 	char	**params;
 	char	***cmds;
+	int		exit_return;
 }	t_data;
 
 typedef struct s_cursors
@@ -87,4 +87,17 @@ char	*ft_strjoin_2(char *s1, char *s2);
 void	parser(t_data **data);
 void	reset_conters(t_cursors	**cursor);
 void	init_crs(t_cursors	**cursor);
+
+//adicionado atila
+int		cmd_check(t_data **data);
+int		ft_export(t_data **data, char *input);
+int		ft_unset(t_data **data, char *input);
+void	ft_cd(t_data **data, char *input);
+int		ft_pwd(void);
+void	ft_echo(t_data **data, char *input);
+void	one_substitution_2(char **cmd, int i, int x);
+char	**cmd_one_substitution(char **cmd);
+void	ft_pipe(t_data **data);
+void	ft_output(t_data **data);
+
 #endif

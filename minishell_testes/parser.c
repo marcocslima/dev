@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/01 14:17:53 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/04 06:40:18 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,8 @@ void	get_slicers(t_data **data, t_cursors *cursor, char slc, int t)
 			}
 			if ((*data)->input[cursor->k] == cursor->c)
 				cursor->counter++;
-			if (cursor->counter % 2 == 0 && ((*data)->input[cursor->k + 1] == slc))
+			if (cursor->counter % 2 == 0 && ((*data)->input[cursor->k + 1] == slc)
+				&& ((*data)->input[cursor->k] != slc))
 			{
 				(*data)->slicers[cursor->k] = (*data)->tokens[t][cursor->i];
 				(*data)->slicers_types[cursor->k] = slc;

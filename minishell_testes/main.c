@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/01 02:18:13 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/04 05:37:26 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**copy_env(char **envp, int add)
 void	init_struct(t_data **data, char **argv, char **envp)
 {
 	(*data) = (t_data *)malloc(sizeof(t_data));
-	(*data)->envp = copy_env(envp, 0);
+	(*data)->envp = copy_env(envp, 3);
 	(*data)->argv = argv;
 	(*data)->input = (char *)ft_calloc(sizeof(char *), 4097);
 	(*data)->pars_inpt = (char **)ft_calloc(sizeof(char *), (4097));
@@ -98,6 +98,7 @@ int	main(int argc, char **argv, char **envp)
 		data->slicers = ft_calloc(ft_strlen(data->input),sizeof(int));
 		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int));
 		parser(&data);
+		cmd_check(&data);
 		exit (0); //retirar
 	}
 	return (0);
