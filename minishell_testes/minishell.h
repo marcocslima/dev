@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/03 15:25:01 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/09/06 02:34:33 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,14 @@ int		ft_export(t_data **data, char *input);
 int		ft_unset(t_data **data, char *input);
 void	ft_cd(t_data **data, char *input);
 int		ft_pwd(void);
-void	ft_echo(t_data **data, char *input);
+void	ft_echo(t_data **data, char **input);
 void	one_substitution_2(char **cmd, int i, int x);
 char	**cmd_one_substitution(char **cmd);
 void	ft_pipe(t_data **data);
 void	ft_output(t_data **data);
+
+//adicionado por Marco
+void clean_data(t_data **data);
+int	len_input(char **p);
 
 #endif
