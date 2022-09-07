@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/06 02:40:40 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/07 04:59:46 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,22 @@ int	len_input(char **p)
 	return (crs->l);
 }
 
-void	ft_echo(t_data **data, char **input)
+void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 {
-	t_cursors	*crs;
-
-	init_crs(&crs);
 	crs->len = len_input(input);
 	if (!input[0] || input[0][0] == '\0')
 	{
 		write(1, "\n", 1);
 		(*data)->exit_return = 1;
 	}
-	while(crs->i < crs->len -1)
+	crs->i = 0;
+	crs->j = 0;
+	if((*data)->qtd_cmds > 1)
+	{
+		crs->len = crs->len -1;
+		(*data)->qtd_cmds--;
+	}
+	while(++crs->i < crs->len)
 	{
 		while (input[crs->i][crs->j] && input[crs->i][crs->j] == ' ')
 			crs->j++;
@@ -72,11 +76,9 @@ void	ft_echo(t_data **data, char **input)
 			crs->flag = 1;
 			crs->i += 3;
 		}
-		input[crs->i] = ft_substr(input[crs->i], crs->i, ft_strlen(input[crs->i]) - crs->i);
 		ft_putstr_fd (input[crs->i], 1);
 		if (crs->flag == 0)
 			write (1, "\n", 1);
 		(*data)->exit_return = 0;
-		crs->i++;
 	}
 }

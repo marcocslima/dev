@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/06 02:34:33 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/07 04:22:59 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_data
 	char	**st_cmds;
 	char	**params;
 	char	***cmds;
+	int		qtd_cmds;
 	int		exit_return;
 }	t_data;
 
@@ -94,7 +95,7 @@ int		ft_export(t_data **data, char *input);
 int		ft_unset(t_data **data, char *input);
 void	ft_cd(t_data **data, char *input);
 int		ft_pwd(void);
-void	ft_echo(t_data **data, char **input);
+void	ft_echo(t_data **data, char **input, t_cursors	*crs);
 void	one_substitution_2(char **cmd, int i, int x);
 char	**cmd_one_substitution(char **cmd);
 void	ft_pipe(t_data **data);

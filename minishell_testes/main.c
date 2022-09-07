@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/04 17:39:57 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/07 04:43:40 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ void	init_struct(t_data **data, char **argv, char **envp)
 	(*data) = (t_data *)malloc(sizeof(t_data));
 	(*data)->envp = copy_env(envp, 3);
 	(*data)->argv = argv;
-	(*data)->input = (char *)ft_calloc(sizeof(char *), 4097);
+	//(*data)->input = (char *)ft_calloc(sizeof(char *), 4097);
 	(*data)->pars_inpt = (char **)ft_calloc(sizeof(char *), (4097));
 	(*data)->params = malloc(sizeof(char));
 	(*data)->cmds = NULL;
 	(*data)->crs = 0;
+	(*data)->qtd_cmds = 0;
 }
 
 void	open_prompt(char **envp)
@@ -72,6 +73,7 @@ void		get_input(t_data **data)
 
 	i = 0;
 	bufstring = ft_calloc(sizeof(char *), 2);
+	(*data)->input = (char *)ft_calloc(sizeof(char *), 4097);
 	while((ret = read(0 , &buf, 1)) && buf != '\n')
 	{
 		bufstring[0] = buf;

@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/04 06:40:18 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/07 05:00:08 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,7 @@ void	get_slc_seq(t_data **data)
 			(*data)->slicers_seq[crs->j] = (*data)->slicers_types[crs->m];
 			crs->j++;
 		}
+	(*data)->qtd_cmds = crs->j + 1;
 	free(crs);
 }
 
