@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/07 05:43:31 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/07 14:32:28 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_data
 	int		argc;
 	char	*input;
 	char	*path;
+	char	*tmp;
 	char	**st_cmds;
 	char	**params;
 	char	***cmds;
