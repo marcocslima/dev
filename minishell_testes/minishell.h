@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/07 04:22:59 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/07 05:43:31 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ typedef struct s_data
 	int		*quotes_types;
 	int		argc;
 	char	*input;
-	char	**pars_inpt;
-	char	**pars_type;
 	char	*path;
 	char	**st_cmds;
 	char	**params;
