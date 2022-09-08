@@ -6,10 +6,8 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/07 15:16:27 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:31:16 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -46,30 +44,28 @@ void	rotate_char(t_data ** data, char *param, char c)
 	t_cursors	*crs;
 
 	init_crs(&crs);
-	crs->len = ft_strlen(param);
+	crs->len = ft_strlen(param) + 1;
 	char	new[crs->len];
-	while (crs->k < crs->len)
+	ft_bzero(new, crs->len);
+	(*data)->tmp = malloc(sizeof(size_t));
+	(*data)->tmp = new;
+	while (crs->counter < crs->len - 1)
 	{
-		new[crs->k] = 0;
-		crs->k++;
-	}
-	ft_bzero((*data)->tmp, 10);
-	while (crs->counter < crs->len)
-	{
-		if (param[crs->counter] != c)
-		{
-			new[crs->i] = param[crs->counter];
-			crs->i++;
-		}
-		else if (param[crs->counter] == c && param[crs->counter] != '\'')
+		if ((param[crs->counter] == c && param[crs->counter] != '\'')
+			|| (param[crs->counter] == '\\' && param[crs->counter] != c))
 		{
 			new[crs->i] = param[crs->counter + 1];
 			crs->i++;
 			crs->counter++;
+			crs->len = crs->len - 1;
+		}
+		else if (param[crs->counter] != c)
+		{
+			new[crs->i] = param[crs->counter];
+			crs->i++;
 		}
 		crs->counter++;
 	}
-	(*data)->tmp = new;
 	free(crs);
 }
 
@@ -81,16 +77,17 @@ int handle_quotes(t_data **data, char *param)
 	if (param[0] == '"' || param[0] == '\'')
 	{
 		while (param[++c->l])
-			if (param[c->l] == '"')
+			if (param[c->l] == '"' && param[c->l - 1] != '\\')
 				c->i++;
-			else if (param[c->l] == '\'')
+			else if (param[c->l] == '\'' && param[c->l - 1] != '\\')
 				c->j++;
 	}
-	if((c->i + c->j) % 2 != 0)
+	c->len = c->i + c->j;
+	if(c->len % 2 != 0)
 		return (1);
 	if (param[0] == '"' || param[0] == '\'')
-		c->flag = param[0];
-	rotate_char(data, param, c->flag);
+		c->q = param[0];
+	rotate_char(data, param, c->q);
 	return (0);
 }
 
@@ -106,15 +103,16 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 			crs->flag = 1;
 			crs->i++;
 		}
-		int h = handle_quotes(data, input[crs->i]);
-		if (h == 0)
-			input[crs->i] = (*data)->tmp;
-		if (crs->flag == 1 &&  crs->i == crs->len - 1)
-			ft_putstr_fd (ft_strjoin(input[crs->i], ""), 1);
-		else
-			ft_putstr_fd (ft_strjoin(input[crs->i], " "), 1);
+		if (handle_quotes(data, input[crs->i]) == 0)
+		{
+			while ((*data)->tmp[++crs->m])
+				ft_putchar_fd((*data)->tmp[crs->m], 1);
+			ft_putchar_fd(' ', 1);
+			crs->m = -1;
+		}
 	}
 	if (crs->flag == 0)
 			write (1, "\n", 1);
+	crs->flag = 0;
 	(*data)->exit_return = 0;
 }
