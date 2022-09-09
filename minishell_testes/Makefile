@@ -6,7 +6,7 @@
 #    By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 02:03:37 by acosta-a          #+#    #+#              #
-#    Updated: 2022/09/07 07:04:21 by mcesar-d         ###   ########.fr        #
+#    Updated: 2022/09/09 14:56:09 by mcesar-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 # Compilation #
 CC = gcc
-CFLAGS = -g #-Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 OPTCC=  -I. -c
 RM = rm -rf
 
@@ -24,7 +24,7 @@ LIBFT_PATH = ./libft
 # SOURCE FILES #
 SRC = ./exits.c ./signal.c ./main.c ./utils.c ./parser.c \
 ./export.c ./cd_pwd.c ./delimiters.c ./echo_exit.c ./cmd_exec.c \
-clean_data.c
+clean_data.c error.c
 
 
 #BONUS =

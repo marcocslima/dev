@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/07 14:32:28 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/09 14:50:42 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		no_error_msg(char *message);
 int		error_msg(char *message);
 void	signal_handler(int	input);
 char	*ft_strjoin_2(char *s1, char *s2);
-void	parser(t_data **data);
+int		parser(t_data **data);
 void	reset_conters(t_cursors	**cursor);
 void	init_crs(t_cursors	**cursor);
 
@@ -103,5 +103,6 @@ void	ft_output(t_data **data);
 //adicionado por Marco
 void clean_data(t_data **data);
 int	len_input(char **p);
+void print_error(int e);
 
 #endif

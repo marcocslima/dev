@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/08 17:39:42 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/09 14:49:57 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,11 @@ int	main(int argc, char **argv, char **envp)
 		get_input(&data);
 		data->slicers = ft_calloc(ft_strlen(data->input),sizeof(int));
 		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int));
-		parser(&data);
-		cmd_check(&data);
+		int tmp = parser(&data);
+		if (tmp == 0)
+			cmd_check(&data);
+		else
+			print_error(tmp);
 		clean_data(&data);
 		//exit (0); //retirar
 	}
