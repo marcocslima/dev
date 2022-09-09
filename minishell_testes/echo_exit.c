@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/08 18:31:16 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/09 06:04:42 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,9 @@ void	rotate_char(t_data ** data, char *param, char c)
 	ft_bzero(new, crs->len);
 	(*data)->tmp = malloc(sizeof(size_t));
 	(*data)->tmp = new;
-	while (crs->counter < crs->len - 1)
+	while (crs->counter <= crs->len - 1)
 	{
-		if ((param[crs->counter] == c && param[crs->counter] != '\'')
-			|| (param[crs->counter] == '\\' && param[crs->counter] != c))
+		if (param[crs->counter] == '\\' && param[crs->counter + 1] == c)
 		{
 			new[crs->i] = param[crs->counter + 1];
 			crs->i++;

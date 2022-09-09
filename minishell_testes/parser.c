@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/08 19:37:11 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/09 05:59:26 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,14 +195,13 @@ void	get_slicers(t_data **data, t_cursors *cursor, char slc, int t)
 		reset_conters(&cursor);
 		while (cursor->k < (*data)->tokens[t][cursor->i])
 		{
-			if (((*data)->input[cursor->k] == '\'' || (*data)->input[cursor->k] == '"'))
-				cursor->q = (*data)->input[cursor->k];
-			if (((*data)->input[cursor->k] == '\'' || (*data)->input[cursor->k] == '"') && cursor->flag == 0)
+			if (((*data)->input[cursor->k] == '\'' || (*data)->input[cursor->k] == '"')
+				&& cursor->flag == 0 && (*data)->input[cursor->k - 1] != '\\')
 			{
 				cursor->c = (*data)->input[cursor->k];
 				cursor->flag = 1;
 			}
-			if ((*data)->input[cursor->k] == cursor->c)
+			if ((*data)->input[cursor->k] == cursor->c && (*data)->input[cursor->k - 1] != '\\')
 				cursor->counter++;
 			if (cursor->counter % 2 == 0 && ((*data)->input[cursor->k + 1] == slc)
 				&& ((*data)->input[cursor->k] != slc))
