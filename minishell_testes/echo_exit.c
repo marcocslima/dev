@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/09 06:04:42 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/10 07:03:43 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,16 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 			crs->flag = 1;
 			crs->i++;
 		}
-		if (handle_quotes(data, input[crs->i]) == 0)
+		crs->err = handle_quotes(data, input[crs->i]);
+		if (crs->err == 0)
 		{
 			while ((*data)->tmp[++crs->m])
 				ft_putchar_fd((*data)->tmp[crs->m], 1);
 			ft_putchar_fd(' ', 1);
 			crs->m = -1;
 		}
+		else
+			print_error(crs->err);
 	}
 	if (crs->flag == 0)
 			write (1, "\n", 1);

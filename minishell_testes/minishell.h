@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/09 14:50:42 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/10 07:02:40 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_cursors
 	int		counter;
 	int		flag;
 	int		len;
+	int		err;
 }	t_cursors;
 
 int		no_error_msg(char *message);

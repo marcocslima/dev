@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 11:59:29 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/07 05:37:25 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/10 07:04:11 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,5 @@ void	init_crs(t_cursors	**cursor)
 	(*cursor)->q		= '\0';
 	(*cursor)->h		= '\0';
 	(*cursor)->len		= 0;
+	(*cursor)->err		= 0;
 }
