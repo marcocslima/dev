@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/10 19:15:30 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/10 23:12:52 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_data
 	char	*tmp;
 	char	**st_cmds;
 	char	**params;
+	char	*dollar;
 	char	***cmds;
 	int		qtd_cmds;
 	int		exit_return;

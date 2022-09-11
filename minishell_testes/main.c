@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/10 19:45:29 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/10 23:13:48 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	init_struct(t_data **data, char **argv, char **envp)
 	//(*data)->pars_inpt = (char **)ft_calloc(sizeof(char *), (4097));
 	(*data)->params = malloc(sizeof(char));
 	(*data)->cmds = NULL;
+	(*data)->dollar = NULL;
 	(*data)->crs = 0;
 	(*data)->qtd_cmds = 0;
 }
