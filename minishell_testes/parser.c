@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/11 00:10:02 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/11 17:29:18 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	str_cat(t_data **data, char *prm, int n)
 	}
 	str_cat_util(data, crs, prm, n);
 }
-
+/*
 void	get_dollar(t_data **data, char *dollar)
 {
 	t_cursors	*crs;
@@ -176,7 +176,7 @@ int	get_expand(t_data **data, t_cursors *crs)
 	free(crs);
 	return (0);
 }
-
+*/
 void	get_params(t_data **data, char *st_cmd, int n)
 {
 	t_cursors	*crs;
@@ -203,8 +203,7 @@ void	get_params(t_data **data, char *st_cmd, int n)
 		crs->r++;
 	}
 	(*data)->cmds[n] = (*data)->params;
-	//free(crs);
-	get_expand(data, crs);
+	free(crs);
 }
 
 void	get_cmds(t_data **data, t_cursors *cursor)

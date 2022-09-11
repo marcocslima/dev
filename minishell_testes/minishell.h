@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/10 23:12:52 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/11 18:26:26 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <stdio.h> //deletar
+# include <stdio.h>
 # define ERROR 1
 # define EMPTY 0
 # define CMD 1
@@ -32,55 +32,63 @@
 # define INPUT 5
 # define PIPE 6
 # define COLON 7
-
 # define IN 0
 # define OUT 1
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
 
+typedef struct s_expand
+{
+	char			*var;
+	char			*value;
+	struct s_expand	*next;
+}					t_expand;
+
 typedef struct s_data
 {
-	char	**envp;
-	char	**argv;
-	int		**tokens;
-	int		*len_tokens;
-	int		*slicers;
-	int		*slicers_types;
-	int		*slicers_seq;
-	int		crs;
-	int		*quotes_types;
-	int		argc;
-	char	*input;
-	char	*path;
-	char	*tmp;
-	char	**st_cmds;
-	char	**params;
-	char	*dollar;
-	char	***cmds;
-	int		qtd_cmds;
-	int		exit_return;
+	char			**envp;
+	char			**argv;
+	int				**tokens;
+	int				*len_tokens;
+	int				*slicers;
+	int				*slicers_types;
+	int				*slicers_seq;
+	int				crs;
+	int				*quotes_types;
+	int				argc;
+	char			*input;
+	char			*path;
+	char			*tmp;
+	char			**st_cmds;
+	char			**params;
+	char			*dollar;
+	char			***cmds;
+	int				qtd_cmds;
+	int				exit_return;
 }	t_data;
 
 typedef struct s_cursors
 {
-	int		i;
-	int		j;
-	int		k;
-	int		r;
-	int		l;
-	int		m;
-	int		n;
-	int		begin;
-	int		last;
-	char	c;
-	char	q;
-	char	h;
-	int		counter;
-	int		flag;
-	int		len;
-	int		err;
-	char	*pointer;
+	int				i;
+	int				j;
+	int				w;
+	int				k;
+	int				r;
+	int				s;
+	int				l;
+	int				m;
+	int				n;
+	int				begin;
+	int				last;
+	char			c;
+	char			q;
+	char			h;
+	int				counter;
+	int				flag;
+	int				len;
+	int				err;
+	char			*pointer;
 }	t_cursors;
 
 int		no_error_msg(char *message);
@@ -104,8 +112,10 @@ void	ft_pipe(t_data **data);
 void	ft_output(t_data **data);
 
 //adicionado por Marco
-void clean_data(t_data **data);
-int	len_input(char **p);
-void print_error(int e);
+void	clean_data(t_data **data);
+int		len_input(char **p);
+void	print_error(int e);
+char	**copy_env(char **envp, int add);
+int		get_expand(t_data **data, char *param);
 
 #endif

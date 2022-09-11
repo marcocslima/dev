@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/10 22:45:00 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/11 18:52:56 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,15 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 		if (crs->err == 0)
 		{
 			while ((*data)->tmp[++crs->m])
+			{
+				if((*data)->tmp[crs->m] == '$' && (*data)->tmp[crs->m] != ' ')
+				{
+					ft_putstr_fd("xxxxxxx", 1); //expand aqui
+					while((*data)->tmp[crs->m] && (*data)->tmp[crs->m] != ' ')
+						crs->m++;
+				}
 				ft_putchar_fd((*data)->tmp[crs->m], 1);
+			}
 			ft_putchar_fd(' ', 1);
 			crs->m = -1;
 		}
