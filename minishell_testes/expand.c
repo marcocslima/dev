@@ -6,12 +6,12 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:03:55 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/11 18:27:39 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/12 04:36:18 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 char	*get_value(char **envp, char *var)
 {
 	int len = ft_strlen(var);
@@ -68,3 +68,4 @@ int		get_expand(t_data **data, char *param)
 	free(crs);
 	return 0;
 }
+*/

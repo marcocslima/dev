@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/11 18:52:56 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/12 05:29:05 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,23 @@ int handle_quotes(t_data **data, char *param)
 	return (0);
 }
 
+char	*get_value(char **envp, char *var)
+{
+	int len = ft_strlen(var);
+	int i = 0;
+	int ret;
+	while (envp[i])
+	{
+		ret = ft_strncmp(var, *envp, len);
+		i++;
+	}
+	if (ret < 0) // corrigir aqui
+		return (0);
+	while (ft_strncmp(var, *envp, len))
+		envp++;
+	return (*envp + len + 1);
+}
+
 void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 {
 	echo_preper(data, input, crs);
@@ -107,12 +124,23 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 		{
 			while ((*data)->tmp[++crs->m])
 			{
-				if((*data)->tmp[crs->m] == '$' && (*data)->tmp[crs->m] != ' ')
-				{
-					ft_putstr_fd("xxxxxxx", 1); //expand aqui
-					while((*data)->tmp[crs->m] && (*data)->tmp[crs->m] != ' ')
-						crs->m++;
-				}
+				if(input[crs->i][0] != '\'')
+					if((*data)->tmp[crs->m] == '$' && (*data)->tmp[crs->m + 1] != ' ')
+					{
+						crs->pos = &(*data)->tmp[crs->m + 1];
+						while((*data)->tmp[crs->m] && (*data)->tmp[crs->m] != ' ')
+						{
+							crs->counter++;
+							crs->m++;
+						}
+						crs->pointer = ft_calloc(sizeof(char), crs->counter);
+						ft_strlcpy(crs->pointer, crs->pos, crs->counter);
+						crs->ret = get_value((*data)->envp, crs->pointer);
+						if(crs->ret)
+							ft_putstr_fd(crs->ret, 1);
+						else
+							crs->m =  crs->m - crs->counter;
+					}
 				ft_putchar_fd((*data)->tmp[crs->m], 1);
 			}
 			ft_putchar_fd(' ', 1);
