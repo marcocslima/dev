@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/12 05:29:05 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/12 11:23:41 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,10 @@ char	*get_value(char **envp, char *var)
 		ret = ft_strncmp(var, *envp, len);
 		i++;
 	}
-	if (ret < 0) // corrigir aqui
-		return (0);
-	while (ft_strncmp(var, *envp, len))
+	while (--i > 0 && ft_strncmp(var, *envp, len))
 		envp++;
+	if (i == 0)
+		return (0);
 	return (*envp + len + 1);
 }
 
