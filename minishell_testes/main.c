@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/12 05:23:00 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/13 15:40:55 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	init_struct(t_data **data, char **argv, char **envp)
 	(*data) = (t_data *)malloc(sizeof(t_data));
 	(*data)->envp = copy_env(envp, 3);
 	(*data)->argv = argv;
-	//(*data)->input = (char *)ft_calloc(sizeof(char *), 4097);
-	//(*data)->pars_inpt = (char **)ft_calloc(sizeof(char *), (4097));
 	(*data)->params = malloc(sizeof(char));
 	(*data)->cmds = NULL;
 	(*data)->dollar = NULL;

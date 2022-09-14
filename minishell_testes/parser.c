@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/11 17:29:18 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/13 17:15:34 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void	get_params(t_data **data, char *st_cmd, int n)
 		crs->r++;
 	}
 	(*data)->cmds[n] = (*data)->params;
-	free(crs);
+	//free(crs);
 }
 
 void	get_cmds(t_data **data, t_cursors *cursor)

@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/12 11:23:41 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/13 18:33:13 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,29 @@ int handle_quotes(t_data **data, char *param)
 	return (0);
 }
 
-char	*get_value(char **envp, char *var)
+char	*get_value(char **envp, char var[])
 {
-	int len = ft_strlen(var);
+	int len = 0;
 	int i = 0;
-	int ret;
-	while (envp[i])
+	char **cp_env;
+
+	while(var[len] && var[len] != ' ')
+		len++;
+	char tmp[len];
+	while(i < len)
 	{
-		ret = ft_strncmp(var, *envp, len);
+		tmp[i] = var[i];
 		i++;
 	}
-	while (--i > 0 && ft_strncmp(var, *envp, len))
-		envp++;
+
+	cp_env = copy_env(envp, 3);
+	while (cp_env[i])
+		i++;
+	while (--i > 0 && ft_strncmp(tmp, *cp_env, len))
+		cp_env++;
 	if (i == 0)
 		return (0);
-	return (*envp + len + 1);
+	return (*cp_env + len + 1);
 }
 
 void	ft_echo(t_data **data, char **input, t_cursors	*crs)
@@ -112,6 +120,7 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 	echo_preper(data, input, crs);
 	while (++crs->i < crs->len)
 	{
+		crs->counter = 0;
 		while (input[crs->i][crs->j] && input[crs->i][crs->j] == ' ')
 			crs->j++;
 		if (input[crs->i][crs->j] == '-' && input [crs->i][crs->j + 1] == 'n')
@@ -120,6 +129,11 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 			crs->i++;
 		}
 		crs->err = handle_quotes(data, input[crs->i]);
+		int l = ft_strlen((*data)->tmp);
+		int i = -1;
+		char tp[l];
+		while(++i < l)
+			tp[i] = (*data)->tmp[i];
 		if (crs->err == 0)
 		{
 			while ((*data)->tmp[++crs->m])
@@ -127,21 +141,17 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 				if(input[crs->i][0] != '\'')
 					if((*data)->tmp[crs->m] == '$' && (*data)->tmp[crs->m + 1] != ' ')
 					{
-						crs->pos = &(*data)->tmp[crs->m + 1];
-						while((*data)->tmp[crs->m] && (*data)->tmp[crs->m] != ' ')
-						{
+						while((*data)->tmp[crs->m + crs->counter])
 							crs->counter++;
-							crs->m++;
-						}
-						crs->pointer = ft_calloc(sizeof(char), crs->counter);
-						ft_strlcpy(crs->pointer, crs->pos, crs->counter);
-						crs->ret = get_value((*data)->envp, crs->pointer);
+						crs->ret = get_value((*data)->envp, &tp[crs->m + 1]);
 						if(crs->ret)
+						{
 							ft_putstr_fd(crs->ret, 1);
-						else
-							crs->m =  crs->m - crs->counter;
+							crs->m = crs->m + crs->counter - 1;
+						}
 					}
-				ft_putchar_fd((*data)->tmp[crs->m], 1);
+				ft_putchar_fd(tp[crs->m], 1);
+				//ft_putchar_fd((*data)->tmp[crs->m], 1);
 			}
 			ft_putchar_fd(' ', 1);
 			crs->m = -1;
