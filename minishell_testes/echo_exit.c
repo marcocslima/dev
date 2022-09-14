@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/14 03:07:12 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/14 06:02:58 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,25 +136,28 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 			tp[i] = (*data)->tmp[i];
 		if (crs->err == 0)
 		{
-			while ((*data)->tmp[++crs->m])
+			crs->s = 0;
+			while (tp[crs->s])
 			{
 				if(input[crs->i][0] != '\'')
-					if((*data)->tmp[crs->m] == '$' && (*data)->tmp[crs->m + 1] != ' ')
+					if((*data)->tmp[crs->s] == '$' && (*data)->tmp[crs->s + 1] != ' ')
 					{
-						while((*data)->tmp[crs->m + crs->counter])
+						while((*data)->tmp[crs->s + crs->counter] != ' '
+							 && (*data)->tmp[crs->s + crs->counter] != '"')
 							crs->counter++;
-						crs->ret = get_value((*data)->envp, &tp[crs->m + 1], crs->counter - 2);
+						crs->ret = get_value((*data)->envp, &tp[crs->s + 1], crs->counter - 1);
 						if(crs->ret)
 						{
 							ft_putstr_fd(crs->ret, 1);
-							crs->m = crs->m + crs->counter;
+							crs->s = crs->s + crs->counter;
 						}
 					}
-				ft_putchar_fd(tp[crs->m], 1);
-				//ft_putchar_fd((*data)->tmp[crs->m], 1);
+				if(crs->s < i)
+					ft_putchar_fd(tp[crs->s], 1);
+				else if(crs->s == i)
+					ft_putchar_fd(' ', 1);
+				crs->s++;
 			}
-			ft_putchar_fd(' ', 1);
-			crs->m = -1;
 		}
 		else
 			print_error(crs->err);
