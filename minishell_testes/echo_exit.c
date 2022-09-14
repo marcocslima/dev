@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/13 18:33:13 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/14 03:07:12 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,16 @@ int handle_quotes(t_data **data, char *param)
 	return (0);
 }
 
-char	*get_value(char **envp, char var[])
+char	*get_value(char **envp, char var[], int n)
 {
-	int len = 0;
+	//int len = 0;
 	int i = 0;
 	char **cp_env;
 
-	while(var[len] && var[len] != ' ')
-		len++;
-	char tmp[len];
-	while(i < len)
+	//while(var[len] && var[len] != ' ')
+	//	len++;
+	char tmp[n];
+	while(i < n)
 	{
 		tmp[i] = var[i];
 		i++;
@@ -108,11 +108,11 @@ char	*get_value(char **envp, char var[])
 	cp_env = copy_env(envp, 3);
 	while (cp_env[i])
 		i++;
-	while (--i > 0 && ft_strncmp(tmp, *cp_env, len))
+	while (--i > 0 && ft_strncmp(tmp, *cp_env, n))
 		cp_env++;
 	if (i == 0)
 		return (0);
-	return (*cp_env + len + 1);
+	return (*cp_env + n + 2);
 }
 
 void	ft_echo(t_data **data, char **input, t_cursors	*crs)
@@ -143,11 +143,11 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 					{
 						while((*data)->tmp[crs->m + crs->counter])
 							crs->counter++;
-						crs->ret = get_value((*data)->envp, &tp[crs->m + 1]);
+						crs->ret = get_value((*data)->envp, &tp[crs->m + 1], crs->counter - 2);
 						if(crs->ret)
 						{
 							ft_putstr_fd(crs->ret, 1);
-							crs->m = crs->m + crs->counter - 1;
+							crs->m = crs->m + crs->counter;
 						}
 					}
 				ft_putchar_fd(tp[crs->m], 1);
