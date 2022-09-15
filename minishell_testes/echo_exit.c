@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/15 12:37:51 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/16 00:26:23 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,12 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 			crs->i++;
 		}
 		crs->err = handle_quotes(data, input[crs->i]);
-		int l = ft_strlen((*data)->tmp);
+		int l = ft_strlen((*data)->tmp) + 1;
 		int i = -1;
 		char tp[l];
 		while(++i < l)
 			tp[i] = (*data)->tmp[i];
+		tp[i] = '\0';
 		if (crs->err == 0)
 		{
 			crs->s = 0;
@@ -153,11 +154,11 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 							crs->s = crs->s + crs->counter;
 						}
 					}
-				if(crs->s < i)
+				if (crs->s < i)
 					ft_putchar_fd(tp[crs->s], 1);
-				else if(crs->s == i)
-					ft_putchar_fd(' ', 1);
 				crs->s++;
+				if (tp[crs->s] == '\0')
+					ft_putchar_fd(' ', 1);
 			}
 		}
 		else
