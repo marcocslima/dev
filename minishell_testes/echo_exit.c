@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/14 06:02:58 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/15 12:37:51 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ char	*get_value(char **envp, char var[], int n)
 		cp_env++;
 	if (i == 0)
 		return (0);
-	return (*cp_env + n + 2);
+	return (*cp_env + n + 1);
 }
 
 void	ft_echo(t_data **data, char **input, t_cursors	*crs)
@@ -140,10 +140,11 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 			while (tp[crs->s])
 			{
 				if(input[crs->i][0] != '\'')
-					if((*data)->tmp[crs->s] == '$' && (*data)->tmp[crs->s + 1] != ' ')
+					if(tp[crs->s] == '$' && tp[crs->s + 1] != ' ')
 					{
-						while((*data)->tmp[crs->s + crs->counter] != ' '
-							 && (*data)->tmp[crs->s + crs->counter] != '"')
+						while(tp[crs->s + crs->counter]
+							&& tp[crs->s + crs->counter] != ' '
+							&& tp[crs->s + crs->counter] != '"')
 							crs->counter++;
 						crs->ret = get_value((*data)->envp, &tp[crs->s + 1], crs->counter - 1);
 						if(crs->ret)
