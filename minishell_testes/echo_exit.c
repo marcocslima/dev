@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/16 00:26:23 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/17 00:31:47 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,10 @@ int handle_quotes(t_data **data, char *param)
 
 char	*get_value(char **envp, char var[], int n)
 {
-	//int len = 0;
 	int i = 0;
 	char **cp_env;
-
-	//while(var[len] && var[len] != ' ')
-	//	len++;
 	char tmp[n];
+	
 	while(i < n)
 	{
 		tmp[i] = var[i];
@@ -115,52 +112,52 @@ char	*get_value(char **envp, char var[], int n)
 	return (*cp_env + n + 1);
 }
 
+void	print_echo(t_data **data, t_cursors *crs, char **input, char tp[])
+{
+	crs->s = 0;
+	while (tp[crs->s])
+	{
+		if(input[crs->i][0] != '\'')
+			if(tp[crs->s] == '$' && tp[crs->s + 1] != ' ')
+			{
+				while(tp[crs->s + crs->counter] && tp[crs->s + crs->counter] != ' '
+					&& tp[crs->s + crs->counter] != '"' && tp[crs->s + crs->counter] != '\'')
+					crs->counter++;
+				crs->ret = get_value((*data)->envp, &tp[crs->s + 1], crs->counter - 1);
+				if(crs->ret)
+				{
+					ft_putstr_fd(crs->ret, 1);
+					crs->s = crs->s + crs->counter;
+				}
+			}
+		if (crs->s < crs->m)
+			ft_putchar_fd(tp[crs->s], 1);
+		crs->s++;
+		if (tp[crs->s] == '\0')
+			ft_putchar_fd(' ', 1);
+	}
+}
+
 void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 {
 	echo_preper(data, input, crs);
 	while (++crs->i < crs->len)
 	{
 		crs->counter = 0;
-		while (input[crs->i][crs->j] && input[crs->i][crs->j] == ' ')
-			crs->j++;
 		if (input[crs->i][crs->j] == '-' && input [crs->i][crs->j + 1] == 'n')
 		{
 			crs->flag = 1;
 			crs->i++;
 		}
 		crs->err = handle_quotes(data, input[crs->i]);
-		int l = ft_strlen((*data)->tmp) + 1;
-		int i = -1;
-		char tp[l];
-		while(++i < l)
-			tp[i] = (*data)->tmp[i];
-		tp[i] = '\0';
+		crs->w = ft_strlen((*data)->tmp) + 1;
+		crs->m = -1;
+		char tp[crs->w];
+		while(++crs->m < crs->w)
+			tp[crs->m] = (*data)->tmp[crs->m];
+		tp[crs->m] = '\0';
 		if (crs->err == 0)
-		{
-			crs->s = 0;
-			while (tp[crs->s])
-			{
-				if(input[crs->i][0] != '\'')
-					if(tp[crs->s] == '$' && tp[crs->s + 1] != ' ')
-					{
-						while(tp[crs->s + crs->counter]
-							&& tp[crs->s + crs->counter] != ' '
-							&& tp[crs->s + crs->counter] != '"')
-							crs->counter++;
-						crs->ret = get_value((*data)->envp, &tp[crs->s + 1], crs->counter - 1);
-						if(crs->ret)
-						{
-							ft_putstr_fd(crs->ret, 1);
-							crs->s = crs->s + crs->counter;
-						}
-					}
-				if (crs->s < i)
-					ft_putchar_fd(tp[crs->s], 1);
-				crs->s++;
-				if (tp[crs->s] == '\0')
-					ft_putchar_fd(' ', 1);
-			}
-		}
+			print_echo(data, crs, input, tp);
 		else
 			print_error(crs->err);
 	}
