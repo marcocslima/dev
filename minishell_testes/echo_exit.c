@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/17 00:31:47 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/17 00:51:08 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int	len_input(char **p)
 	t_cursors	*crs;
 
 	init_crs(&crs);
-	while(p[crs->l])
+	while (p[crs->l])
 		crs->l++;
 	return (crs->l);
 }
 
-void echo_preper(t_data **data, char **input, t_cursors	*crs)
+void	echo_preper(t_data **data, char **input, t_cursors	*crs)
 {
 	crs->len = len_input(input);
 	if (!input[0] || input[0][0] == '\0')
@@ -32,14 +32,14 @@ void echo_preper(t_data **data, char **input, t_cursors	*crs)
 	}
 	crs->i = 0;
 	crs->j = 0;
-	if((*data)->qtd_cmds > 1)
+	if ((*data)->qtd_cmds > 1)
 	{
 		crs->len = crs->len -1;
 		(*data)->qtd_cmds--;
 	}
 }
 
-void	rotate_char(t_data ** data, char *param, char c)
+void	rotate_char(t_data **data, char *param, char c)
 {
 	t_cursors	*crs;
 
@@ -68,10 +68,10 @@ void	rotate_char(t_data ** data, char *param, char c)
 	free(crs);
 }
 
-int handle_quotes(t_data **data, char *param)
+int	handle_quotes(t_data **data, char *param)
 {
-	t_cursors *c;
-	
+	t_cursors	*c;
+
 	init_crs(&c);
 	if (param[0] == '"' || param[0] == '\'')
 	{
@@ -82,7 +82,7 @@ int handle_quotes(t_data **data, char *param)
 				c->j++;
 	}
 	c->len = c->i + c->j;
-	if(c->len % 2 != 0)
+	if (c->len % 2 != 0)
 		return (1);
 	if (param[0] == '"' || param[0] == '\'')
 		c->q = param[0];
@@ -92,23 +92,21 @@ int handle_quotes(t_data **data, char *param)
 
 char	*get_value(char **envp, char var[], int n)
 {
-	int i = 0;
-	char **cp_env;
-	char tmp[n];
-	
-	while(i < n)
-	{
-		tmp[i] = var[i];
-		i++;
-	}
+	t_cursors	*crs;
+	char		**cp_env;
+	char		tmp[n];
 
+	init_crs(&crs);
+	while (++crs->l < n)
+		tmp[crs->l] = var[crs->l];
 	cp_env = copy_env(envp, 3);
-	while (cp_env[i])
-		i++;
-	while (--i > 0 && ft_strncmp(tmp, *cp_env, n))
+	while (cp_env[crs->l])
+		crs->l++;
+	while (--crs->l > 0 && ft_strncmp(tmp, *cp_env, n))
 		cp_env++;
-	if (i == 0)
+	if (crs->l == 0)
 		return (0);
+	free(crs);
 	return (*cp_env + n + 1);
 }
 
@@ -117,14 +115,14 @@ void	print_echo(t_data **data, t_cursors *crs, char **input, char tp[])
 	crs->s = 0;
 	while (tp[crs->s])
 	{
-		if(input[crs->i][0] != '\'')
-			if(tp[crs->s] == '$' && tp[crs->s + 1] != ' ')
+		if (input[crs->i][0] != '\'')
+			if (tp[crs->s] == '$' && tp[crs->s + 1] != ' ')
 			{
-				while(tp[crs->s + crs->counter] && tp[crs->s + crs->counter] != ' '
+				while (tp[crs->s + crs->counter] && tp[crs->s + crs->counter] != ' '
 					&& tp[crs->s + crs->counter] != '"' && tp[crs->s + crs->counter] != '\'')
 					crs->counter++;
 				crs->ret = get_value((*data)->envp, &tp[crs->s + 1], crs->counter - 1);
-				if(crs->ret)
+				if (crs->ret)
 				{
 					ft_putstr_fd(crs->ret, 1);
 					crs->s = crs->s + crs->counter;
@@ -153,7 +151,7 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 		crs->w = ft_strlen((*data)->tmp) + 1;
 		crs->m = -1;
 		char tp[crs->w];
-		while(++crs->m < crs->w)
+		while (++crs->m < crs->w)
 			tp[crs->m] = (*data)->tmp[crs->m];
 		tp[crs->m] = '\0';
 		if (crs->err == 0)
