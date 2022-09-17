@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/17 02:44:24 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:20:05 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	rotate_char(t_data **data, char *param, char c)
 	init_crs(&crs);
 	crs->len = ft_strlen(param) + 1;
 	new = ft_calloc(crs->len, sizeof(char));
-	//ft_bzero(new, crs->len);
-	//(*data)->tmp = malloc(sizeof(size_t));
 	(*data)->tmp = new;
 	while (crs->counter <= crs->len - 1)
 	{
@@ -88,6 +86,7 @@ int	handle_quotes(t_data **data, char *param)
 	if (param[0] == '"' || param[0] == '\'')
 		c->q = param[0];
 	rotate_char(data, param, c->q);
+	free(c);
 	return (0);
 }
 

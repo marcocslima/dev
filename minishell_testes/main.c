@@ -6,10 +6,8 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/13 15:40:55 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:18:40 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -83,9 +81,28 @@ void		get_input(t_data **data)
 	free(bufstring);
 }
 
+int	verify_quotes(t_data **data)
+{
+	t_cursors	*c;
+
+	init_crs(&c);
+	while ((*data)->input[++c->l])
+		if ((*data)->input[c->l] == '"' && (*data)->input[c->l - 1] != '\\')
+			c->i++;
+		else if ((*data)->input[c->l] == '\'' && (*data)->input[c->l - 1] != '\\')
+			c->j++;
+	c->len = c->i + c->j;
+	if (c->len % 2 != 0)
+		return (1);
+	free(c);
+	return (0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
+	int		ret_parser;
+	int		ret_quotes;
 
 	if (argc != 1)
 		error_msg("Please type only one argument");
@@ -98,11 +115,12 @@ int	main(int argc, char **argv, char **envp)
 		get_input(&data);
 		data->slicers = ft_calloc(ft_strlen(data->input),sizeof(int));
 		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int));
-		int tmp = parser(&data);
-		if (tmp == 0)
+		ret_parser = parser(&data);
+		ret_quotes = verify_quotes(&data);
+		if (ret_parser + ret_quotes == 0)
 			cmd_check(&data);
 		else
-			print_error(tmp);
+			print_error(ret_quotes);
 		clean_data(&data);
 		//exit (0); //retirar
 	}
