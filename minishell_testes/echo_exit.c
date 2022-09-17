@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/17 00:51:08 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/17 02:44:24 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,13 @@ void	echo_preper(t_data **data, char **input, t_cursors	*crs)
 void	rotate_char(t_data **data, char *param, char c)
 {
 	t_cursors	*crs;
+	char		*new;
 
 	init_crs(&crs);
 	crs->len = ft_strlen(param) + 1;
-	char	new[crs->len];
-	ft_bzero(new, crs->len);
-	(*data)->tmp = malloc(sizeof(size_t));
+	new = ft_calloc(crs->len, sizeof(char));
+	//ft_bzero(new, crs->len);
+	//(*data)->tmp = malloc(sizeof(size_t));
 	(*data)->tmp = new;
 	while (crs->counter <= crs->len - 1)
 	{
@@ -116,18 +117,18 @@ void	print_echo(t_data **data, t_cursors *crs, char **input, char tp[])
 	while (tp[crs->s])
 	{
 		if (input[crs->i][0] != '\'')
-			if (tp[crs->s] == '$' && tp[crs->s + 1] != ' ')
-			{
-				while (tp[crs->s + crs->counter] && tp[crs->s + crs->counter] != ' '
-					&& tp[crs->s + crs->counter] != '"' && tp[crs->s + crs->counter] != '\'')
-					crs->counter++;
-				crs->ret = get_value((*data)->envp, &tp[crs->s + 1], crs->counter - 1);
-				if (crs->ret)
-				{
-					ft_putstr_fd(crs->ret, 1);
-					crs->s = crs->s + crs->counter;
-				}
-			}
+		if (tp[crs->s] == '$' && tp[crs->s + 1] != ' ')
+		{
+		while (tp[crs->s + crs->counter] && tp[crs->s + crs->counter] != ' '
+			&& tp[crs->s + crs->counter] != '"' && tp[crs->s + crs->counter] != '\'')
+			crs->counter++;
+		crs->ret = get_value((*data)->envp, &tp[crs->s + 1], crs->counter - 1);
+		if (crs->ret)
+		{
+			ft_putstr_fd(crs->ret, 1);
+			crs->s = crs->s + crs->counter;
+		}
+		}
 		if (crs->s < crs->m)
 			ft_putchar_fd(tp[crs->s], 1);
 		crs->s++;
