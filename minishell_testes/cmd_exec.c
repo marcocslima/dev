@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/07 06:59:45 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/17 17:35:00 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int	cmd_check(t_data **data)
 	while((*data)->cmds[++crs->l])
 	{
 		if (!ft_memcmp((*data)->cmds[crs->l][0], "echo", 5))
+		{
+			crs->flag = 0;
 			ft_echo(data, (*data)->cmds[crs->l], crs);
+		}
 		else if (!ft_memcmp((*data)->cmds[crs->l][0], "pwd", 4))
 			ft_pwd();
 		else if (!ft_memcmp((*data)->cmds[crs->l][0], "cd", 3))

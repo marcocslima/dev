@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/17 20:20:05 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/17 17:48:51 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ void	print_echo(t_data **data, t_cursors *crs, char **input, char tp[])
 
 void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 {
+	char tp[4097];
+
 	echo_preper(data, input, crs);
 	while (++crs->i < crs->len)
 	{
@@ -150,7 +152,6 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 		crs->err = handle_quotes(data, input[crs->i]);
 		crs->w = ft_strlen((*data)->tmp) + 1;
 		crs->m = -1;
-		char tp[crs->w];
 		while (++crs->m < crs->w)
 			tp[crs->m] = (*data)->tmp[crs->m];
 		tp[crs->m] = '\0';
@@ -161,6 +162,5 @@ void	ft_echo(t_data **data, char **input, t_cursors	*crs)
 	}
 	if (crs->flag == 0)
 			write (1, "\n", 1);
-	crs->flag = 0;
 	(*data)->exit_return = 0;
 }
