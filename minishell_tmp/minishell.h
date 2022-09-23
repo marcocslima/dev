@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/21 04:20:11 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/21 16:11:46 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int		ft_pwd(void);
 void	ft_echo(t_data **data, char **input, t_cursors	*crs);
 void	ft_here_doc(t_data **data, t_cursors *crs);
 void	ft_bash(t_data **data);
+
 //DELIMITERS
 void	one_substitution_2(char **cmd, int i, int x);
 char	**cmd_one_substitution(char **cmd);
