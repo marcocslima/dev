@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/21 16:54:36 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/23 00:46:19 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	**copy_env(char **envp, int add)
 	char	**copy;
 
 	len = 0;
+
 	while (envp[len])
 		len++;
 	if (!(copy = (char **)ft_calloc(sizeof(char *), (len + add + 1))))
@@ -26,7 +27,6 @@ char	**copy_env(char **envp, int add)
 	i = -1;
 	while (i++ < len - 1)
 		copy[i] = ft_strdup(envp[i]);
-	copy[i + 1] = NULL;
 	return (copy);
 }
 

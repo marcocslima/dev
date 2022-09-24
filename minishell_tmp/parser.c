@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/23 09:05:21 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/24 04:05:12 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	get_params(t_data **data, char *st_cmd, int n)
 		crs->r++;
 	}
 	(*data)->cmds[n] = (*data)->params;
-	//free(crs);
+	free(crs);
 }
 
 void	get_cmds(t_data **data, t_cursors *cursor)
@@ -234,6 +234,7 @@ void	get_slc_seq(t_data **data)
 		if ((*data)->slicers_types[crs->l] != 0)
 			crs->i++;
 	(*data)->slicers_seq = ft_calloc(crs->i, sizeof(int));
+	ft_bzero((*data)->slicers_seq, crs->i + 1);
 	while ((*data)->input[++crs->m])
 		if ((*data)->slicers_types[crs->m] != 0)
 		{
