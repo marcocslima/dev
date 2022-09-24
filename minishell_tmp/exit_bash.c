@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/23 09:01:52 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/24 10:42:44 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,13 @@ void	signal_handler_bash(int sig)
 
 void	ft_bash(t_data **data)
 {
-	char	cmd[256];// = {"/home/mcl/dev/minishell/marco/minishell_tmp/minishell", "-la", NULL};
+	char	cmd[256];
 	char	tmp[256];
 	char	*args[256];
 	char	*path;
 	int		i;
 	int		j = 0;
+	int		flag;
 
 	pid_t	pid;
 	int status;
@@ -69,7 +70,7 @@ void	ft_bash(t_data **data)
 		i = 3;
 	else if (!ft_memcmp((*data)->cmds[0][0], "/", 1))
 		i = 1;
-
+	flag = i;
 	while ((*data)->cmds[0][0][i])
 	{
 		cmd[j] = (*data)->cmds[0][0][i];
@@ -78,6 +79,17 @@ void	ft_bash(t_data **data)
 	}
 	cmd[j] = '\0';
 	path = getcwd(tmp, sizeof(tmp));
+	int len_b = ft_strlen(path);
+	if (flag == 3)
+	{
+		while (flag < 4 || len_b == 0)
+		{
+			if(path[len_b] == '/')
+				flag++;
+			len_b--;
+		}
+		path[len_b + 1] = '\0';
+	}
 	path = ft_strjoin_2(path, "/");
 	path = ft_strjoin_2(path, cmd);
 
@@ -87,18 +99,16 @@ void	ft_bash(t_data **data)
 
 	i = 0;
 	args[0] = path;
-	while(++i < (*data)->qtd_cmds) // corrigir aqui
+	while((*data)->cmds[0][++i])
 		args[i] = (*data)->cmds[0][i];
 	args[i] = NULL;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		write(1, "filho \n", 7);
+		//write(1, "filho \n", 7);
 		signal(SIGINT, signal_handler_bash);
 		if (execve(path, args, (*data)->envp)  == -1)
-//			exit(ERROR);
-			//write(1, " ERRO ", 6);
 			exec_error_msg(path);
 	}
 	else
