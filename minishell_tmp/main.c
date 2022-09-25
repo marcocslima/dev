@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/23 00:46:19 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:28:29 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 			print_error(ret_quotes);
 		clean_data(&data);
+		//clean_all(&data);
 		//exit (0); //retirar
 	}
 	return (0);

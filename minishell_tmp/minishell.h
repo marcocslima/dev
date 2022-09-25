@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/21 04:20:11 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:10:17 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,25 @@ typedef struct s_expand
 
 typedef struct s_data
 {
-	char			**envp;
-	char			**argv;
-	int				**tokens;
-	int				*len_tokens;
-	int				*slicers;
-	int				*slicers_types;
-	int				*slicers_seq;
-	int				crs;
-	int				*quotes_types;
+	char			**envp; //clean_all
+	char			**argv; //clean_all
+	int				**tokens; //clean_all
+	int				*len_tokens; //clean_data
+	int				*slicers; //clean_data
+	int				*slicers_types; //clean_data
+	int				*slicers_seq; //clean_data
+	int				crs; //clean_data
+	int				*quotes_types; //clean_data
 	int				argc;
-	char			*input;
-	char			*path;
-	char			*pathcd;
-	char			*home_path;
-	char			*tmp;
-	char			**st_cmds;
-	char			**params;
-	char			*dollar;
-	char			***cmds;
+	char			*input; //clean_data
+	char			*path; //clean_data
+	char			*pathcd; //clean_all
+	char			*home_path; //clean_all
+	char			*tmp; //clean_all
+	char			**st_cmds; //clean_all
+	char			**params; //clean_data
+	char			*dollar; //clean_all
+	char			***cmds; //clean_data
 	int				qtd_cmds;
 	int				exit_return;
 }	t_data;
@@ -150,5 +150,6 @@ int		len_input(char **p);
 void	print_error(int e);
 char	**copy_env(char **envp, int add);
 int		get_expand(t_data **data, char *param);
+void	clean_all(t_data **data);
 
 #endif

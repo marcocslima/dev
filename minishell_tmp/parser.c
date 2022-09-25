@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/24 04:05:12 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:47:30 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	str_cat_util(t_data **data, t_cursors *crs, char *prm, int n)
 	tmp = new;
 	new = prm;
 	free(tmp);
+	ft_bzero(sr, 4);
 	if (crs->c)
 	{
 		sr[0] = ' ';
@@ -233,8 +234,7 @@ void	get_slc_seq(t_data **data)
 	while ((*data)->input[++crs->l])
 		if ((*data)->slicers_types[crs->l] != 0)
 			crs->i++;
-	(*data)->slicers_seq = ft_calloc(crs->i, sizeof(int));
-	ft_bzero((*data)->slicers_seq, crs->i + 1);
+	(*data)->slicers_seq = ft_calloc(crs->i + 1, sizeof(int));
 	while ((*data)->input[++crs->m])
 		if ((*data)->slicers_types[crs->m] != 0)
 		{
@@ -242,6 +242,7 @@ void	get_slc_seq(t_data **data)
 			crs->j++;
 		}
 	(*data)->qtd_cmds = crs->j + 1;
+	(*data)->slicers_seq[crs->j] = 0;
 	free(crs);
 }
 
