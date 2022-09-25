@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/24 10:42:44 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/25 02:10:20 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	exec_error_msg(char *path)
 {
-	int	fd;
-	DIR *folder;
+	int		fd;
+	DIR		*folder;
 
 	fd = open(path, O_WRONLY);
 	if (path)
@@ -51,62 +51,49 @@ void	signal_handler_bash(int sig)
 	}
 }
 
-void	ft_bash(t_data **data)
+char	*preper_path(t_data **data, t_cursors *crs, char *path, char cmd[])
 {
-	char	cmd[256];
-	char	tmp[256];
-	char	*args[256];
-	char	*path;
-	int		i;
-	int		j = 0;
-	int		flag;
-
-	pid_t	pid;
-	int status;
-
 	if (!ft_memcmp((*data)->cmds[0][0], "./", 2))
-		i = 2;
+		crs->i = 2;
 	else if (!ft_memcmp((*data)->cmds[0][0], "../", 3))
-		i = 3;
-	else if (!ft_memcmp((*data)->cmds[0][0], "/", 1))
-		i = 1;
-	flag = i;
-	while ((*data)->cmds[0][0][i])
+		crs->i = 3;
+	crs->flag = crs->i;
+	while ((*data)->cmds[0][0][crs->i])
 	{
-		cmd[j] = (*data)->cmds[0][0][i];
-		i++;
-		j++;
+		cmd[crs->j] = (*data)->cmds[0][0][crs->i];
+		crs->i++;
+		crs->j++;
 	}
-	cmd[j] = '\0';
-	path = getcwd(tmp, sizeof(tmp));
-	int len_b = ft_strlen(path);
-	if (flag == 3)
+	cmd[crs->j] = '\0';
+	return (path);
+}
+
+char	*ret_path(t_cursors *crs, char *path, char cmd[])
+{
+	crs->len = ft_strlen(path);
+	if (crs->flag == 3)
 	{
-		while (flag < 4 || len_b == 0)
+		while (crs->flag < 4 || crs->len == 0)
 		{
-			if(path[len_b] == '/')
-				flag++;
-			len_b--;
+			if(path[crs->len] == '/')
+				crs->flag++;
+			crs->len--;
 		}
-		path[len_b + 1] = '\0';
+		path[crs->len + 1] = '\0';
 	}
 	path = ft_strjoin_2(path, "/");
 	path = ft_strjoin_2(path, cmd);
+	return (path);
+}
 
-	i = -1;
-	while(++i < 257)
-		args[i] = NULL;
-
-	i = 0;
-	args[0] = path;
-	while((*data)->cmds[0][++i])
-		args[i] = (*data)->cmds[0][i];
-	args[i] = NULL;
+void	exec_bash(t_data **data, char *path, char *args[])
+{
+	int			status;
+	pid_t		pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		//write(1, "filho \n", 7);
 		signal(SIGINT, signal_handler_bash);
 		if (execve(path, args, (*data)->envp)  == -1)
 			exec_error_msg(path);
@@ -116,11 +103,28 @@ void	ft_bash(t_data **data)
 		waitpid(pid, &status, 0);
 		return ;
 	}
+}
 
+void	ft_bash(t_data **data)
+{
+	char		cmd[256];
+	char		tmp[256];
+	char		*args[256];
+	char		*path;
+	t_cursors	*crs;
 
-//	ft_cd_home(data, home_path, i, input);
-//	if ((*data)->exit_return != 2)
-//		return ;
+	init_crs(&crs);
+	path = getcwd(tmp, sizeof(tmp));
+	path = preper_path(data, crs, path, cmd);
+	path = ret_path(crs, path, cmd);
+	while(++crs->l < 257)
+		args[crs->l] = NULL;
+	args[0] = path;
+	while((*data)->cmds[0][++crs->w])
+		args[crs->w] = (*data)->cmds[0][crs->w];
+	args[crs->w] = NULL;
+	exec_bash(data, path, args);
+	free(crs);
 }
 
 int	error_msg(char *message)
