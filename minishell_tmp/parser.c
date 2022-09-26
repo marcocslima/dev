@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/26 03:50:04 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 16:44:10 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	rotate(t_data **data)
 	tmp = (*data)->slicers_seq;
 	(*data)->slicers_seq = new;
 	free(tmp);
+	free(crs);
 }
 
 void	str_cat(t_data **data, char *prm, int n)
