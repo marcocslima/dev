@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/25 19:47:30 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 03:50:04 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,6 +270,7 @@ int	parser(t_data	**data)
 		if (get_slicers(data, cursor, slicers[s], t) == 1)
 			return (1);
 	}
+	free(cursor);
 	get_slc_seq(data);
 	init_crs(&cursor);
 	get_cmds(data, cursor);

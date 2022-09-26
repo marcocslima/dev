@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 16:52:45 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/25 20:22:23 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 03:38:56 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void destroy_pointers_char(char **p)
 {
 	int i = -1;
 	while(p[++i])
-		if(p[i])
-			free(p[i]);
+		//if(p[i])
+		free(p[i]);
 	free(p);
 }
 
@@ -81,7 +81,7 @@ void clean_data(t_data **data)
 	free((*data)->quotes_types);
 	free((*data)->input);
 	free((*data)->path);
-	destroy_pointers_char((*data)->params);
+	//destroy_pointers_char((*data)->params); ERRO VALGRIND
 	(*data)->crs = 0;
 	free(crs);
 }

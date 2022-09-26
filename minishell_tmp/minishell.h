@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/25 20:10:17 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 04:03:06 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ typedef struct s_cursors
 	int				status;//atila
 	pid_t			pid;//atila
 	int				err;
-	char			*pos;
+	//char			*pos;
 	char			*ret;
-	char			*pointer;
+	//char			*pointer;
 }	t_cursors;
 
 int		no_error_msg(char *message);
