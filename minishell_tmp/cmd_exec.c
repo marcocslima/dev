@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/23 00:43:41 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 16:20:42 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void	builtin_execute(t_data **data, int i, int flag, t_cursors *crs)
 		ft_unset(data, (*data)->cmds[i][1]);
 	else if (!ft_memcmp((*data)->cmds[i][0], "env", 4))
 		ft_env(data, (*data)->cmds[i][1]);
-//	else if (!ft_memcmp((*data)->cmds[i][0], "exit", 5))
-//		ft_exit(data, (*data)->cmds[i][1]);
+	else if (!ft_memcmp((*data)->cmds[i][0], "exit", 5))
+		ft_exit(data);
 	else if (flag == 0)
 		execute(cmd1, data);
 	else

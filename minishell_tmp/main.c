@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/26 03:56:27 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 16:30:10 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	init_struct(t_data **data, char **argv, char **envp)
 	(*data) = (t_data *)malloc(sizeof(t_data));
 	(*data)->envp = copy_env(envp, 3);
 	(*data)->argv = argv;
-//	(*data)->params = malloc(sizeof(char)); ERRO VALGRIND - ACHO QUE NÃO ESTÁ SENDO USADO
 	(*data)->cmds = NULL;
 	(*data)->dollar = NULL;
 	(*data)->crs = 0;
@@ -122,7 +121,6 @@ int	main(int argc, char **argv, char **envp)
 		else
 			print_error(ret_quotes);
 		clean_data(&data);
-		//clean_all(&data);
 		//exit (0); //retirar
 	}
 	return (0);

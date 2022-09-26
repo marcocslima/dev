@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/26 04:03:06 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 16:29:46 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,5 +151,6 @@ void	print_error(int e);
 char	**copy_env(char **envp, int add);
 int		get_expand(t_data **data, char *param);
 void	clean_all(t_data **data);
+void	ft_exit(t_data **data);
 
 #endif
