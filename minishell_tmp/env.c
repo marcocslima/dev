@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 00:57:01 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/17 01:15:12 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/09/26 22:15:27 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_env(t_data **data, char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (input && input[0] != '\0')

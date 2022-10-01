@@ -1,46 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_bash.c                                        :+:      :+:    :+:   */
+/*   bash.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/25 02:10:20 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 21:18:48 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	exec_error_msg(char *path)
-{
-	int		fd;
-	DIR		*folder;
-
-	fd = open(path, O_WRONLY);
-	if (path)
-		folder = opendir(path);
-	ft_putstrs("minishell: ", path, NULL ,STDERR);
-	//if (ft_strchr(path, '/') == NULL)
-	if (access(path, F_OK) != 0)
-	{
-		ft_putstr_fd(": command not found", STDERR);
-		exit (127);
-	}
-	else if (fd == -1 && folder == NULL)
-	{
-		ft_putstr_fd ("No such file or directory", STDERR);
-		exit (127);
-	}
-	else if (fd == -1 && folder != NULL)
-		ft_putstr_fd (": is a directory", STDERR);
-	else if (fd != -1 && folder == NULL)
-		ft_putstr_fd (": Permission denied", STDERR);
-	if (folder)
-		closedir(folder);
-	close(fd);
-	exit (126);
-}
 
 void	signal_handler_bash(int sig)
 {
@@ -126,23 +96,3 @@ void	ft_bash(t_data **data)
 	exec_bash(data, path, args);
 	free(crs);
 }
-
-int	error_msg(char *message)
-{
-	ft_putstr_fd(message, 2);
-	ft_putstr_fd("\n", 2);
-	exit(ERROR);
-}
-
-int	no_error_msg(char *message)
-{
-	ft_putstr_fd(message, 1);
-	ft_putstr_fd("\n", 1);
-//	if (stack->array_a[0])
-	{
-//		free(stack->array_a);
-//		free(stack->array_b);
-	}
-	exit(0);
-}
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/26 16:29:46 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:59:42 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,6 @@
 # include <readline/history.h>
 # include <stdio.h>
 # define ERROR 1
-# define EMPTY 0
-# define CMD 1
-# define ARG 2
-# define TRUNC 3
-# define APPEND 4
-# define INPUT 5
-# define PIPE 6
-# define COLON 7
 # define IN 0
 # define OUT 1
 # define STDIN 0
@@ -47,25 +39,25 @@ typedef struct s_expand
 
 typedef struct s_data
 {
-	char			**envp; //clean_all
-	char			**argv; //clean_all
-	int				**tokens; //clean_all
-	int				*len_tokens; //clean_data
-	int				*slicers; //clean_data
-	int				*slicers_types; //clean_data
-	int				*slicers_seq; //clean_data
-	int				crs; //clean_data
-	int				*quotes_types; //clean_data
+	char			**envp; /*clean_all*/
+	char			**argv; /*clean_all*/
+	int				**tokens; /*clean_all*/
+	int				*len_tokens; /*clean_data*/
+	int				*slicers; /*clean_data*/
+	int				*slicers_types; /*clean_data*/
+	int				*slicers_seq; /*clean_data*/
+	int				crs; /*clean_data*/
+	int				*quotes_types; /*clean_data*/
 	int				argc;
-	char			*input; //clean_data
-	char			*path; //clean_data
-	char			*pathcd; //clean_all
-	char			*home_path; //clean_all
-	char			*tmp; //clean_all
-	char			**st_cmds; //clean_all
-	char			**params; //clean_data
-	char			*dollar; //clean_all
-	char			***cmds; //clean_data
+	char			*input; /*clean_data*/
+	char			*path; /*clean_data*/
+	char			*pathcd;  /*clean_all*/
+	char			*home_path; /*clean_all*/
+	char			*tmp; /*clean_all*/
+	char			**st_cmds; /*clean_all*/
+	char			**params;  /*clean_data*/
+	char			*dollar;  /*clean_all*/
+	char			***cmds;  /*clean_data*/
 	int				qtd_cmds;
 	int				exit_return;
 }	t_data;
@@ -90,19 +82,19 @@ typedef struct s_cursors
 	char			c;
 	char			q;
 	char			h;
-	char			*str;//atila
-	char			*temp;//atila
-	char			*str2;//atila
+	char			*str; /*atila*/
+	char			*temp;/*atila*/
+	char			*str2;/*atila*/
 	int				counter;
 	int				flag;
 	int				flagecho;
 	int				len;
-	int				output;//atila
-	int				input;//atila
-	int				saved_stdout;//atila
-	int				saved_stdin;//atila
-	int				status;//atila
-	pid_t			pid;//atila
+	int				output;/*atila*/
+	int				input;/*atila*/
+	int				saved_stdout;/*atila*/
+	int				saved_stdin;/*atila*/
+	int				status;/*atila*/
+	pid_t			pid;/*atila*/
 	int				err;
 	//char			*pos;
 	char			*ret;
@@ -117,11 +109,13 @@ int		parser(t_data **data);
 void	reset_conters(t_cursors	**cursor);
 void	init_crs(t_cursors	**cursor);
 
-//adicionado atila
-//MAIN FUNCTIONS
+/*adicionado atila*/
+/*MAIN FUNCTIONS*/
 void	cmd_check(t_data **data);
+void	cmd_check_2(t_data **data, t_cursors	*crs);
 void	builtin_execute(t_data **data, int i, int flag, t_cursors *crs);
-//BUILTINS
+void	builtin_execute_2(t_data **data, int i, int flag, char *cmd1);
+/*BUILTINS*/
 int		ft_export(t_data **data, char *input);
 int		ft_unset(t_data **data, char *input);
 int		ft_cd(t_data **data, char *input, int i);
@@ -131,20 +125,23 @@ int		ft_pwd(void);
 void	ft_echo(t_data **data, char **input, t_cursors	*crs);
 void	ft_here_doc(t_data **data, t_cursors *crs);
 void	ft_bash(t_data **data);
-//DELIMITERS
+/*DELIMITERS*/
 void	one_substitution_2(char **cmd, int i, int x);
 char	**cmd_one_substitution(char **cmd);
 void	ft_pipe(t_data **data, int i, int flag, t_cursors *crs);
 void	ft_output(t_data **data, t_cursors *crs);
+void	ft_output_2(t_data **data, t_cursors *crs);
 void	ft_input(t_data **data, t_cursors *crs);
 void	execute(char *argv, t_data **data);
 void	execute_pipe(char *argv, t_data **data);
+void	ft_in_output(t_data **data, t_cursors *crs);
+void	ft_here_doc_2(t_data **data, t_cursors *crs, int fd[2]);
 
-//utils
+/*utils*/
 int		is_token(char s);
 int		exec_error_msg(char *path);
 
-//adicionado por Marco
+/*adicionado por Marco*/
 void	clean_data(t_data **data);
 int		len_input(char **p);
 void	print_error(int e);
