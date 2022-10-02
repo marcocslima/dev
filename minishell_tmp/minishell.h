@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/26 23:59:42 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/01 07:01:20 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ typedef struct s_cursors
 int		no_error_msg(char *message);
 int		error_msg(char *message);
 void	signal_handler(int	input);
+void	child_signal_handler(int input);
 char	*ft_strjoin_2(char *s1, char *s2);
 int		parser(t_data **data);
 void	reset_conters(t_cursors	**cursor);

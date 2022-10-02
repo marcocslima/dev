@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/28 14:57:32 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/09/30 08:24:53 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	*here_doc_str(t_data **data, t_cursors *crs)
 	char	*temp;
 
 	temp = NULL;
+	crs->str = NULL;
 	crs->len = ft_strlen((*data)->cmds[crs->i2 + 1][1]);
 	while (!crs->str || ft_strncmp(temp, (*data)->cmds[crs->i2 + 1][1],
 		crs->len))
@@ -33,7 +34,8 @@ char	*here_doc_str(t_data **data, t_cursors *crs)
 void	ft_here_doc(t_data **data, t_cursors *crs)
 {
 	int		fd[2];
-
+	
+	dup2(crs->saved_stdin, STDIN);
 	if (pipe(fd) == -1)
 	{
 		(*data)->exit_return = 1;
