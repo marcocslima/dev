@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/02 06:06:23 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:31:53 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ void	builtin_execute(t_data **data, int i, int flag, t_cursors *crs)
 	{
 		crs->flagecho = 0;
 		ft_echo(data, (*data)->cmds[i], crs);
-		if ((*data)->cmds[i][2] && ft_memcmp((*data)->cmds[i][1], "-n", 2) &&
-			(*data)->cmds[i][2][0] != '\0' && ft_memcmp((*data)->cmds[i]
-				[2], ";", 2))
-			exit(0);
+		//if ((*data)->cmds[i][2] && ft_memcmp((*data)->cmds[i][1], "-n", 2) &&
+		//	(*data)->cmds[i][2][0] != '\0' && ft_memcmp((*data)->cmds[i]
+		//		[2], ";", 2))
+		//	crs->flagecho = 1;
 	}
 	else
 		builtin_execute_2(data, i, flag, cmd1);

@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/01 18:11:23 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:46:27 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	print_echo(t_data **data, t_cursors *crs, char **input, char tp[])
 		if (crs->s < crs->m)
 			ft_putchar_fd(tp[crs->s], 1);
 		crs->s++;
-		if (tp[crs->s] == '\0')
+		if (tp[crs->s] == '\0' && crs->len - crs->i > 1)
 			ft_putchar_fd(' ', 1);
 	}
 }
