@@ -32,18 +32,18 @@ int	exec_error_msg(char *path)
 	ft_putstrs("minishell: ", path, NULL, STDERR);
 	if (access(path, F_OK) != 0)
 	{
-		ft_putstr_fd(": command not found", STDERR);
+		ft_putstr_fd(": command not found\n", STDERR);
 		return (127);
 	}
 	else if (fd == -1 && folder == NULL)
 	{
-		ft_putstr_fd ("No such file or directory", STDERR);
+		ft_putstr_fd ("No such file or directory\n", STDERR);
 		return (127);
 	}
 	else if (fd == -1 && folder != NULL)
-		ft_putstr_fd (": is a directory", STDERR);
+		ft_putstr_fd (": is a directory\n", STDERR);
 	else if (fd != -1 && folder == NULL)
-		ft_putstr_fd (": Permission denied", STDERR);
+		ft_putstr_fd (": Permission denied\n", STDERR);
 	if (folder)
 		closedir(folder);
 	close(fd);
