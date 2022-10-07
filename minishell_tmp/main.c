@@ -84,7 +84,41 @@ int	verify_quotes(t_data **data)
 	free(c);
 	return (0);
 }
+/*
+void input_preper(t_data **data)
+{
+	t_cursors *crs;
+	char tmp[4007];
 
+	init_crs(&crs);
+	while ((*data)->input[crs->i])
+	{
+		if((*data)->input[crs->i] != '>' && (*data)->input[crs->i] != '<')
+			tmp[crs->j] = (*data)->input[crs->i];
+		else
+			if ((*data)->input[crs->i - 1] != '\\')
+			{
+				tmp[crs->j] = ' ';
+				tmp[crs->j + 1] = (*data)->input[crs->i]; 
+				if((*data)->input[crs->i + 1] == (*data)->input[crs->i])
+				{
+					tmp[crs->j + 2] = (*data)->input[crs->i + 1];
+					tmp[crs->j + 3] = ' ';
+					crs->j = crs->j + 3;
+				}
+				else
+				{
+					tmp[crs->j + 2] = ' ';
+					crs->j = crs->j + 2;
+				}
+			}
+		crs->i++;
+		crs->j++;
+	}
+	(*data)->input = tmp;
+	free(crs);
+}
+*/
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -100,6 +134,7 @@ int	main(int argc, char **argv, char **envp)
 		open_prompt(data->envp);
 		signal(SIGINT, signal_handler);
 		get_input(&data);
+		//input_preper(&data);
 		data->slicers = ft_calloc(ft_strlen(data->input),sizeof(int));
 		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int) + 1);
 		ret_parser = parser(&data);
