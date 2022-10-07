@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/09 14:43:17 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/10/03 03:27:10 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/09/26 22:18:52 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ int	exec_error_msg(char *path)
 	ft_putstrs("minishell: ", path, NULL, STDERR);
 	if (access(path, F_OK) != 0)
 	{
-		ft_putstr_fd(": command not found\n", STDERR);
+		ft_putstr_fd(": command not found", STDERR);
 		return (127);
 	}
 	else if (fd == -1 && folder == NULL)
 	{
-		ft_putstr_fd ("No such file or directory\n", STDERR);
+		ft_putstr_fd ("No such file or directory", STDERR);
 		return (127);
 	}
 	else if (fd == -1 && folder != NULL)
-		ft_putstr_fd (": is a directory\n", STDERR);
+		ft_putstr_fd (": is a directory", STDERR);
 	else if (fd != -1 && folder == NULL)
-		ft_putstr_fd (": Permission denied\n", STDERR);
+		ft_putstr_fd (": Permission denied", STDERR);
 	if (folder)
 		closedir(folder);
 	close(fd);

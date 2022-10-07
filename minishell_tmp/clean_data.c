@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 16:52:45 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/09/26 21:22:34 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/06 00:23:02 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ int count_cmds(t_data **data)
 	t_cursors *crs;
 
 	init_crs(&crs);
-	crs->len = ft_strlen((*data)->input);
+	if ((*data)->input)
+		crs->len = ft_strlen((*data)->input);
 	while (crs->j < crs->len)
 	{
 		if ((*data)->slicers[crs->j] != 0)
 			crs->counter++;
 		crs->j++;
 	}
-	free(crs);
+//	free(crs);
 	return (crs->counter);
 }
 
@@ -35,6 +36,17 @@ void destroy_pointers_int(int **p)
 		while(p[++i])
 			free(p[i]);
 	free(p);
+}
+
+void destroy_cursors(t_cursors *crs)
+{
+/*	int i = -1;
+
+	if(crs->cursor[i + 1])
+		while(crs[++i])
+			free(crs[i]);
+	free(crs);*/
+	free(crs);
 }
 
 void destroy_pointers_char(char **p)
@@ -65,7 +77,7 @@ void destroy_mat_char(t_data **data, char ***p, t_cursors *crs)
 		}
 		crs->i++;
 	}
-	//free(p);
+//	free(p);
 }
 
 void clean_data(t_data **data)
@@ -80,27 +92,28 @@ void clean_data(t_data **data)
 	free((*data)->slicers);
 	free((*data)->slicers_types);
 	free((*data)->slicers_seq);
-	free((*data)->quotes_types);
+//		free((*data)->quotes_types);
 	free((*data)->input);
-	free((*data)->path);
+//	free((*data)->path);
 	//destroy_pointers_char((*data)->params); ERRO VALGRIND
 	(*data)->crs = 0;
 	free(crs);
 }
 
-void clean_all(t_data **data)
+void clean_all(t_data **data, t_cursors *crs)
 {
-	t_cursors *crs;
+//	t_cursors *crs;
 
-	init_crs(&crs);
+//	init_crs(&crs);
 	clean_data(data);
 	destroy_pointers_char((*data)->envp);
 	//destroy_pointers_char((*data)->argv); NÃO É MALLOCADO
 	(*data)->argv = '\0';
-	//destroy_pointers_int((*data)->tokens); JÁ TEM FREE ANTERIOR
-	free((*data)->pathcd);
-	free((*data)->home_path);
-	free((*data)->tmp);
+	//destroy_pointers_int((*data)->tokens); //JÁ TEM FREE ANTERIOR
+	destroy_cursors(crs);
+//	free((*data)->pathcd);
+//	free((*data)->home_path);
+//	free((*data)->tmp);
 	destroy_pointers_char((*data)->st_cmds);
 	free((*data)->dollar);
 	free(crs);

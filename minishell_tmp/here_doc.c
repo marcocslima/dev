@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/30 08:24:53 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/05 17:00:53 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*here_doc_str(t_data **data, t_cursors *crs)
 void	ft_here_doc(t_data **data, t_cursors *crs)
 {
 	int		fd[2];
-	
+
 	dup2(crs->saved_stdin, STDIN);
 	if (pipe(fd) == -1)
 	{

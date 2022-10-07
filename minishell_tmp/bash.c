@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/26 21:18:48 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:26:33 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*ret_path(t_cursors *crs, char *path, char cmd[])
 	{
 		while (crs->flag < 4 || crs->len == 0)
 		{
-			if(path[crs->len] == '/')
+			if (path[crs->len] == '/')
 				crs->flag++;
 			crs->len--;
 		}

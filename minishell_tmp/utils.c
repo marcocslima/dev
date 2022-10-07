@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 11:59:29 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/18 02:15:19 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/06 00:13:38 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	reset_conters(t_cursors	**cursor)
 
 void	init_crs(t_cursors	**cursor)
 {
-	(*cursor) = (t_cursors *)malloc(sizeof(t_cursors));
+	(*cursor) = (t_cursors *)ft_calloc(sizeof(t_cursors), 1);
 	(*cursor)->counter	= 0;
 	(*cursor)->flag		= 0;
 	(*cursor)->i 		= 0;

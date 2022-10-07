@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/01 07:01:20 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/05 23:23:04 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,9 @@ void	init_crs(t_cursors	**cursor);
 /*MAIN FUNCTIONS*/
 void	cmd_check(t_data **data);
 void	cmd_check_2(t_data **data, t_cursors	*crs);
+void	cmd_check_2_1(t_data **data, t_cursors *crs);
 void	builtin_execute(t_data **data, int i, int flag, t_cursors *crs);
-void	builtin_execute_2(t_data **data, int i, int flag, char *cmd1);
+void	builtin_execute_2(t_data **data, int i, int flag, char *cmd1, t_cursors *crs);
 /*BUILTINS*/
 int		ft_export(t_data **data, char *input);
 int		ft_unset(t_data **data, char *input);
@@ -148,7 +149,7 @@ int		len_input(char **p);
 void	print_error(int e);
 char	**copy_env(char **envp, int add);
 int		get_expand(t_data **data, char *param);
-void	clean_all(t_data **data);
-void	ft_exit(t_data **data);
+void clean_all(t_data **data, t_cursors *crs); // alterado
+void	ft_exit(t_data **data, t_cursors *crs);//alterado
 
 #endif

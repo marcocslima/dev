@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/03 04:05:18 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/10/05 22:50:03 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,14 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		error_msg("Please type only one argument");
 	init_struct(&data, argv, envp);
-	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	while (1)
 	{
 		open_prompt(data->envp);
 		signal(SIGINT, signal_handler);
 		get_input(&data);
 		data->slicers = ft_calloc(ft_strlen(data->input),sizeof(int));
-		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int));
+		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int) + 1);
 		ret_parser = parser(&data);
 		ret_quotes = verify_quotes(&data);
 		if (ret_parser + ret_quotes == 0)

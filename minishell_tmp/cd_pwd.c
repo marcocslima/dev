@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/09/16 23:35:52 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:24:06 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	ft_cd(t_data **data, char *input, int i)
 		chdir(input);
 		(*data)->exit_return = 0;
 	}
-	free(input);
+//	free(input);
 	return ((*data)->exit_return);
 }
 

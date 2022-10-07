@@ -6,7 +6,7 @@
 #    By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/02 21:00:15 by mcesar-d          #+#    #+#              #
-#    Updated: 2022/09/12 21:47:48 by acosta-a         ###   ########.fr        #
+#    Updated: 2022/10/03 22:15:25 by acosta-a         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ BONUS			=	ft_lstnew.c ft_lstadd_front.c ft_lstlast.c ft_lstadd_back.c ft_lstsize
 					ft_lstdelone.c ft_lstiter.c ft_lstclear.c ft_lstmap.c
 BONUS_O			=	$(BONUS:.c=.o)
 CC				=	gcc
-CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS			=	-g3 -Wall -Wextra -Werror
 NAME			=	libft.a
 
 all:		$(NAME)
