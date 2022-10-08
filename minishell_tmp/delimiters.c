@@ -166,17 +166,20 @@ void	ft_pipe(t_data **data, int i, int flag, t_cursors *crs)
 	int		status;
 
 	signal(SIGINT, child_signal_handler);
-	pipe (pipefd);
-	pid = fork();
-	if (pid == 0)
+	if (ft_memcmp((*data)->cmds[i][0], "echo", 5))
 	{
-		close (pipefd[IN]);
-		dup2 (pipefd[OUT], STDOUT);
-		builtin_execute(data, i, flag, crs);
+		pipe (pipefd);
+		pid = fork();
+		if (pid == 0)
+		{
+			close (pipefd[IN]);
+			dup2 (pipefd[OUT], STDOUT);
+			builtin_execute(data, i, flag, crs);
+		}
+		waitpid(pid, &status, 0);
+		close(pipefd[OUT]);
+		dup2(pipefd[IN], STDIN);
 	}
-	waitpid(pid, &status, 0);
-	close(pipefd[OUT]);
-	dup2(pipefd[IN], STDIN);
 }
 void	ft_output(t_data **data, t_cursors *crs)
 {
