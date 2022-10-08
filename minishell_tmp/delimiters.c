@@ -119,7 +119,10 @@ void	execute(char *argv, t_data **data)
 {
 	char	**cmd;
 	char	*path;
+	pid_t	pid;
+	int		status;
 
+	signal(SIGINT, child_signal_handler);
 	cmd_space_substitution(argv);
 	cmd = ft_split(argv, ' ');
 	cmd_one_substitution (cmd);
@@ -128,9 +131,14 @@ void	execute(char *argv, t_data **data)
 		free(cmd[0]);
 		free(cmd);
 	}
-	path = pathexec(cmd[0], (*data)->envp);
-	if (execve(path, cmd, (*data)->envp)  == -1)
-		exit(exec_error_msg(argv));
+	pid = fork();
+	if (pid == 0)
+	{
+		path = pathexec(cmd[0], (*data)->envp);
+		if (execve(path, cmd, (*data)->envp)  == -1)
+			exit(exec_error_msg(argv));
+	}
+	waitpid(pid, &status, 0);
 }
 
 void	execute_pipe(char *argv, t_data **data)
@@ -144,17 +152,17 @@ void	execute_pipe(char *argv, t_data **data)
 	pid = fork();
 	if (pid == 0)
 	{
-	cmd_space_substitution(argv);
-	cmd = ft_split(argv, ' ');
-	cmd_one_substitution (cmd);
-	if (cmd[0] == NULL)
-	{
-		free(cmd[0]);
-		free(cmd);
-	}
-	path = pathexec(cmd[0], (*data)->envp);
-	if (execve(path, cmd, (*data)->envp)  == -1)
-		exit(exec_error_msg(argv));
+		cmd_space_substitution(argv);
+		cmd = ft_split(argv, ' ');
+		cmd_one_substitution (cmd);
+		if (cmd[0] == NULL)
+		{
+			free(cmd[0]);
+			free(cmd);
+		}
+		path = pathexec(cmd[0], (*data)->envp);
+		if (execve(path, cmd, (*data)->envp)  == -1)
+			exit(exec_error_msg(argv));
 	}
 	waitpid(pid, &status, 0);
 }
@@ -220,7 +228,7 @@ void	ft_output_2(t_data **data, t_cursors *crs)
 
 void	ft_input(t_data **data, t_cursors *crs)
 {
-	pid_t	pid;
+	//pid_t	pid;
 
 	if (!ft_strncmp((*data)->cmds[crs->i2][crs->j2], "<", 2) && !ft_strncmp
 			((*data)->cmds[crs->i2 + 1][0], "<", 1))
@@ -230,9 +238,9 @@ void	ft_input(t_data **data, t_cursors *crs)
 		ft_here_doc(data, crs);
 		return ;
 	}
-	pid = fork();
-	if (pid == 0)
-	{
+	//pid = fork();
+	//if (pid == 0)
+	//{
 		if (((*data)->cmds[crs->i2][2] && !ft_strncmp((*data)->cmds[crs->i2][2], "<", 2) && ft_strncmp((*data)->cmds[crs->i2 + 1][0], "<", 2)) || (!(*data)->cmds[crs->i2][2] && (*data)->cmds[crs->i2][1] && !ft_strncmp((*data)->cmds[crs->i2][1], "<", 2) && ft_strncmp((*data)->cmds[crs->i2 + 1][0], "<", 2)))
 			crs->input = open((*data)->cmds[crs->i2 + 1][0], O_RDONLY, S_IRWXU);
 		if (((*data)->cmds[crs->i2 + 2] && (*data)->cmds[crs->i2 + 2][0] && !ft_strncmp((*data)->cmds[crs->i2 + 2][0], ">", 2)) || ((*data)->cmds[crs->i2 + 1] && (*data)->cmds[crs->i2 + 1][1] && !ft_strncmp((*data)->cmds[crs->i2 + 1][1], ">", 2))){
@@ -254,8 +262,8 @@ void	ft_input(t_data **data, t_cursors *crs)
 			close(crs->saved_stdin);
 			close(crs->input);
 		}
-	waitpid(pid, &crs->status, 0);
-	}
+	//waitpid(pid, &crs->status, 0); // WAIT DENTRO DO PID ??????
+	//}
 	if ((*data)->cmds[crs->i2 + 1][1] && (*data)->cmds[crs->i2 + 1][1][0] == '>')
 	{
 		crs->i2 += 3;
