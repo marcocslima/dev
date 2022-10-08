@@ -133,10 +133,10 @@ void	builtin_execute(t_data **data, int i, int flag, t_cursors *crs)
 	{
 		crs->flagecho = 0;
 		ft_echo(data, (*data)->cmds[i], crs);
-		if ((*data)->cmds[i][2] && ft_memcmp((*data)->cmds[i][1], "-n", 2) &&
-			(*data)->cmds[i][2][0] != '\0' && ft_memcmp((*data)->cmds[i]
-				[2], ";", 2))// adicionado por atila mas tem que estar
-		exit(0);
+		//if ((*data)->cmds[i][2] && ft_memcmp((*data)->cmds[i][1], "-n", 2) &&
+		//	(*data)->cmds[i][2][0] != '\0' && ft_memcmp((*data)->cmds[i]
+		//		[2], ";", 2))// adicionado por atila mas tem que estar
+		//exit(0);
 	}
 	else
 		builtin_execute_2(data, i, flag, cmd1, crs);

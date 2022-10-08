@@ -84,41 +84,56 @@ int	verify_quotes(t_data **data)
 	free(c);
 	return (0);
 }
-/*
+
+
 void input_preper(t_data **data)
 {
 	t_cursors *crs;
-	char tmp[4007];
+	char slicers[4] = ";|<>";
+	char slicer;
+	char *clean_pointer;
 
 	init_crs(&crs);
-	while ((*data)->input[crs->i])
+	clean_pointer = (*data)->input; 
+	(*data)->tmp = (char *)ft_calloc(sizeof(char *), 4097);
+	crs->len = ft_strlen(slicers);
+	while((*data)->input[crs->i])
 	{
-		if((*data)->input[crs->i] != '>' && (*data)->input[crs->i] != '<')
-			tmp[crs->j] = (*data)->input[crs->i];
-		else
-			if ((*data)->input[crs->i - 1] != '\\')
+		crs->l = -1;
+		slicer = '\0';
+		while(++crs->l < crs->len)
+			if ((*data)->input[crs->i] == slicers[crs->l])
 			{
-				tmp[crs->j] = ' ';
-				tmp[crs->j + 1] = (*data)->input[crs->i]; 
-				if((*data)->input[crs->i + 1] == (*data)->input[crs->i])
-				{
-					tmp[crs->j + 2] = (*data)->input[crs->i + 1];
-					tmp[crs->j + 3] = ' ';
-					crs->j = crs->j + 3;
-				}
-				else
-				{
-					tmp[crs->j + 2] = ' ';
-					crs->j = crs->j + 2;
-				}
+				slicer = slicers[crs->l];
+				break ;
 			}
+		if ((*data)->input[crs->i] == slicer && (*data)->input[crs->i - 1] != '\\')
+		{
+
+			(*data)->tmp[crs->j] = ' ';
+			(*data)->tmp[crs->j + 1] = (*data)->input[crs->i];
+			crs->j = crs->j + 2;
+			if ((*data)->input[crs->i + 1] == (*data)->input[crs->i]
+				&& (((*data)->input[crs->i] == '>') | ((*data)->input[crs->i] == '<')))
+			{
+				(*data)->tmp[crs->j] = (*data)->input[crs->i + 1];
+				crs->i++;
+				crs->j++;
+			}
+			(*data)->tmp[crs->j] = ' ';
+		}
+		else
+			(*data)->tmp[crs->j] = (*data)->input[crs->i];
 		crs->i++;
 		crs->j++;
 	}
-	(*data)->input = tmp;
+
+	(*data)->input = (*data)->tmp;
+	free(clean_pointer);
 	free(crs);
 }
-*/
+
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -134,7 +149,7 @@ int	main(int argc, char **argv, char **envp)
 		open_prompt(data->envp);
 		signal(SIGINT, signal_handler);
 		get_input(&data);
-		//input_preper(&data);
+		input_preper(&data);
 		data->slicers = ft_calloc(ft_strlen(data->input),sizeof(int));
 		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int) + 1);
 		ret_parser = parser(&data);
