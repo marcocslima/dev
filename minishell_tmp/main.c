@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/05 22:50:03 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/09 18:27:01 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	verify_quotes(t_data **data)
 	return (0);
 }
 
-
 void input_preper(t_data **data)
 {
 	t_cursors *crs;
@@ -133,7 +132,6 @@ void input_preper(t_data **data)
 	free(crs);
 }
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -149,7 +147,7 @@ int	main(int argc, char **argv, char **envp)
 		open_prompt(data->envp);
 		signal(SIGINT, signal_handler);
 		get_input(&data);
-		input_preper(&data);
+		input_preper(&data);	
 		data->slicers = ft_calloc(ft_strlen(data->input),sizeof(int));
 		data->slicers_types = ft_calloc(ft_strlen(data->input),sizeof(int) + 1);
 		ret_parser = parser(&data);

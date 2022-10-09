@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/06 08:50:46 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/09 19:05:16 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ int	len_cmds(t_data **data, t_cursors *crs, int c)
 
 void	cmd_check(t_data **data)
 {
-	char		*cmd2;
+	//char		*cmd2;
 	t_cursors	*crs;
 
 	init_crs(&crs);
 	cmd_check_2(data, crs);
+	/*
+	//--------------------------------------------------------------------
 	if (crs->i2 < crs->k2 && crs->i2 > 0 && (*data)->cmds[crs->i2][0]
 		&& ft_strncmp((*data)->cmds[crs->i2][0], ">", 1) && (*data)->cmds
 			[crs->i2 - 1][2] && ft_strncmp ((*data)->cmds[crs->i2 - 1][2], ">",
@@ -40,6 +42,8 @@ void	cmd_check(t_data **data)
 		ft_strncmp((*data)->cmds[crs->i2][0], ">", 1) && (*data)->cmds[crs->i2
 			- 1][2] && ft_strncmp((*data)->cmds[crs->i2 - 1][2], ">", 1))
 		cmd2 = ft_strjoin_2(cmd2, (*data)->cmds[crs->i2][1]);
+	//--------------------------------------------------------------------
+	*/
 	if (crs->i2 < crs->k2 && ft_memcmp((*data)->cmds[crs->i2][0], ">",
 		2) && ft_memcmp((*data)->cmds[crs->i2][0], ">", 2))
 	{

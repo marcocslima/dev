@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 13:36:21 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/10/06 00:23:34 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/07 14:33:04 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,7 @@ void	str_cat_util(t_data **data, t_cursors *crs, char *prm, int n)
 	char	sr[4];
 	int		len;
 
-	if(prm)
-		len = ft_strlen(prm);
-//	ft_bzero(sr, 4);
-//	new = ft_calloc(sizeof(char) , (len + 4 + 1));
-//	new = prm;
-//	free(tmp);
+	len = ft_strlen(prm);
 	if (crs->c)
 	{
 		sr[0] = ' ';
@@ -80,7 +75,6 @@ void	str_cat_util(t_data **data, t_cursors *crs, char *prm, int n)
 		new = ft_calloc(sizeof(char) , (len + 4));
 		new = prm;
 		ft_strlcat(new, sr, len + 4);
-//		new = ft_strjoin_2(new, sr);
 	}
 	else
 	{
@@ -88,11 +82,9 @@ void	str_cat_util(t_data **data, t_cursors *crs, char *prm, int n)
 		sr[1] = (char)(*data)->slicers_seq[n];
 		sr[2] = '\0';
 		new = ft_calloc(sizeof(char), (len + 3));
-//		new = (char *)malloc(len + 3)
 		new = prm;
 		if (new)
 			ft_strlcat(new, sr, len + 3);
-//			new = ft_strjoin_2(new, sr);
 	}
 	prm = new;
 }
