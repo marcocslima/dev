@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/09 19:05:16 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/10/12 13:27:12 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,19 @@ void	cmd_check_2_1(t_data **data, t_cursors *crs)
 		[crs->i2][crs->j2], ">", 2))
 	{
 		ft_output(data, crs);
+		crs->i2 = crs->o + 1;
+/*
 		while((*data)->cmds[crs->w])
 		{
-			if((*(*data)->cmds[crs->w][0] == '>') | (*(*data)->cmds[crs->w][0] == '<'))
+			if((*data)->cmds[crs->w][1] 
+				&& ((*(*data)->cmds[crs->w][0] == '>') | (*(*data)->cmds[crs->w][0] == '<')
+				| (*(*data)->cmds[crs->w][1] == '>') | (*(*data)->cmds[crs->w][1] == '<')))
 				crs->i2++;
 			crs->w++;
 		}
-		crs->i2++;
+		if(crs->i2 < crs->w)
+			crs->i2++;
+*/
 	}
 	while ((*data)->cmds[crs->i2] && (*data)->cmds[crs->i2][crs->j2] &&
 		!ft_memcmp((*data)->cmds[crs->i2][crs->j2], "<", 2))
