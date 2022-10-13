@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:23 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/05 23:23:04 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:43:15 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_data
 	int				*slicers_types; /*clean_data*/
 	int				*slicers_seq; /*clean_data*/
 	int				crs; /*clean_data*/
+	int				jump;
 	int				*quotes_types; /*clean_data*/
 	int				argc;
 	char			*input; /*clean_data*/

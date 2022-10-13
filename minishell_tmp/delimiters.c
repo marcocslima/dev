@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/12 13:41:05 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:55:10 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,6 +264,9 @@ void	ft_output(t_data **data, t_cursors *crs)
 
 	jc = join_cmds(data, crs->i2);
 	ncmd = ft_split(jc, '>');
+	while (ncmd[crs->o])
+		crs->o++;
+	(*data)->jump = crs->o + 1;
 		
 	pid = fork();
 	if (pid == 0)
@@ -274,13 +277,13 @@ void	ft_output(t_data **data, t_cursors *crs)
 	{
 		if(jc[i] == '>' && jc[i+1] == '>')
 		{
-			++crs->o;
-			crs->output = open(ncmd[crs->o], O_CREAT | O_WRONLY | O_APPEND, S_IRWXO);
+			++crs->k;
+			crs->output = open(ncmd[crs->k], O_CREAT | O_WRONLY | O_APPEND, S_IRWXO);
 		}
 		else if(jc[i] == '>' && jc[i + 1] != '>' && jc[i - 1] != '>')
 		{
-			++crs->o;
-			crs->output = open(ncmd[crs->o], O_CREAT | O_WRONLY | O_TRUNC, S_IRWXO);
+			++crs->k;
+			crs->output = open(ncmd[crs->k], O_CREAT | O_WRONLY | O_TRUNC, S_IRWXO);
 		}
 	}
 	if (crs->output == -1)
@@ -290,11 +293,6 @@ void	ft_output(t_data **data, t_cursors *crs)
 		(*data)->exit_return = 1;
 		return ;
 	}
-	//exec_output(crs);
-	//if(crs->flag == 1)
-	//crs->w++;
-	//else
-	//	crs->i2 = i - 1;
 	ft_output_2(data, crs);
 	}
 	waitpid(pid, &crs->status, 0);
@@ -302,12 +300,12 @@ void	ft_output(t_data **data, t_cursors *crs)
 
 void	ft_output_2(t_data **data, t_cursors *crs)
 {
-		crs->saved_stdout = dup(STDOUT);
+		//crs->saved_stdout = dup(STDOUT);
 		dup2(crs->output, STDOUT);
 		close(crs->output);
 		builtin_execute(data, crs->i2, crs->flag, crs);
-		dup2(crs->saved_stdout, STDOUT);
-		close(crs->saved_stdout);
+		//dup2(crs->saved_stdout, STDOUT);
+		//close(crs->saved_stdout);
 }
 
 
