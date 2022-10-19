@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/10 23:55:06 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/10/17 22:45:34 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void input_preper(t_data **data)
 	clean_pointer = (*data)->input; 
 	(*data)->tmp = (char *)ft_calloc(sizeof(char *), 4097);
 	crs->len = ft_strlen(slicers);
-	if((*data)->input[crs->i])
+	if((*data)->input && (*data)->input[crs->i]) // TAVA DANDO SEGMENTATION FAULT
 	{
 		while((*data)->input[crs->i])
 		{

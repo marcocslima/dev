@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/12 18:55:10 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/10/17 23:51:27 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	execute(char *argv, t_data **data)
 		free(cmd);
 	}
 	path = pathexec(cmd[0], (*data)->envp);
-	if (execve(path, cmd, (*data)->envp)  == -1)
+	if (execve(path, cmd, (*data)->envp) == -1)
 		exit(exec_error_msg(argv));
 }
 
@@ -181,7 +181,7 @@ void	ft_pipe(t_data **data, int i, int flag, t_cursors *crs)
 		dup2(pipefd[IN], STDIN);
 	}
 }
-
+/*
 void exec_output(t_cursors *crs)//(t_data **data, t_cursors *crs)
 {
     int status, pid;
@@ -203,7 +203,7 @@ void exec_output(t_cursors *crs)//(t_data **data, t_cursors *crs)
     close(fd[1]);
     waitpid(pid, &status, 0);
 }
-
+*/
 int check_sep(char c)
 {
 	t_cursors *crs;
@@ -253,9 +253,6 @@ char *join_cmds(t_data **data, int cmd)
 	return (ret);	
 }
 
-
-
-
 void	ft_output(t_data **data, t_cursors *crs)
 {
 	pid_t	pid;
@@ -266,25 +263,19 @@ void	ft_output(t_data **data, t_cursors *crs)
 	ncmd = ft_split(jc, '>');
 	while (ncmd[crs->o])
 		crs->o++;
-	(*data)->jump = crs->o + 1;
-		
+	if ((*data)->qtd_cmds < crs->o + 1)
+		(*data)->jump = crs->o;
+	else
+		(*data)->jump = crs->o + 1;
 	pid = fork();
 	if (pid == 0)
 	{
-	int i = -1;
-	//crs->o = 1;
-	while(jc[++i])
+	while(jc[++crs->l])
 	{
-		if(jc[i] == '>' && jc[i+1] == '>')
-		{
-			++crs->k;
-			crs->output = open(ncmd[crs->k], O_CREAT | O_WRONLY | O_APPEND, S_IRWXO);
-		}
-		else if(jc[i] == '>' && jc[i + 1] != '>' && jc[i - 1] != '>')
-		{
-			++crs->k;
-			crs->output = open(ncmd[crs->k], O_CREAT | O_WRONLY | O_TRUNC, S_IRWXO);
-		}
+		if(jc[crs->l] == '>' && jc[crs->l + 1] == '>')
+			crs->output = open(ncmd[++crs->k], O_CREAT | O_WRONLY | O_APPEND, S_IRWXO);
+		else if(jc[crs->l] == '>' && jc[crs->l + 1] != '>' && jc[crs->l - 1] != '>')
+			crs->output = open(ncmd[++crs->k], O_CREAT | O_WRONLY | O_TRUNC, S_IRWXO);
 	}
 	if (crs->output == -1)
 	{
