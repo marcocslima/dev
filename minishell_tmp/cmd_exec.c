@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/13 05:59:34 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/10/23 08:46:52 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,10 @@ int	len_cmds(t_data **data, t_cursors *crs, int c)
 
 void	cmd_check(t_data **data)
 {
-	//char		*cmd2;
 	t_cursors	*crs;
 
 	init_crs(&crs);
 	cmd_check_2(data, crs);
-	/*
-	//--------------------------------------------------------------------
-	if (crs->i2 < crs->k2 && crs->i2 > 0 && (*data)->cmds[crs->i2][0]
-		&& ft_strncmp((*data)->cmds[crs->i2][0], ">", 1) && (*data)->cmds
-			[crs->i2 - 1][2] && ft_strncmp ((*data)->cmds[crs->i2 - 1][2], ">",
-			1))
-		cmd2 = ft_strdup((*data)->cmds[crs->i2][0]);
-	if (crs->i2 > 0 && (*data)->cmds[crs->i2] && ft_strncmp((*data)->cmds
-			[crs->i2][0], ">", 1) && (*data)->cmds[crs->i2 - 1][2] && ft_strncmp
-				((*data)->cmds[crs->i2 - 1][2], ">", 1))
-		cmd2 = ft_strjoin_2(cmd2, " ");
-	if (crs->i2 < crs->k2 && crs->i2 > 0 && (*data)->cmds[crs->i2][1] &&
-		ft_strncmp((*data)->cmds[crs->i2][0], ">", 1) && (*data)->cmds[crs->i2
-			- 1][2] && ft_strncmp((*data)->cmds[crs->i2 - 1][2], ">", 1))
-		cmd2 = ft_strjoin_2(cmd2, (*data)->cmds[crs->i2][1]);
-	//--------------------------------------------------------------------
-	*/
 	if (crs->i2 < crs->k2 && ft_memcmp((*data)->cmds[crs->i2][0], ">",
 		2) && ft_memcmp((*data)->cmds[crs->i2][0], ">", 2))
 	{
@@ -73,9 +55,7 @@ void	cmd_check_2(t_data **data, t_cursors *crs)
 			crs->j2 = 0;
 		}
 		while (crs->i2 < crs->k2 && (*data)->cmds[crs->i2][crs->j2])
-		{
 			cmd_check_2_1(data, crs);
-		}
 		if (crs->i2 < crs->k2 - 1)
 			crs->i2++;
 	}
@@ -93,8 +73,9 @@ void	cmd_check_2_1(t_data **data, t_cursors *crs)
 		crs->i2 = (*data)->jump;
 		crs->j2 = 0;
 	}
-	while ((*data)->cmds[crs->i2] && (*data)->cmds[crs->i2][crs->j2] &&
-		!ft_memcmp((*data)->cmds[crs->i2][crs->j2], "<", 2))
+	while (crs->flagpipe == 8 && crs->i2 <= crs->k2 && (*data)->cmds
+		[crs->i2] && (*data)->cmds[crs->i2][crs->j2] && !ft_memcmp((*data)->cmds
+			[crs->i2][crs->j2], "<", 2))
 		ft_input(data, crs);
 	if (crs->i2 < (*data)->qtd_cmds && (*data)->cmds[crs->i2]
 		&& (*data)->cmds[crs->i2][crs->j2] &&
@@ -108,14 +89,14 @@ void	cmd_check_2_1(t_data **data, t_cursors *crs)
 
 void	builtin_execute(t_data **data, int i, int flag, t_cursors *crs)
 {
-	char	*cmd1;
+	char	cmd2[1000];
 	int		j;
 
 	j = 1;
 	if (((*data)->cmds[i][0] && crs->i > 0 && (*data)->cmds[i - 1][2] &&
 		ft_strncmp((*data)->cmds[i - 1][2], ">", 1)) || ((*data)->cmds[i][0] &&
 			crs->i == 0))
-		cmd1 = ft_strdup((*data)->cmds[i][0]);
+		(*data)->tmp = ft_strdup((*data)->cmds[i][0]);
 	while ((*data)->cmds[i] && (*data)->cmds[i][j])
 	{
 		if ((*data)->cmds[i][j] && ft_strncmp((*data)->cmds[i][j], "<", 1)
@@ -123,22 +104,29 @@ void	builtin_execute(t_data **data, int i, int flag, t_cursors *crs)
 				->cmds[i][j], "|", 1) && ft_strncmp((*data)->cmds[i][j], ";",
 					1))
 		{
-			cmd1 = ft_strjoin_2(cmd1, " ");
-			cmd1 = ft_strjoin_2(cmd1, (*data)->cmds[i][j]);
+			(*data)->tmp = ft_strjoin_2((*data)->tmp, " ");
+			(*data)->tmp = ft_strjoin_2((*data)->tmp, (*data)->cmds[i][j]);
 		}
 		j++;
 	}
+	crs->len = ft_strlen((*data)->tmp);
+	ft_bzero(cmd2, 1000);
+	ft_memcpy(cmd2, (*data)->tmp, crs->len);
 	if (!ft_memcmp((*data)->cmds[i][0], "echo", 5))
 	{
-		crs->flagecho = 0;
-		ft_echo(data, (*data)->cmds[i], crs);
-		//if ((*data)->cmds[i][2] && ft_memcmp((*data)->cmds[i][1], "-n", 2) &&
-		//	(*data)->cmds[i][2][0] != '\0' && ft_memcmp((*data)->cmds[i]
-		//		[2], ";", 2))// adicionado por atila mas tem que estar
-		//exit(0);
+		if(!ft_memcmp((*data)->cmds[i][1], "$?", 2))
+		{
+			ft_putnbr_fd((*data)->exit_return, 1);
+			write(1, "\n", 1);
+		}
+		else
+		{
+			crs->flagecho = 0;
+			ft_echo(data, (*data)->cmds[i], crs);
+		}
 	}
 	else
-		builtin_execute_2(data, i, flag, cmd1, crs);
+		builtin_execute_2(data, i, flag, cmd2, crs);
 }
 
 void	builtin_execute_2(t_data **data, int i, int flag, char *cmd1, t_cursors *crs)
@@ -162,5 +150,5 @@ void	builtin_execute_2(t_data **data, int i, int flag, char *cmd1, t_cursors *cr
 	else if (flag == 0)
 		execute(cmd1, data);
 	else
-		execute_pipe(cmd1, data);
+		execute_pipe(cmd1, data, crs);
 }

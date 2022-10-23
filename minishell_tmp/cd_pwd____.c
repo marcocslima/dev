@@ -3,13 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   cd_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/17 21:06:02 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/23 11:49:52 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -37,25 +35,24 @@ char	*find_env_val(t_data **data, char *find)
 
 void	ft_cd_home(t_data **data, char *home_path, int i, char *input)
 {
-	home_path = find_env_val(data, "HOME");
+	if (!input || input[0] == '\0' || ft_memcmp("~", input, 1) == 0
+		|| ft_memcmp(input, "--", 2) == 0)
+	{
+		chdir(home_path);
+		(*data)->exit_return = 0;
+		return ;
+	}
 	if (!(home_path))
 	{
 		ft_putstr_fd("cd: HOME not set\n", 2);
 		(*data)->exit_return = 1;
 		return ;
 	}
-	if ((*data)->cmds[i][2] && (((*data)->cmds[i][2][0] != '\0' &&
-		!is_token((*data)->cmds[i][2][0]))))
+	if ((*data)->cmds[i] && (*data)->cmds[i][2] && (*data)->cmds[i][2][0]
+		&& !is_token((*data)->cmds[i][2][0]))
 	{
-		ft_putstr_fd("cd: too many arguments", 2);
+		ft_putstr_fd("cd: too many arguments\n", 2);
 		(*data)->exit_return = 1;
-		return ;
-	}
-	if (!input || input[0] == '\0' || ft_memcmp("~", input, 1) == 0
-		|| ft_memcmp(input, "--", 2) == 0)
-	{
-		chdir(home_path);
-		(*data)->exit_return = 0;
 		return ;
 	}
 	else
@@ -74,6 +71,7 @@ void	ft_cd_2(t_data **data, char *path)
 	ft_putstr_fd("\n", 1);
 	chdir(path);
 	(*data)->exit_return = 0;
+	free_paths((*data)->home_path, (*data)->pathcd);
 }
 
 int	ft_cd(t_data **data, char *input, int i)
@@ -82,13 +80,16 @@ int	ft_cd(t_data **data, char *input, int i)
 	(*data)->pathcd = find_env_val(data, "OLDPWD");
 	ft_cd_home(data, (*data)->home_path, i, input);
 	if ((*data)->exit_return != 2)
+	{
+		free_paths((*data)->home_path, (*data)->pathcd);
 		return ((*data)->exit_return);
+	}
 	else if (ft_memcmp("-", input, ft_strlen(input)) == 0)
 	{
-		(*data)->pathcd = find_env_val(data, "OLDPWD");
 		ft_cd_2(data, (*data)->pathcd);
 		return ((*data)->exit_return);
 	}
+	free_paths((*data)->home_path, (*data)->pathcd);
 	(*data)->exit_return = 1;
 	if (access(input, F_OK) == -1)
 		ft_putstr_fd("no such file or directory: ", 2);
@@ -99,8 +100,6 @@ int	ft_cd(t_data **data, char *input, int i)
 		chdir(input);
 		(*data)->exit_return = 0;
 	}
-	free((*data)->pathcd);
-	free((*data)->home_path);
 	return ((*data)->exit_return);
 }
 
@@ -115,3 +114,4 @@ int	ft_pwd(void)
 	}
 	return (ERROR);
 }
+

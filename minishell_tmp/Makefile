@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/28 02:03:37 by acosta-a          #+#    #+#              #
-#    Updated: 2022/10/03 22:15:06 by acosta-a         ###   ########.fr        #
+#    Updated: 2022/10/23 12:05:03 by mcesar-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,8 @@ LIBFT = ./libft/libft.a
 LIBFT_PATH = ./libft
 # SOURCE FILES #
 SRC = ./bash.c ./signal.c ./main.c ./utils.c ./parser.c \
-./export.c ./cd_pwd.c ./delimiters.c ./echo.c ./exit.c ./cmd_exec.c \
-clean_data.c error.c env.c here_doc.c
-
+./export.c ./cd_pwd.c ./exec_and_pipe.c ./echo.c ./exit.c ./cmd_exec.c \
+clean_data.c error.c env.c here_doc.c ./redirinput.c ./rediroutput.c ./init_scream.c
 
 #BONUS =
 
