@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 07:44:08 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/05 17:00:53 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/31 15:31:26 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*here_doc_str(t_data **data, t_cursors *crs)
 		crs->str = ft_strjoin(crs->str, temp);
 		crs->str = ft_strjoin(crs->str, "\n");
 	}
+	free(temp);
 	return (crs->str);
 }
 
@@ -35,7 +36,6 @@ void	ft_here_doc(t_data **data, t_cursors *crs)
 {
 	int		fd[2];
 
-	dup2(crs->saved_stdin, STDIN);
 	if (pipe(fd) == -1)
 	{
 		(*data)->exit_return = 1;
@@ -53,9 +53,10 @@ void	ft_here_doc(t_data **data, t_cursors *crs)
 	else
 	{
 		write (fd[1], crs->str, ft_strlen(crs->str));
+		free(crs->str);
 		close (fd[1]);
 		dup2(fd[0], STDIN);
-		builtin_execute(data, crs->i2, crs->flag, crs);
+		builtin_execute(data, crs);
 		crs->i2 += 2;
 	}
 }
@@ -73,10 +74,11 @@ void	ft_here_doc_2(t_data **data, t_cursors *crs, int fd[2])
 	crs->saved_stdout = dup(STDOUT);
 	dup2(crs->output, STDOUT);
 	write (fd[1], crs->str, ft_strlen(crs->str));
+	free(crs->str);
 	close (fd[1]);
 	dup2(fd[0], STDIN);
 	close (fd[0]);
-	builtin_execute(data, crs->i2, crs->flag, crs);
+	builtin_execute(data, crs);
 	dup2(crs->saved_stdout, STDOUT);
 	close(crs->saved_stdout);
 	crs->i2 += 3;

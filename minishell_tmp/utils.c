@@ -6,7 +6,7 @@
 /*   By: acosta-a <acosta-a@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 11:59:29 by acosta-a          #+#    #+#             */
-/*   Updated: 2022/10/17 22:17:37 by acosta-a         ###   ########.fr       */
+/*   Updated: 2022/10/30 10:14:39 by acosta-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	init_crs(t_cursors	**cursor)
 	(*cursor) = (t_cursors *)ft_calloc(sizeof(t_cursors), 1);
 	(*cursor)->counter = 0;
 	(*cursor)->flag = 0;
+	(*cursor)->input = 0;
 	(*cursor)->flagpipe = 8;
 	(*cursor)->flagfork = 0;
 	(*cursor)->i = 0;
@@ -76,14 +77,17 @@ void	init_crs(t_cursors	**cursor)
 
 int	is_token(char s)
 {
-	char	token[9] = ";|'\" $\\<>";
 	int		i;
+	char	token[9];
 
+	ft_strlcpy(token, ";|'\" $\\<>", 9);
 	i = 0;
-	while (token[i] != s)
+	while (token[i] != s && i < 9)
+	{
+		if (token[i] == s)
+			return (1);
 		i++;
-	if (token[i] == s)
-		return (1);
+	}
 	return (0);
 }
 
@@ -100,9 +104,9 @@ char	*ft_clean_quotes(char *s, char c)
 	len = -1;
 	while (s[++len])
 	{
-		if (flag == 0 && (s[len] == '"' || (s[len] == '\\' && (
-			s[len + 1] == '\'' || s[len + 1] == '"' || s[len + 1] == '\\'
-				|| s[len + 1] == c))))
+		if (flag == 0 && (s[len] == '"' || (s[len] == '\\' && (s[len + 1]
+						== '\'' || s[len + 1] == '"' || s[len + 1] == '\\'
+						|| s[len + 1] == c))))
 		{
 			init++;
 			len ++;
