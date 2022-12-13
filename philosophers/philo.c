@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 05:08:04 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/12/08 23:15:03 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/12/13 20:23:37 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void    drop_fork(t_philo *philo, int flag)
 
 void	clean_to_exit(t_philo *philo)
 {
-	philo->dbase->dead = 1000;
+	//philo->dbase->dead = 1000;
 	philo->dbase->index = -1;
 	while (++philo->dbase->index < philo->dbase->n_philos)
 		pthread_mutex_destroy(&philo->dbase->forks[philo->dbase->index]);
@@ -154,58 +154,57 @@ void	verify_state(t_philo *philo)
 			clean_to_exit(philo);
 			exit (0);
 		}
-		drop_fork(philo, 1);
+		drop_fork(philo, 0);
 	}
-	drop_fork(philo, 0);
 }
 
-void    get_fork(t_philo *philo)
+void    get_forks(t_philo *philo)
 {
 	if (philo->dbase->n_philos == 1)
 		clean_to_exit(philo);
-	pthread_mutex_lock(&philo->dbase->forks[philo->id]);
-	print_log(philo, RIGHT_FORK);
-	philo->f_right = RIGHT_FORK;
-    if (philo->id > 0)
+	if(pthread_mutex_lock(&philo->dbase->forks[philo->id]) == 0)
 	{
-        pthread_mutex_lock(&philo->dbase->forks[philo->id - 1]);
-		print_log(philo, LEFT_FORK);
-		philo->f_left = LEFT_FORK;
-	}
-	else
-	{
-		pthread_mutex_lock(&philo->dbase->forks[philo->dbase->n_philos - 1]);
-		print_log(philo, LEFT_FORK);
-		philo->f_left = LEFT_FORK;
-	}
-	/*
-	if(philo->f_right == 6 && philo->f_left == 0)
-	{
-		pthread_mutex_unlock(&philo->dbase->forks[philo->id]);
-		printf("%d soltou garfo direito !!!!\n", philo->id + 1);
-		philo->f_left = 0;
-		philo->f_right = 0;
-	}
-	else if(philo->f_right == 0 && philo->f_left == 5)
-	{
-    	if(philo->id > 0)
+		print_log(philo, RIGHT_FORK);
+		philo->f_right = RIGHT_FORK;
+		//printf("%d Pegou o direito !!!!\n", philo->id + 1);
+		if (philo->id > 0)
 		{
-        	pthread_mutex_unlock(&philo->dbase->forks[philo->id - 1]);
-			//printf("%d soltou garfo esquerdo !!!!\n", philo->id + 1);
+			if(pthread_mutex_lock(&philo->dbase->forks[philo->id - 1]) == 0)
+			{
+				print_log(philo, LEFT_FORK);
+				philo->f_left = LEFT_FORK;
+				//printf("%d Pegou o esquerdo !!!!\n", philo->id + 1);
+			}
+			//else
+			//{
+			//	pthread_mutex_unlock(&philo->dbase->forks[philo->id]);
+			//	printf("%d Soltou o direito !!!!\n", philo->id + 1);
+			//}
 		}
 		else
 		{
-        	pthread_mutex_unlock(&philo->dbase->forks[philo->dbase->n_philos - 1]);
-			//printf("%d soltou garfo esquerdo !!!!\n", philo->id + 1);
+			if(pthread_mutex_lock(&philo->dbase->forks[philo->dbase->n_philos - 1]) == 0)
+			{
+				print_log(philo, LEFT_FORK);
+				philo->f_left = LEFT_FORK;
+				//printf("%d Pegou o esquerdo !!!!\n", philo->id + 1);
+			}
+			//else
+			//{
+			//	pthread_mutex_unlock(&philo->dbase->forks[philo->id]);
+			//	printf("%d Soltou o direito !!!!\n", philo->id + 1);
+			//}
 		}
-		philo->f_left = 0;
-		philo->f_right = 0;
 	}
-	*/
 	if (philo->f_right + philo->f_left == 11)
 		verify_state(philo);
-	//else
-	//	drop_fork(philo, 1);
+	else
+	{
+		philo->f_left = 0;
+		philo->f_right = 0;
+		printf("%d AQUI !!!!\n", philo->id);
+		//drop_fork(philo, 1);
+	}	
 }
 
 void	*simulation(void *var)
@@ -214,7 +213,7 @@ void	*simulation(void *var)
 
 	philo = var;
 	while(1)
-		get_fork(philo);
+		get_forks(philo);
 	return (NULL);
 }
 
@@ -222,20 +221,24 @@ int	main(int argc, char *argv[])
 {
     t_dbase 	*dbase;
     t_philo 	*philo;
+	int i = -1;
+	int j = -1;
     
     dbase = (t_dbase *)malloc(sizeof(t_dbase));
     if (init(dbase, &philo, argc, argv))
 		return (ERROR);
 	dbase->t_init = get_time_now();
 	philo->dbase->dead = 0;
-	dbase->index = -1;
-	while (++dbase->index < dbase->n_philos)
+	//dbase->index = -1;
+	//while (++dbase->index < dbase->n_philos)
+	while (++i < dbase->n_philos)
 	{
-		pthread_create(&philo[dbase->index].td, NULL, &simulation, &philo[dbase->index]);
 		usleep(50);
+		pthread_create(&philo[i].td, NULL, &simulation, &philo[i]);
 	}
-	philo->dbase->index = -1;
-	while (++philo->dbase->index < philo->dbase->n_philos && philo->dbase->dead != 1000)
-		pthread_join(philo[philo->dbase->index].td, NULL);
+	//philo->dbase->index = -1;
+	//while (++philo->dbase->index < philo->dbase->n_philos)
+	while (++j < philo->dbase->n_philos)
+		pthread_join(philo[j].td, NULL);
 	return (0);
 }
