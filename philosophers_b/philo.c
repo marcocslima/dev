@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 05:08:04 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/12/16 00:53:37 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/12/13 20:23:37 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	print_log(t_philo *philo, int state)
 {
 	long long	now;
 
-	pthread_mutex_lock(&philo->dbase->lock);
 	now = get_time_now();
 	if ((state == LEFT_FORK || state == RIGHT_FORK) && philo->dbase->dead == 0)
 		printf("%llu %d has taken a fork \n", now, philo->id + 1);
@@ -39,7 +38,6 @@ void	print_log(t_philo *philo, int state)
 		printf("%llu %d is sleeping \n", now, philo->id + 1);
 	else if (state == DEAD)
 		printf("%llu %d died \n", now, philo->id + 1);
-	pthread_mutex_unlock(&philo->dbase->lock);
 }
 
 
@@ -54,6 +52,7 @@ int	init(t_dbase *dbase, t_philo **philo, int argc, char *argv[])
 	dbase->t_die = ft_atoi(argv[2]);
 	dbase->t_eat = ft_atoi(argv[3]);
 	dbase->t_sleep = ft_atoi(argv[4]);
+	dbase->index = -1;
 	dbase->n_eats = -1;
 	dbase->some_die = 0;
 	dbase->dead = 0;
@@ -70,7 +69,6 @@ int	init(t_dbase *dbase, t_philo **philo, int argc, char *argv[])
 	}
 	if (dbase->n_philos == 0)
 		exit_free(dbase, *philo, 0);
-	pthread_mutex_init(&dbase->lock, NULL);
 	init_philos(dbase, *philo);
 	return (0);
 }
@@ -91,29 +89,39 @@ void	init_philos(t_dbase *dbase, t_philo *philo)
 		philo[i].f_right = 0;
 		philo[i].f_left = 0;
 	}
+	pthread_mutex_init(&dbase->lock, NULL);
 }
 
 void    drop_fork(t_philo *philo, int flag)
 {
-	pthread_mutex_unlock(&philo->dbase->forks[philo->id - 1]);
-	pthread_mutex_unlock(&philo->dbase->forks[philo->id % philo->dbase->n_philos]);
-	philo->f_left = 0;
-	philo->f_right = 0;
+    pthread_mutex_unlock(&philo->dbase->forks[philo->id]);
+	//printf("%d soltou garfo direito....\n", philo->id + 1);
+    if(philo->id > 0)
+	{
+        pthread_mutex_unlock(&philo->dbase->forks[philo->id - 1]);
+		//printf("%d soltou garfo esquerdo....\n", philo->id + 1);
+	}
+	else
+	{
+        pthread_mutex_unlock(&philo->dbase->forks[philo->dbase->n_philos - 1]);
+		//printf("%d soltou garfo esquerdo....\n", philo->id + 1);
+	}
 	if (flag == 0)
 	{
 		print_log(philo, SLEEP);
 		usleep(philo->dbase->t_sleep * 1000);
 		print_log(philo, THINK);
 	}
+	philo->f_right = 0;
+	philo->f_left = 0;
 }
 
 void	clean_to_exit(t_philo *philo)
 {
-	int	i;
-	
-	i = -1;
-	while (++i < philo->dbase->n_philos)
-		pthread_mutex_destroy(&philo->dbase->forks[i]);
+	//philo->dbase->dead = 1000;
+	philo->dbase->index = -1;
+	while (++philo->dbase->index < philo->dbase->n_philos)
+		pthread_mutex_destroy(&philo->dbase->forks[philo->dbase->index]);
 	free(philo->dbase->forks);
 	free(philo->dbase);
 	exit (0);
@@ -141,6 +149,8 @@ void	verify_state(t_philo *philo)
 		if (philo->eat_count == philo->dbase->n_eats)
 		{
 			philo->dbase->all_eat++;
+			if(philo->dbase->all_eat >= philo->dbase->n_philos)
+				philo->dbase->index = -1;
 			clean_to_exit(philo);
 			exit (0);
 		}
@@ -152,18 +162,49 @@ void    get_forks(t_philo *philo)
 {
 	if (philo->dbase->n_philos == 1)
 		clean_to_exit(philo);
-	if(pthread_mutex_lock(&philo->dbase->forks[philo->id - 1]) == 0)
-	{
-		print_log(philo, LEFT_FORK);
-		philo->f_left = LEFT_FORK;
-	}
-	if(pthread_mutex_lock(&philo->dbase->forks[philo->id % philo->dbase->n_philos]) == 0)
+	if(pthread_mutex_lock(&philo->dbase->forks[philo->id]) == 0)
 	{
 		print_log(philo, RIGHT_FORK);
 		philo->f_right = RIGHT_FORK;
+		//printf("%d Pegou o direito !!!!\n", philo->id + 1);
+		if (philo->id > 0)
+		{
+			if(pthread_mutex_lock(&philo->dbase->forks[philo->id - 1]) == 0)
+			{
+				print_log(philo, LEFT_FORK);
+				philo->f_left = LEFT_FORK;
+				//printf("%d Pegou o esquerdo !!!!\n", philo->id + 1);
+			}
+			//else
+			//{
+			//	pthread_mutex_unlock(&philo->dbase->forks[philo->id]);
+			//	printf("%d Soltou o direito !!!!\n", philo->id + 1);
+			//}
+		}
+		else
+		{
+			if(pthread_mutex_lock(&philo->dbase->forks[philo->dbase->n_philos - 1]) == 0)
+			{
+				print_log(philo, LEFT_FORK);
+				philo->f_left = LEFT_FORK;
+				//printf("%d Pegou o esquerdo !!!!\n", philo->id + 1);
+			}
+			//else
+			//{
+			//	pthread_mutex_unlock(&philo->dbase->forks[philo->id]);
+			//	printf("%d Soltou o direito !!!!\n", philo->id + 1);
+			//}
+		}
 	}
-	if(philo->f_left + philo->f_right == 11)
+	if (philo->f_right + philo->f_left == 11)
 		verify_state(philo);
+	else
+	{
+		philo->f_left = 0;
+		philo->f_right = 0;
+		printf("%d AQUI !!!!\n", philo->id);
+		//drop_fork(philo, 1);
+	}	
 }
 
 void	*simulation(void *var)
@@ -180,21 +221,24 @@ int	main(int argc, char *argv[])
 {
     t_dbase 	*dbase;
     t_philo 	*philo;
-	int 		i;
-
-	i = -1;
+	int i = -1;
+	int j = -1;
+    
     dbase = (t_dbase *)malloc(sizeof(t_dbase));
     if (init(dbase, &philo, argc, argv))
 		return (ERROR);
 	dbase->t_init = get_time_now();
 	philo->dbase->dead = 0;
+	//dbase->index = -1;
+	//while (++dbase->index < dbase->n_philos)
 	while (++i < dbase->n_philos)
 	{
+		usleep(50);
 		pthread_create(&philo[i].td, NULL, &simulation, &philo[i]);
-		usleep(100);
 	}
-	i = -1;
-	while (++i < philo->dbase->n_philos)
-		pthread_join(philo[i].td, NULL);
+	//philo->dbase->index = -1;
+	//while (++philo->dbase->index < philo->dbase->n_philos)
+	while (++j < philo->dbase->n_philos)
+		pthread_join(philo[j].td, NULL);
 	return (0);
 }

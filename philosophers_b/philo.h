@@ -6,7 +6,7 @@
 /*   By: mcesar-d <mcesar-d@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 05:32:14 by mcesar-d          #+#    #+#             */
-/*   Updated: 2022/12/16 00:29:22 by mcesar-d         ###   ########.fr       */
+/*   Updated: 2022/12/13 19:55:06 by mcesar-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 typedef struct s_dbase
 {
-	//int				index;
+	int				index;
 	int				dead;
 	int				n_philos;
 	int				some_die;
