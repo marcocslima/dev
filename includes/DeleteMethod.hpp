@@ -13,7 +13,7 @@
 #pragma once
 
 #include "AResponse.hpp"
-#include "Utils.hpp"
+#include "utils.hpp"
 
 class DeleteMethod : public AHttpResponse {
     public:

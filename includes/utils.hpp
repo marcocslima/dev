@@ -16,3 +16,5 @@
 
 responseData getJson(std::string body);
 responseData getContent(std::string root, std::string file);
+std::string getDir ();
+std::string getBin(const std::string& url);

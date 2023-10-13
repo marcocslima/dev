@@ -16,10 +16,7 @@
 #include "Location.hpp"
 #include "Parser.hpp"
 #include "Request.hpp"
-#include "Utils.hpp"
-// #include <string.h>
-// #include <sys/wait.h>
-// #include <unistd.h>
+#include "utils.hpp"
 
 class CGI : public HttpRequest {
     private:

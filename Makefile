@@ -68,7 +68,6 @@ FILES = main.cpp\
 		ErrorPage.cpp\
 		utils.cpp\
 		Cgi.cpp\
-		Utils.cpp\
 		ResponseHandlers.cpp
 
 # COMPILED_SOURCES #
