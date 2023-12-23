@@ -16,6 +16,7 @@ const Court: React.FC<CourtProps> = ({ matchData, matchPadles, onSendKey }) => {
 
   React.useEffect(() => {
     setMatch(matchData.match);
+    console.log(matchData.match);
   }, [matchData]);
 
   React.useEffect(() => {

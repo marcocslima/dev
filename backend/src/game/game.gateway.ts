@@ -100,7 +100,7 @@ export class GamePong implements OnGatewayConnection, OnGatewayDisconnect {
         }
         await game.rooms[roomId].playingGameInstance.playGame(startMatch, matchPadle, (updatedMatch) => {
           this.server.to(game.rooms[roomId].room_id).emit('matchStarted', {
-            match: { ...updatedMatch, room_id: game.rooms[roomId].player1 }
+            match: { ...updatedMatch, room_id: roomId }
           });
           matchStatus = {
             player1: game.rooms[roomId].player1.id,

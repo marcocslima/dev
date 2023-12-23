@@ -95,7 +95,6 @@ export class PlayingGameService implements PlayingGameInstance {
         await playGameRecursive();
       }
     };
-
     await playGameRecursive();
   }
 
