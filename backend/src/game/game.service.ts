@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Server } from 'socket.io';
 
 export const initialMatch: Match = {
-  room_id: '',
+  // room_id: '',
   matchStatus: 'WAITING',
   ball: {
     x: 580 / 2,
@@ -24,9 +24,9 @@ export interface Player {
   avatar: null | string;
 }
 
-export interface PlayingGameInstance {
-  playGame: (match: Match, matchPadle: MatchPadle, updateCallback: (updatedMatch: Match) => void) => Promise<void>;
-}
+// export interface PlayingGameInstance {
+//   playGame: (match: Match, matchPadle: MatchPadle, updateCallback: (updatedMatch: Match) => void) => Promise<void>;
+// }
 
 @Injectable()
 export class GameService {
@@ -45,128 +45,112 @@ export class GameService {
     if (game.rooms[roomId]) {
       const room = game.rooms[roomId];
       game.rooms[roomId].match = initialMatch;
-      if (player === room.player1.id) {
-        server.to(room.room_id).emit('playerLeftRoom', { message: `${room.player1.name} saiu da sala.` });
-      } else if (room.player2 && player === room.player2.id) {
-        server.to(room.room_id).emit('playerLeftRoom', { message: `${room.player2.name} saiu da sala.` });
-      }
+      // if (player === room.player1.id) {
+      //   server.to(room.room_id).emit('playerLeftRoom', { message: `${room.player1.name} saiu da sala.` });
+      // } else if (room.player2 && player === room.player2.id) {
+      //   server.to(room.room_id).emit('playerLeftRoom', { message: `${room.player2.name} saiu da sala.` });
+      // }
       delete game.rooms[roomId];
     }
   }
 }
 
-@Injectable()
-export class PlayingGameService implements PlayingGameInstance {
-  async playGame(match: Match, matchPadle: MatchPadle, updateCallback: (updatedMatch: Match) => void): Promise<void> {
-    const playGameRecursive = async () => {
-      const xpos = match.ball.x + match.ball.xspeed * match.ball.xdirection;
-      const ypos = match.ball.y + match.ball.yspeed * match.ball.ydirection;
+// @Injectable()
+// export class PlayingGameService implements PlayingGameInstance {
+// async playGame(match: Match, updateCallback: (updatedMatch: Match) => void): Promise<void> {
+//   const playGameRecursive = async () => {
+//     const xpos = match.ball.x + match.ball.xspeed * match.ball.xdirection;
+//     const ypos = match.ball.y + match.ball.yspeed * match.ball.ydirection;
 
-      match.ball.x = xpos;
-      match.ball.y = ypos;
+//     match.ball.x = xpos;
+//     match.ball.y = ypos;
 
-      const updatedMatchWithColision = await this.handleColision(match, matchPadle);
+//     if (xpos > match.courtDimensions.width - match.ball.width || xpos < match.ball.width) {
+//       match.ball.xdirection *= -1;
+//     }
 
-      if (xpos > match.courtDimensions.width - match.ball.width || xpos < match.ball.width) {
-        match.ball.xdirection *= -1;
-      }
+//     if (ypos > match.courtDimensions.height - match.ball.width || ypos < match.ball.width) {
+//       match.ball.ydirection *= -1;
+//     }
 
-      if (ypos > match.courtDimensions.height - match.ball.width || ypos < match.ball.width) {
-        match.ball.ydirection *= -1;
-      }
+//     if (match.matchStatus === 'PLAYING') {
+//       updateCallback({ ...match });
+//       await new Promise((resolve) => setTimeout(resolve, 3000));
+//       await playGameRecursive();
+//     }
+//   };
+//   await playGameRecursive();
+// }
 
-      if (xpos < match.ball.width) {
-        match.score2++;
-        match.ball.x = match.courtDimensions.width / 2;
-        match.ball.y = match.courtDimensions.height / 2;
-      }
+// async latencyGame(roomId: string, player: string, game: Game, server: Server): Promise<void> {
+//   const room = game.rooms[roomId];
+//   const startTime = new Date().getTime();
 
-      if (xpos > match.courtDimensions.width - match.ball.width) {
-        match.score1++;
-        match.ball.x = match.courtDimensions.width / 2;
-        match.ball.y = match.courtDimensions.height / 2;
-      }
+//   const getLatency = async () => {
+//     const currentTime = new Date().getTime();
+//     const latency = currentTime - startTime;
+//     // server.to(room.room_id).emit('ping', latency);
 
-      updateCallback(updatedMatchWithColision);
+//     console.log(latency, '-->', player);
 
-      if (match.matchStatus === 'PLAYING') {
-        updateCallback({ ...match });
-        await new Promise((resolve) => setTimeout(resolve, 1000 / 60));
-        await playGameRecursive();
-      }
-    };
-    await playGameRecursive();
-  }
+//     await new Promise((resolve) => setTimeout(resolve, 5000));
+//     await getLatency();
+//   };
 
-  async latencyGame(roomId: string, player: string, game: Game, server: Server): Promise<void> {
-    const room = game.rooms[roomId];
-    const startTime = new Date().getTime();
+//   await getLatency();
+// }
 
-    const getLatency = async () => {
-      const currentTime = new Date().getTime();
-      const latency = currentTime - startTime;
-      server.to(room.room_id).emit('ping', latency);
+// async movePadle(padle: Padle, matchPadle: MatchPadle, player: string, matchRoom: Room): Promise<void> {
+//   // const updatedPadle: MatchPadle = { ...matchPadle };
 
-      console.log(latency, '-->', player);
+//   if (padle.key === 'ArrowUp') {
+//     if (player === '1') {
+//       matchRoom.padles.player1.y -= 5 * matchPadle.player1.playerSpeed;
+//     } else {
+//       matchRoom.padles.player2.y -= 5 * matchPadle.player2.playerSpeed;
+//     }
+//   } else if (padle.key === 'ArrowDown') {
+//     if (player === '1') {
+//       matchRoom.padles.player1.y += 5 * matchPadle.player1.playerSpeed;
+//     } else {
+//       matchRoom.padles.player2.y += 5 * matchPadle.player2.playerSpeed;
+//     }
+//   }
 
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-      await getLatency();
-    };
+//   if (player === '1' && matchRoom.padles.player1.y < 5) matchRoom.padles.player1.y = 2;
+//   if (player === '2' && matchRoom.padles.player2.y < 5) matchRoom.padles.player2.y = 2;
+//   if (player === '1' && matchRoom.padles.player1.y > 270)
+//     matchRoom.padles.player1.y = 270;
+//   if (player === '2' && matchRoom.padles.player2.y > 270)
+//     matchRoom.padles.player2.y = 270;
 
-    await getLatency();
-  }
+// return updatedPadle;
+//   }
 
-  async movePadle(padle: Padle, matchPadle: MatchPadle, player: string, matchStatus: Match): Promise<MatchPadle> {
-    const updatedPadle: MatchPadle = { ...matchPadle };
+//   async handleColision(match: Match, matchPadle: MatchPadle): Promise<Match> {
+//     const updatedMatch: Match = { ...match };
 
-    if (padle.key === 'ArrowUp') {
-      if (player === '1') {
-        updatedPadle.player1.y -= 5 * matchPadle.player1.playerSpeed;
-      } else {
-        updatedPadle.player2.y -= 5 * matchPadle.player1.playerSpeed;
-      }
-    } else if (padle.key === 'ArrowDown') {
-      if (player === '1') {
-        updatedPadle.player1.y += 5 * matchPadle.player1.playerSpeed;
-      } else {
-        updatedPadle.player2.y += 5 * matchPadle.player1.playerSpeed;
-      }
-    }
+//     if (updatedMatch.ball.x < 15) {
+//       if (updatedMatch.ball.y > matchPadle.player1.y - 5 && updatedMatch.ball.y < matchPadle.player1.y + 55) {
+//         updatedMatch.ball.xdirection *= -1;
+//       }
+//     }
 
-    if (player === '1' && updatedPadle.player1.y < 5) updatedPadle.player1.y = 2;
-    if (player === '2' && updatedPadle.player2.y < 5) updatedPadle.player2.y = 2;
-    if (player === '1' && updatedPadle.player1.y > matchStatus.courtDimensions.height - 50)
-      updatedPadle.player1.y = matchStatus.courtDimensions.height - 50;
-    if (player === '2' && updatedPadle.player2.y > matchStatus.courtDimensions.height - 50)
-      updatedPadle.player2.y = matchStatus.courtDimensions.height - 50;
-
-    return updatedPadle;
-  }
-
-  async handleColision(match: Match, matchPadle: MatchPadle): Promise<Match> {
-    const updatedMatch: Match = { ...match };
-
-    if (updatedMatch.ball.x < 15) {
-      if (updatedMatch.ball.y > matchPadle.player1.y - 5 && updatedMatch.ball.y < matchPadle.player1.y + 55) {
-        updatedMatch.ball.xdirection *= -1;
-      }
-    }
-
-    if (updatedMatch.ball.x > updatedMatch.courtDimensions.width - 15) {
-      if (updatedMatch.ball.y > matchPadle.player2.y - 5 && updatedMatch.ball.y < matchPadle.player2.y + 55) {
-        updatedMatch.ball.xdirection *= -1;
-      }
-    }
-    return updatedMatch;
-  }
-}
+//     if (updatedMatch.ball.x > updatedMatch.courtDimensions.width - 15) {
+//       if (updatedMatch.ball.y > matchPadle.player2.y - 5 && updatedMatch.ball.y < matchPadle.player2.y + 55) {
+//         updatedMatch.ball.xdirection *= -1;
+//       }
+//     }
+//     return updatedMatch;
+//   }
+// }
 
 export interface Room {
-  room_id: string;
   player1: Player;
   player2: Player;
   match: Match;
-  playingGameInstance?: PlayingGameInstance;
+  padles: MatchPadle;
+  // playingGameInstance?: PlayingGameInstance;
 }
 
 export interface Game {
@@ -175,7 +159,6 @@ export interface Game {
 }
 
 export interface Match {
-  room_id: string;
   matchStatus: string;
   ball: {
     x: number;

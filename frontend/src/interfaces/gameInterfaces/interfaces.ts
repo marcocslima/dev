@@ -5,14 +5,15 @@ export interface Player {
 }
 
 export interface RoomGame {
-  room_id: string;
   player1: Player;
-  player2: Player | null;
+  player2: Player;
+  match: Match;
+  padles: MatchPadle;
 }
 
 export interface GameData {
-  players: Player[];
-  rooms: RoomGame[];
+  players: { [key: string]: Player };
+  rooms: { [key: string]: RoomGame };
   status: string;
   match: boolean;
   connected: boolean;

@@ -1,7 +1,6 @@
 import { OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { GameService, Player, Room } from './game.service';
-import { PlayingGameService } from './game.service';
 interface Padle {
     type: string;
     key: string;
@@ -9,9 +8,8 @@ interface Padle {
 }
 export declare class GamePong implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly gameService;
-    private readonly playingGameService;
     server: Server;
-    constructor(gameService: GameService, playingGameService: PlayingGameService);
+    constructor(gameService: GameService);
     handleConnection(client: Socket, ...args: any[]): void;
     handleDisconnect(client: Socket): void;
     handleCreateRoom(user: Player, client: Socket): void;

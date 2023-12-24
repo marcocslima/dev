@@ -5,15 +5,25 @@ export interface Player {
     name: string;
     avatar: null | string;
 }
+export interface PlayingGameInstance {
+    playGame: (match: Match, matchPadle: MatchPadle, updateCallback: (updatedMatch: Match) => void) => Promise<void>;
+}
 export declare class GameService {
     findRoomByPlayerId(playerId: string, game: Game): string | null;
     removeRoomAndNotify(roomId: string, player: string, game: Game, server: Server): void;
 }
+export declare class PlayingGameService implements PlayingGameInstance {
+    playGame(match: Match, matchPadle: MatchPadle, updateCallback: (updatedMatch: Match) => void): Promise<void>;
+    latencyGame(roomId: string, player: string, game: Game, server: Server): Promise<void>;
+    movePadle(padle: Padle, matchPadle: MatchPadle, player: string, matchStatus: Match): Promise<MatchPadle>;
+    handleColision(match: Match, matchPadle: MatchPadle): Promise<Match>;
+}
 export interface Room {
+    room_id: string;
     player1: Player;
     player2: Player;
     match: Match;
-    padles: MatchPadle;
+    playingGameInstance?: PlayingGameInstance;
 }
 export interface Game {
     players: {
@@ -24,6 +34,7 @@ export interface Game {
     };
 }
 export interface Match {
+    room_id: string;
     matchStatus: string;
     ball: {
         x: number;

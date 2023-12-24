@@ -31,8 +31,8 @@ export const Game = () => {
   }, [user]);
 
   const [gameData, setGameData] = React.useState<GameData>({
-    players: [],
-    rooms: [],
+    players: {},
+    rooms: {},
     status: '',
     match: false,
     connected: false,
@@ -43,9 +43,9 @@ export const Game = () => {
   const [padle, setPadle] = React.useState<MatchPadle>({} as MatchPadle);
 
   const playerInRoom = React.useMemo(() => {
-    const playerIn = gameData.rooms.find(
+    const playerIn = Object.values(gameData.rooms).find(
       room =>
-        room.player1.id === userPlayer.id ||
+        (room.player1 && room.player1.id === userPlayer.id) ||
         (room.player2 && room.player2.id === userPlayer.id),
     );
     return playerIn;
@@ -84,13 +84,10 @@ export const Game = () => {
     });
 
     socket.on('game', (receivedGame: GameData) => {
-      const playersArray = Object.values(receivedGame.players);
-      const roomsArray = Object.values(receivedGame.rooms);
-
       setGameData(prevGameData => ({
         ...prevGameData,
-        players: playersArray,
-        rooms: roomsArray,
+        players: receivedGame.players,
+        rooms: receivedGame.rooms,
       }));
     });
 
@@ -114,7 +111,7 @@ export const Game = () => {
     });
 
     socket.on('ping', () => {
-      console.log('ping');
+      // console.log('ping');
     });
 
     return () => {
@@ -175,10 +172,10 @@ export const Game = () => {
     socket.emit('sendKey', padleObj);
   };
 
-  // React.useEffect(() => {
-  //   console.log(userPlayer.id);
-  //   console.log(match.room_id);
-  // }, [match]);
+  React.useEffect(() => {
+    console.log(userPlayer);
+    console.log(gameData);
+  }, [gameData, userPlayer]);
 
   return (
     <>
@@ -212,7 +209,7 @@ export const Game = () => {
             <h1 style={{ padding: '20px' }}>LOUNGE</h1>
             <h2 style={{ padding: '20px' }}>*** JOGADORES ***</h2>
             <div className="players-container">
-              {gameData.players.map(player => (
+              {Object.values(gameData.players).map(player => (
                 <PlayerCard key={player.id} player={player} />
               ))}
             </div>
@@ -221,9 +218,9 @@ export const Game = () => {
               <Button onClick={createRoom}>Criar sala</Button>
             </div>
             <div className="rooms-container">
-              {gameData.rooms.map(room => (
+              {Object.values(gameData.rooms).map(room => (
                 <RoomCard
-                  key={room.room_id}
+                  key={Object.keys(room)[0]}
                   room={room}
                   getInRoom={getInRoom}
                 />

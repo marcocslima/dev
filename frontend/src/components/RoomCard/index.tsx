@@ -2,18 +2,7 @@ import * as React from 'react';
 import { Avatar } from 'antd';
 import './style.css';
 // import { AlignCenterOutlined } from '@ant-design/icons';
-
-interface Player {
-  id: string;
-  name: string;
-  avatar: string | null;
-}
-
-interface RoomGame {
-  room_id: string;
-  player1: Player;
-  player2: Player | null;
-}
+import { RoomGame } from 'interfaces/gameInterfaces/interfaces';
 
 interface RoomCardProps {
   room: RoomGame;
@@ -31,7 +20,7 @@ function getRandomColor() {
 
 const RoomCard: React.FC<RoomCardProps> = ({ room, getInRoom }) => (
   <div
-    key={room.room_id}
+    key={Object.keys(room)[0]}
     className="room-card"
     style={{
       display: 'flex',

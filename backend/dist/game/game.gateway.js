@@ -18,7 +18,6 @@ const swagger_1 = require("@nestjs/swagger");
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const game_service_1 = require("./game.service");
-const game_service_2 = require("./game.service");
 const game = {
     players: {},
     rooms: {},
@@ -29,9 +28,8 @@ const matchPadle = {
 };
 let matchStatus;
 let GamePong = class GamePong {
-    constructor(gameService, playingGameService) {
+    constructor(gameService) {
         this.gameService = gameService;
-        this.playingGameService = playingGameService;
     }
     handleConnection(client, ...args) { }
     handleDisconnect(client) {
@@ -51,7 +49,7 @@ let GamePong = class GamePong {
         if (!playerAlreadyInRoom) {
             client.join(client.id);
             const match = { ...game_service_1.initialMatch };
-            game.rooms[client.id] = { room_id: client.id, player1: { ...user }, player2: null, match: { ...match } };
+            game.rooms[client.id] = { player1: { ...user }, player2: null, match: { ...match }, padles: { ...matchPadle } };
         }
         else {
             console.log('The Player is already in the room:', client.id);
@@ -59,63 +57,21 @@ let GamePong = class GamePong {
         this.server.emit('game', game);
     }
     handleGetInRoom(room, client) {
-        const playerAlreadyInRoom = Object.values(game.rooms).find((existingRoom) => existingRoom.player1.id === room.player2.id || (existingRoom.player2 && existingRoom.player2.id === room.player2.id));
-        if (!playerAlreadyInRoom && game.rooms[room.room_id].player2 === null) {
-            client.join(room.room_id);
-            game.rooms[room.room_id].player2 = { ...room.player2 };
-        }
-        else {
-            console.log('The Player is already in the room:', client.id);
-        }
-        this.server.emit('game', game);
+        console.log(game);
     }
     async handleStartMatch(user, client) {
         const roomId = this.gameService.findRoomByPlayerId(user.id, game);
-        let startMatch = { ...game.rooms[roomId].match, matchStatus: 'PLAYING' };
-        if (game.rooms[roomId]) {
-            try {
-                if (!game.rooms[roomId].playingGameInstance) {
-                    game.rooms[roomId].playingGameInstance = new game_service_2.PlayingGameService();
-                }
-                await game.rooms[roomId].playingGameInstance.playGame(startMatch, matchPadle, (updatedMatch) => {
-                    this.server.to(game.rooms[roomId].room_id).emit('matchStarted', {
-                        match: { ...updatedMatch, room_id: roomId }
-                    });
-                    matchStatus = {
-                        player1: game.rooms[roomId].player1.id,
-                        score1: updatedMatch.score1,
-                        player2: game.rooms[roomId].player2.id,
-                        score2: updatedMatch.score2,
-                    };
-                });
-            }
-            catch (error) { }
-        }
+        game.rooms[roomId].match = { ...game_service_1.initialMatch, matchStatus: 'PLAYING' };
+        game.rooms[roomId].padles = { ...matchPadle };
     }
     async handleSendKey(padle, client) {
         const roomId = this.gameService.findRoomByPlayerId(padle.player, game);
-        const matchStatus = { ...game.rooms[roomId].match };
+        const matchRoom = { ...game.rooms[roomId] };
         const player = game.rooms[roomId].player1.id === padle.player ? '1' : '2';
         const direction = padle.type === 'keyup' ? 'STOP' : 'GO';
-        if (game.rooms[roomId] && direction === 'GO') {
-            const updatedPadle = await this.playingGameService.movePadle(padle, matchPadle, player, matchStatus);
-            this.server.to(game.rooms[roomId].room_id).emit('movePadle', { matchPadle: { ...updatedPadle } });
-        }
     }
     handleLeaveRoom(user, client) {
         const roomId = this.gameService.findRoomByPlayerId(user.id, game);
-        if (game.rooms[roomId]) {
-            this.gameService.removeRoomAndNotify(roomId, user.id, game, this.server);
-            client.leave(roomId);
-            this.server.emit('game', game);
-            try {
-                this.server.to(game.rooms[roomId].room_id).emit('playerLeftRoom', 'GameOver: Player left the room!');
-            }
-            catch (error) { }
-        }
-        else {
-            console.error(`Room not found for user ${user.id}`);
-        }
     }
     handlePlayerConnected(player, client) {
         const existingPlayer = game.players[client.id];
@@ -185,6 +141,6 @@ exports.GamePong = GamePong = __decorate([
     (0, swagger_1.ApiTags)('pong'),
     (0, common_1.Controller)('pong'),
     (0, websockets_1.WebSocketGateway)({ cors: { origin: 'http://localhost:3000' } }),
-    __metadata("design:paramtypes", [game_service_1.GameService, game_service_2.PlayingGameService])
+    __metadata("design:paramtypes", [game_service_1.GameService])
 ], GamePong);
 //# sourceMappingURL=game.gateway.js.map
